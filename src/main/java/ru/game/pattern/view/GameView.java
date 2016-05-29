@@ -2,7 +2,6 @@ package ru.game.pattern.view;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.GameStatus;
-import ru.game.pattern.model.GameBackground;
 import ru.game.pattern.model.GameObject;
 import ru.game.pattern.model.WindowInfo;
 
@@ -67,24 +66,32 @@ public class GameView implements  Runnable{
 
     volatile private GameStatus gameStatus;
 
+    public GameView() {
+        windowInfo = new WindowInfo(WIDTH, HEIGHT);
+    }
+
     public void startGame(GameController gameController) {
         this.gameController = gameController;
         gameStatus = new GameStatus();
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) image.getGraphics();
-        windowInfo = new WindowInfo(WIDTH, HEIGHT);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        mainFrame.setPreferredSize(new Dimension(WIDTH+15, HEIGHT+38)); //+ оконная рамка и + верхня панель окна с названием и иконкойыв
         mainFrame.pack();
         mainFrame.setContentPane(gamePanel);
         mainFrame.setLocationRelativeTo(null);
+        gamePanel.addGameObjectListeners(gameController.getAllGameObjects());
 
+        gameController.startUpdate(gameStatus);
         this.startDraw();
-        gameController.startUpdate(gameStatus, windowInfo);
-
         mainFrame.setVisible(true);
     }
 
+
+    public WindowInfo getWindowInfo() {
+        return windowInfo;
+    }
 
     /**
      * Запуск потока для отрисовки элоементов

@@ -13,15 +13,14 @@ public interface GameController {
     /**
      * Запуск потока Thread updateThread
      * @param gameStatus ссылка на GameStatus gameStatus. Статус игры может меняться и другуми потоками других объектов
-     * @param windowInfo информация об окне
      */
-    void startUpdate(GameStatus gameStatus, WindowInfo windowInfo);
+    void startUpdate(GameStatus gameStatus);
 
     /**
      * Метод, обновляющий все игровые объекты
      */
     void updateAll();
-    
+
     /**
      * Возвращает список всех игровых объектов
      * @return список всех игровых объектов

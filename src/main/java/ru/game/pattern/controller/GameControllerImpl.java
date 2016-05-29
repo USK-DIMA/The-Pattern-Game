@@ -2,6 +2,7 @@ package ru.game.pattern.controller;
 
 import ru.game.pattern.model.GameBackground;
 import ru.game.pattern.model.GameObject;
+import ru.game.pattern.model.Player;
 import ru.game.pattern.model.WindowInfo;
 import ru.game.pattern.view.GameView;
 
@@ -37,21 +38,30 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     private WindowInfo windowInfo;
 
+
+    private Player player;
+
     @Override
     public void run() {
         updateAll();
     }
 
     /**
-     * Запуск потока Thread updateThread
-     * @param gameStatus ссылка на GameStatus gameStatus. Статус игры может меняться и другуми потоками других объектов
      * @param windowInfo информация об окне
      */
-    @Override
-    public void startUpdate(GameStatus gameStatus, WindowInfo windowInfo) {
-        this.gameStatus = gameStatus;
+    public GameControllerImpl(WindowInfo windowInfo) {
         this.windowInfo = windowInfo;
+        player = new Player(windowInfo);
         background = new GameBackground(windowInfo);
+    }
+
+    /**
+     * Запуск потока Thread updateThread
+     * @param gameStatus ссылка на GameStatus gameStatus. Статус игры может меняться и другуми потоками других объектов
+     */
+    @Override
+    public void startUpdate(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
 
         if(updateThread==null){
             synchronized (GameControllerImpl.class){
@@ -75,6 +85,7 @@ public class GameControllerImpl implements GameController, Runnable{
                 System.err.println("Error of Thread.sleep in GameController.updateAll");
             }
             background.update();
+            player.update();
             //// TODO: 27.05.2016 Обновить состояние всех объектов
         }
     }
@@ -87,6 +98,7 @@ public class GameControllerImpl implements GameController, Runnable{
     public List<GameObject> getAllGameObjects(){
         List<GameObject> gameObjects =  new ArrayList<>();
         gameObjects.add(background);
+        gameObjects.add(player);
         //// TODO: 27.05.2016 Придумать, как хранить и передовать все объекты
         return gameObjects;
     }

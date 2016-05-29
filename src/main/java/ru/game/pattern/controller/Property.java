@@ -5,4 +5,6 @@ package ru.game.pattern.controller;
  */
 public class Property {
     public static int UPDATE_PAUSE = 33;
+
+    public static int GAME_SPEED = 1;
 }

@@ -1,7 +1,10 @@
 package ru.game.pattern.view;
 
+import ru.game.pattern.model.GameObject;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -24,5 +27,16 @@ public class GamePanel extends JPanel {
         setPreferredSize(new Dimension(width, height));
         setFocusable(true);
         requestFocus();
+    }
+
+    public void addGameObjectListeners(java.util.List<GameObject> allGameObjects) {
+        for(GameObject object : allGameObjects){
+            if(object==null){
+                System.out.println(object);
+            }
+            if(object.getKeyListener()!=null) {
+                addKeyListener(object.getKeyListener());
+            }
+        }
     }
 }

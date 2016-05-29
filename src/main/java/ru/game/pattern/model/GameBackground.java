@@ -1,6 +1,7 @@
 package ru.game.pattern.model;
 
 import java.awt.*;
+import java.awt.event.KeyListener;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -19,6 +20,11 @@ public class GameBackground extends GameObject{
 
     public GameBackground(WindowInfo windowInfo) {
         this.windowInfo = windowInfo;
+    }
+
+    @Override
+    public KeyListener getKeyListener() {
+        return null;
     }
 
     @Override

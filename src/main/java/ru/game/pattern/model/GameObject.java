@@ -1,6 +1,7 @@
 package ru.game.pattern.model;
 
 import java.awt.*;
+import java.awt.event.KeyListener;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -11,6 +12,8 @@ import java.awt.*;
  */
 abstract public class GameObject {
 
+
+    public abstract KeyListener getKeyListener();
 
     /**
      * В метожн происходит отрисовка объекта игры

@@ -10,8 +10,8 @@ import ru.game.pattern.view.GameView;
 public class Main {
 
     public static void main(String[] args) {
-        GameController gameController = new GameControllerImpl();
         GameView gameView = new GameView();
+        GameController gameController = new GameControllerImpl(gameView.getWindowInfo());
         GameManager gameManager = new GameManager(gameController, gameView);
         System.out.println("Start Game");
         gameManager.startGame();
