@@ -60,17 +60,33 @@ public class Player extends GameObject {
 
     @Override
     public void update() {
+        double sin45 = 0.70710678118; //в случае движения по диагонали, сумарная скорось пердвижения по x и по y должна быть рвана speed
+
+        double k = 1;
+
         if(left){
-            updateX(-speed * Property.GAME_SPEED);
+            if(up^down){ //если нажата одна из клавиш. Если нажаты обе, то они себя компесируют
+                k=sin45;
+            }
+            updateX((int)((-speed * k * Property.GAME_SPEED) + 0.5));
         }
         if(right){
-            updateX(speed * Property.GAME_SPEED);
+            if(up^down){ //если нажата одна из клавиш. Если нажаты обе, то они себя компесируют
+                k=sin45;
+            }
+            updateX((int)((speed * k * Property.GAME_SPEED) + 0.5));
         }
         if(up){
-            updateY(-speed * Property.GAME_SPEED);
+            if(left^right){ //если нажата одна из клавиш. Если нажаты обе, то они себя компесируют
+                k=sin45;
+            }
+            updateY((int)((-speed * k * Property.GAME_SPEED) + 0.5));
         }
         if(down){
-            updateY(speed * Property.GAME_SPEED);
+            if(left^right){ //если нажата одна из клавиш. Если нажаты обе, то они себя компесируют
+                k=sin45;
+            }
+            updateY((int)((speed * k * Property.GAME_SPEED) + 0.5));
         }
     }
 
