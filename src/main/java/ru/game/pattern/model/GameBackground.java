@@ -2,6 +2,7 @@ package ru.game.pattern.model;
 
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -28,6 +29,11 @@ public class GameBackground extends GameObject{
     }
 
     @Override
+    public MouseListener getMouseListener() {
+        return null;
+    }
+
+    @Override
     public void draw(Graphics2D g) {
         g.setColor(color);
         g.fillRect(0, 0, windowInfo.getWidth(),  windowInfo.getHeight());
@@ -37,4 +43,10 @@ public class GameBackground extends GameObject{
     public void update() {
 
     }
+
+    @Override
+    public Type getType() {
+        return Type.other;
+    }
+
 }

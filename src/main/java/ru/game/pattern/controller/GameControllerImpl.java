@@ -1,9 +1,6 @@
 package ru.game.pattern.controller;
 
-import ru.game.pattern.model.GameBackground;
-import ru.game.pattern.model.GameObject;
-import ru.game.pattern.model.Player;
-import ru.game.pattern.model.WindowInfo;
+import ru.game.pattern.model.*;
 import ru.game.pattern.view.GameView;
 
 import java.util.ArrayList;
@@ -38,8 +35,11 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     private WindowInfo windowInfo;
 
+    //private Player player;
 
-    private Player player;
+    private Cursor cursor;
+
+    private List<GameObject> gameObjects;
 
     @Override
     public void run() {
@@ -51,8 +51,22 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     public GameControllerImpl(WindowInfo windowInfo) {
         this.windowInfo = windowInfo;
-        player = new Player(windowInfo);
+        gameObjects = new ArrayList<>();
         background = new GameBackground(windowInfo);
+        cursor = new Cursor(windowInfo, gameObjects);
+
+        Player player1 = new Player(windowInfo);
+        Player player2 = new Player(windowInfo);
+        player2.setLocation(100, 100);
+        Player player3 = new Player(windowInfo);
+        player3.setLocation(300, 300);
+
+        /**Порядок добваленных элементов аналогичен порядку отрисовке на экране */
+        gameObjects.add(background);
+        gameObjects.add(player1);
+        gameObjects.add(player2);
+        gameObjects.add(player3);
+        gameObjects.add(cursor);
     }
 
     /**
@@ -84,9 +98,10 @@ public class GameControllerImpl implements GameController, Runnable{
             } catch (InterruptedException e) {
                 System.err.println("Error of Thread.sleep in GameController.updateAll");
             }
-            background.update();
-            player.update();
-            //// TODO: 27.05.2016 Обновить состояние всех объектов
+
+            for(GameObject o : gameObjects){
+                o.update();
+            }
         }
     }
 
@@ -96,10 +111,6 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     @Override
     public List<GameObject> getAllGameObjects(){
-        List<GameObject> gameObjects =  new ArrayList<>();
-        gameObjects.add(background);
-        gameObjects.add(player);
-        //// TODO: 27.05.2016 Придумать, как хранить и передовать все объекты
         return gameObjects;
     }
 

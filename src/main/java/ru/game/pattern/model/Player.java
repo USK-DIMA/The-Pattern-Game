@@ -1,10 +1,8 @@
 package ru.game.pattern.model;
 
-import ru.game.pattern.controller.Property;
-
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -16,78 +14,124 @@ import java.awt.event.KeyListener;
  */
 public class Player extends GameObject {
 
-    private int x = 20;
+    public final int SPEED = 20;
 
-    private int y = 20;
+    private int x;
 
+    private int y;
+
+    /**
+     * Радиус
+     */
     private final int r = 5;
-
-    private final int speed=10;
 
     private Color color = Color.RED;
 
-    private boolean left;
+    private Color selectingColor = Color.YELLOW;
 
-    private boolean right;
+    private final static int SELECTING_BOARD_HEIGHT = 2;
 
-    private boolean up;
-
-    private boolean down;
+    volatile private Point targetLocation;
 
     private WindowInfo windowsInfo;
 
-    private PlayerKeyListener keyListener;
+    private boolean selectedByCursor;
 
     public Player(WindowInfo windowsInfo) {
         this.windowsInfo=windowsInfo;
-        keyListener = new PlayerKeyListener();
-        left = false;
-        right = false;
-        up = false;
-        down = false;
+        this.x=windowsInfo.getWidth()/2;
+        this.y=windowsInfo.getHeight()/2;
+        selectedByCursor=false;
+        targetLocation=null;
+    }
+
+    public void setLocation(int x, int y){
+        this.x=x;
+        this.x=y;
     }
 
     @Override
     public KeyListener getKeyListener(){
-        return keyListener;
+        return null;
+    }
+
+    @Override
+    public MouseListener getMouseListener() {
+        return null;
     }
 
     @Override
     public void draw(Graphics2D g) {
-            g.setColor(color);
-            g.fillOval(x-r, y-r, 2*r, 2*r);
+        if(selectedByCursor){
+            g.setColor(selectingColor);
+            int selectingR = r+SELECTING_BOARD_HEIGHT;
+            g.fillOval(x-selectingR, y-selectingR, 2*selectingR, 2*selectingR);
+        }
+        g.setColor(color);
+        g.fillOval(x-r, y-r, 2*r, 2*r);
     }
 
     @Override
     public void update() {
-        double sin45 = 0.70710678118; //в случае движения по диагонали, сумарная скорось пердвижения по x и по y должна быть рвана speed
+        if(targetLocation!=null) {
+            if (!(targetLocation.x == x && targetLocation.y == y)) {
+                double dx;
+                double dy;
+                double targetX = targetLocation.getX();
+                double targetY = targetLocation.getY();
+                if(targetX - x!=0) {
+                    double tan = Math.abs((targetY - y) / (targetX - x));
+                    dx = SPEED / Math.sqrt(1 + tan * tan);
+                    if(dx > Math.abs(targetX - x)){
+                        dx = Math.abs(targetX - x);
+                    }
+                    dx*= Math.signum(targetX - x);
 
-        double k = 1;
+                    dy = Math.abs(dx * tan);
+                    if(dy > Math.abs(targetY - y)){
+                        dy = Math.abs(targetY - y);
+                    }
+                    dy *= Math.signum(targetY - y);
+                }
+                else {
+                    dx=0;
+                    if(SPEED <Math.abs(targetY - y)) {
+                        dy = SPEED;
+                    } else {
+                        dy = Math.abs(targetY - y);
+                    }
+                    dy*=Math.signum(targetLocation.getY() - y);
+                }
 
-        if(left){
-            if(up^down){ //если нажата одна из клавиш. Если нажаты обе, то они себя компесируют
-                k=sin45;
+                x += dx;
+                y += dy;
             }
-            updateX((int)((-speed * k * Property.GAME_SPEED) + 0.5));
         }
-        if(right){
-            if(up^down){ //если нажата одна из клавиш. Если нажаты обе, то они себя компесируют
-                k=sin45;
-            }
-            updateX((int)((speed * k * Property.GAME_SPEED) + 0.5));
-        }
-        if(up){
-            if(left^right){ //если нажата одна из клавиш. Если нажаты обе, то они себя компесируют
-                k=sin45;
-            }
-            updateY((int)((-speed * k * Property.GAME_SPEED) + 0.5));
-        }
-        if(down){
-            if(left^right){ //если нажата одна из клавиш. Если нажаты обе, то они себя компесируют
-                k=sin45;
-            }
-            updateY((int)((speed * k * Property.GAME_SPEED) + 0.5));
-        }
+    }
+
+    @Override
+    public Type getType() {
+        return Type.player;
+    }
+
+    @Override
+    public boolean isSeletedByCursor() {
+        return selectedByCursor;
+    }
+
+    @Override
+    public void setSelectedByCursor(boolean selectedByCursor) {
+        this.selectedByCursor = selectedByCursor;
+    }
+
+    @Override
+    public Point getLocation() {
+        return new Point(x, y);
+    }
+
+    @Override
+    public void setClickCursorLocation(Point point) {
+        targetLocation=point;
     }
 
     private void updateX(int dx) {
@@ -105,50 +149,6 @@ public class Player extends GameObject {
             y=0;
         } else if(y>windowsInfo.getHeight()){
             y=windowsInfo.getHeight();
-        }
-    }
-
-
-    private class PlayerKeyListener implements KeyListener{
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            int key = e.getKeyCode();
-            if(key == KeyEvent.VK_W){
-                up=true;
-            }
-            if(key == KeyEvent.VK_S){
-                down=true;
-            }
-            if(key == KeyEvent.VK_A){
-                left=true;
-            }
-            if(key == KeyEvent.VK_D){
-                right=true;
-            }
-
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            int key = e.getKeyCode();
-            if(key == KeyEvent.VK_W){
-                up=false;
-            }
-            if(key == KeyEvent.VK_S){
-                down=false;
-            }
-            if(key == KeyEvent.VK_A){
-                left=false;
-            }
-            if(key == KeyEvent.VK_D){
-                right=false;
-            }
         }
     }
 

@@ -67,7 +67,14 @@ public class GameView implements  Runnable{
     volatile private GameStatus gameStatus;
 
     public GameView() {
-        windowInfo = new WindowInfo(WIDTH, HEIGHT);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setPreferredSize(new Dimension(WIDTH+Property.WINDOW_BOARD, HEIGHT+Property.WINDOW_BAR_HEIGHT)); //+ оконная рамка и + верхня панель окна с названием и иконкойыв
+        mainFrame.pack();
+        mainFrame.setContentPane(gamePanel);
+        mainFrame.setLocationRelativeTo(null);
+        windowInfo = new WindowInfo(WIDTH, HEIGHT, mainFrame);
+        windowInfo.setWindowBoard(Property.WINDOW_BOARD);
+        windowInfo.setWindowsBarHeight(Property.WINDOW_BAR_HEIGHT);
     }
 
     public void startGame(GameController gameController) {
@@ -76,11 +83,6 @@ public class GameView implements  Runnable{
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) image.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setPreferredSize(new Dimension(WIDTH+15, HEIGHT+38)); //+ оконная рамка и + верхня панель окна с названием и иконкойыв
-        mainFrame.pack();
-        mainFrame.setContentPane(gamePanel);
-        mainFrame.setLocationRelativeTo(null);
         gamePanel.addGameObjectListeners(gameController.getAllGameObjects());
 
         gameController.startUpdate(gameStatus);
@@ -118,7 +120,7 @@ public class GameView implements  Runnable{
     private void drawAll() {
         while (gameStatus.isRun()){
             try {
-                Thread.sleep(Property.FPS);
+                Thread.sleep(1000/Property.FPS);
             } catch (InterruptedException e) {
                 System.err.println("Error of Thread.sleep in GameView.drawAll");
             }
@@ -127,7 +129,6 @@ public class GameView implements  Runnable{
             for(GameObject o : gameObjectList){
                 o.draw(g); //Отрисовка объектов из контроллера
             }
-
             gameDraw();
         }
     }

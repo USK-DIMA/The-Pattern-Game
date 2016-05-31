@@ -31,11 +31,11 @@ public class GamePanel extends JPanel {
 
     public void addGameObjectListeners(java.util.List<GameObject> allGameObjects) {
         for(GameObject object : allGameObjects){
-            if(object==null){
-                System.out.println(object);
-            }
             if(object.getKeyListener()!=null) {
                 addKeyListener(object.getKeyListener());
+            }
+            if(object.getMouseListener()!=null) {
+                addMouseListener(object.getMouseListener());
             }
         }
     }
