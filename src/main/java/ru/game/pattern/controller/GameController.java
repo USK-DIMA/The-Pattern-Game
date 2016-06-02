@@ -2,8 +2,8 @@ package ru.game.pattern.controller;
 
 import ru.game.pattern.model.GameObject;
 import ru.game.pattern.model.PhysicalGameObject;
-import ru.game.pattern.model.WindowInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,5 +28,5 @@ public interface GameController {
      */
     List<GameObject> getAllGameObjects();
 
-    List<PhysicalGameObject> getPhysicalGameObject();
+    ArrayList<PhysicalGameObject> getPhysicalGameObject();
 }

@@ -42,7 +42,7 @@ public class GameControllerImpl implements GameController, Runnable{
 
     private List<GameObject> allGameObjects;
 
-    private List<PhysicalGameObject> physicalGameObjects;
+    private ArrayList<PhysicalGameObject> physicalGameObjects;
 
     @Override
     public void run() {
@@ -122,7 +122,7 @@ public class GameControllerImpl implements GameController, Runnable{
         return allGameObjects;
     }
 
-    public List<PhysicalGameObject> getPhysicalGameObject() {
+    public ArrayList<PhysicalGameObject> getPhysicalGameObject() {
         return physicalGameObjects;
     }
 

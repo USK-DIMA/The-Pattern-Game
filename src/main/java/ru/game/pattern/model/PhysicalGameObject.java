@@ -11,11 +11,18 @@ public abstract class PhysicalGameObject extends GameObject {
         return false;
     };
 
+    public void setSelectedByCursor(boolean selectedByCursor){
+
+    }
+
     abstract public void setClickCursorLocation(Point point);
 
-    abstract public  void setSelectedByCursor(boolean selectedByCursor);
-
     abstract public Point getLocation();
+
+    /**
+     * отмена выполнения всех действий
+     */
+    abstract void resetAction();
 
     /**
      * возвращает расстояние между объектами.
@@ -24,6 +31,10 @@ public abstract class PhysicalGameObject extends GameObject {
      */
     abstract public int collision(PhysicalGameObject gameObject);
 
+    /**
+     * Возвращает радиус объекта (то пространство, которое он занимает)
+     * @return
+     */
     abstract public int getTerritoryRadius();
 
     public abstract int collision(double x, double y, int teritoryRadius);

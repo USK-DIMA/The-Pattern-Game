@@ -9,8 +9,6 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-import java.util.List;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -89,7 +87,7 @@ public class Player extends PhysicalGameObject {
         if(targetLocation!=null) {
             int x = location.x;
             int y = location.y;
-            if (!(targetLocation.x == x && targetLocation.y == y)) {
+            if (!(targetLocation.x == x && targetLocation.y == y)) {//если не достигли цели
                 double dx;
                 double dy;
                 double targetX = targetLocation.getX();
@@ -118,18 +116,41 @@ public class Player extends PhysicalGameObject {
                     dy*=Math.signum(targetLocation.getY() - y);
                     targetLocation=null;
                 }
-                for(PhysicalGameObject o :gameController.getPhysicalGameObject()){
+
+                //Проверяем объекты на столкновения
+
+                //// TODO: 03.06.2016 закоментированный код не работает как надо. Пока вернём старый код, который тоже работает не как надо, но лучше
+                //// TODO: 03.06.2016 есди этот способ не будет как-то улучшен и использован, изменить сигнатуру  ArrayList<> getPhysicalGameObject на List<> getPhysicalGameObject (и все такие ArrayList-ы)
+                /*int  index = gameController.getPhysicalGameObject().indexOf(this);
+                System.err.println("index: "+index);
+                for(int i=index+1; i<gameController.getPhysicalGameObject().size(); i++){
+                    PhysicalGameObject o =  gameController.getPhysicalGameObject().get(i);
                     if (o == this){ continue;}//сам с собой не проверяем
                     int length = o.collision(x+dx, y+dy, TERITORY_RADIUS);
                     System.out.println(length);
-                    if(length<0){
-                        if(dx!=0) {
+                    if(length<0) {
+                        if (dx != 0) {
                             dx *= -((double) length / dx);
                         }
-                        if(dy!=0) {
+                        if (dy != 0) {
                             dy *= -((double) length / dy);
                         }
-                        targetLocation=null;
+                        //targetLocation=null;
+                    }
+                }*/
+
+                for(PhysicalGameObject o :  gameController.getPhysicalGameObject()){
+                    if (o == this){ continue;}//сам с собой не проверяем
+                    int length = o.collision(x+dx, y+dy, TERITORY_RADIUS);
+                    System.out.println(length);
+                    if(length<0) {
+                        if (dx != 0) {
+                            dx *= -((double) length / dx);
+                        }
+                        if (dy != 0) {
+                            dy *= -((double) length / dy);
+                        }
+                        //targetLocation=null;
                     }
                 }
                 location.x += dx;
@@ -156,6 +177,11 @@ public class Player extends PhysicalGameObject {
     @Override
     public Point getLocation() {
         return location;
+    }
+
+    @Override
+    void resetAction() {
+        targetLocation=null;
     }
 
     @Override

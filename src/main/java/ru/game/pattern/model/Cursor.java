@@ -179,9 +179,20 @@ public class Cursor extends GameObject {
 
         @Override
         public void keyTyped(KeyEvent e) {
-            if(e.getKeyCode() == 0){//буква ё или 0
+            //// TODO: 03.06.2016  неприавльная обработка нажатия клавишь. e.getKeyCode() всегда возвращает 0
+            System.out.println(e.getKeyCode());
+            if(e.getKeyCode() == 0){//буква ё
+                System.out.println("000000000000000000000");
                 for (PhysicalGameObject o : selectingGameObjects) {
                     o.setSelectedByCursor(true);
+                }
+            }
+            if(e.getKeyCode() == KeyEvent.VK_S){ //буква s
+                System.out.println("ssssssssssssssssssssss");
+                for (PhysicalGameObject o : selectingGameObjects) {
+                    if(o.isSeletedByCursor()) {
+                        o.resetAction();
+                    }
                 }
             }
         }
