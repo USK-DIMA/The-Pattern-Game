@@ -14,12 +14,18 @@ import java.util.List;
  */
 public class Cursor extends GameObject {
 
+    /**
+     * true, если рамку выделения курсором необходимо отрисовывать и проводить какое-то обновление
+     */
     volatile private boolean drawAndUpdate;
 
+    /**
+     * информация об окне
+     */
     private WindowInfo windowInfo;
 
 
-    //TODO заменить этот набор точек на два объекта класса Point
+    //TODO заменить этот набор точек на объект класса Point
     /**
      * Координаты курсора при нажатии ЛКМ на поле
      */
@@ -27,6 +33,7 @@ public class Cursor extends GameObject {
 
     private int startY;
 
+    //TODO заменить этот набор точек на объект класса Point
     /**
      * Координаты курсора при движении курсора по экрану при зажатой ЛКМ
      */
@@ -34,20 +41,50 @@ public class Cursor extends GameObject {
 
     private int endY;
 
+    /**
+     * Цвет рамки выделения курсором
+     */
     private Color color = Color.YELLOW;
 
+    /**
+     * Обработчик событий
+     */
     private CursorMouseListener mouseListener;
 
+    /**
+     * Обработчик событий
+     */
     private CursorKeyListener keyListener;
 
+    /**
+     * Коллекция игровых объектов, которые будут проверяться на выделение курсором/бубут выделяться курсторм
+     * и которые вообще, как-то будут взаимодейстовать с курсором
+     * возможно название поля надо будет изменить
+     */
     private List<PhysicalGameObject> selectingGameObjects;
 
+    /**
+     * Координата X левого верхнего угла прямоугольника выделения курсором,
+     * независимо от того, было ли выделение произведено из нижнего правого угла или любого другоуго
+     */
     private int leftX;
 
+    /**
+     * Координата Y левого верхнего угла прямоугольника выделения курсором,
+     * независимо от того, было ли выделение произведено из нижнего правого угла или любого другоуго
+     */
     private int upY;
 
+    /**
+     * Координата X правого нижнего угла прямоугольника выделения курсором,
+     * независимо от того, было ли выделение произведено из нижнего правого угла или любого другоуго
+     */
     private int rightX;
 
+    /**
+     * Координата Y правого нижнего угла прямоугольника выделения курсором,
+     * независимо от того, было ли выделение произведено из нижнего правого угла или любого другоуго
+     */
     private int downY;
 
     /**
@@ -115,6 +152,9 @@ public class Cursor extends GameObject {
         return Type.other;
     }
 
+    /**
+     * Обработчик действий мышью для курсора
+     */
     class CursorMouseListener implements MouseListener{
 
         @Override
@@ -124,7 +164,7 @@ public class Cursor extends GameObject {
         @Override
         public void mousePressed(MouseEvent e) {
             System.out.println("mousePressed");
-            if(e.getButton()==MouseEvent.BUTTON1) {
+            if(e.getButton()==MouseEvent.BUTTON1) { //выделение объектов на экране (отрисовка рамки)
                 drawAndUpdate = true;
                 startX = e.getX();
                 startY = e.getY();
@@ -135,46 +175,44 @@ public class Cursor extends GameObject {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if(e.getButton()==MouseEvent.BUTTON1) {
+            if(e.getButton()==MouseEvent.BUTTON1) { //выделение объектов на экране (сообщение объектам, что они выделены)
                 drawAndUpdate = false;
-                System.out.println("mouseReleased");
 
                 for (PhysicalGameObject o : selectingGameObjects) {
                     Point location = o.getLocation();
                     if (location != null) {
                         int x = location.x;
                         int y = location.y;
-                        if (x >= leftX && x <= rightX && y >= upY && y <= downY) {
+                        if (x >= leftX && x <= rightX && y >= upY && y <= downY) { //Только те, которые попали в выделенную область
                             o.setSelectedByCursor(true);
-                        } else if(!shiftKey){
+                        } else if(!shiftKey){ //остальные становяться не выделенными (если не нажата клавиша shift)
                             o.setSelectedByCursor(false);
                         }
                     }
                 }
             }
 
-            if(e.getButton()==MouseEvent.BUTTON3) {
-                System.out.println("mouseReleased BUTTON3");
+            if(e.getButton()==MouseEvent.BUTTON3) { //Клик по экрано ПКМ
                 for(PhysicalGameObject o: selectingGameObjects){
                     if(o.isSeletedByCursor()){
                         o.setClickCursorLocation(new Point(e.getX(), e.getY()));
                     }
                 }
-                //// TODO: 31.05.2016 реализвать движение объектов по нажатию клавиши
             }
         }
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            //System.out.println("mouseEntered");
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-           // System.out.println("mouseExited");
         }
     }
 
+    /**
+     * Обработчик нажатия клавиш для курсора
+     */
     class CursorKeyListener implements KeyListener{
 
         @Override

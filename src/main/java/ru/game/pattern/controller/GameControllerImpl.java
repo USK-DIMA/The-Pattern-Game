@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Класс инкапсулироует всю логику игры
+ * @see ru.game.pattern.controller.GameController
+ * @see java.lang.Runnable
  */
 public class GameControllerImpl implements GameController, Runnable{
 
@@ -36,14 +38,24 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     private WindowInfo windowInfo;
 
-    //private Player player;
-
+    /**
+     * Объект класса, содержащий в себе всю логику и отрисовку действий, связанных с курсором
+     */
     private Cursor cursor;
 
+    /**
+     * коллекция всех игровых объектов
+     */
     private List<GameObject> allGameObjects;
 
+    /**
+     * коллекция всех физческих игровых объектов
+     */
     private ArrayList<PhysicalGameObject> physicalGameObjects;
 
+    /**
+     * @see java.lang.Runnable
+     */
     @Override
     public void run() {
         updateAll();
@@ -86,7 +98,7 @@ public class GameControllerImpl implements GameController, Runnable{
         this.gameStatus = gameStatus;
 
         if(updateThread==null){
-            synchronized (GameControllerImpl.class){
+            synchronized (GameControllerImpl.class){ //один объект класса GameControllerImpl должен порождать только один поток для обновления
                 if(updateThread==null) {
                     updateThread = new Thread(this);
                     updateThread.start();
@@ -102,7 +114,7 @@ public class GameControllerImpl implements GameController, Runnable{
     public void updateAll() {
         while (gameStatus.isRun()){
             try {
-                Thread.sleep(Property.UPDATE_PAUSE);
+                Thread.sleep(Property.UPDATE_PAUSE); //просто пауза
             } catch (InterruptedException e) {
                 System.err.println("Error of Thread.sleep in GameController.updateAll");
             }
@@ -113,15 +125,12 @@ public class GameControllerImpl implements GameController, Runnable{
         }
     }
 
-    /**
-     * Возвращает список всех игровых объектов
-     * @return список всех игровых объектов
-     */
     @Override
     public List<GameObject> getAllGameObjects(){
         return allGameObjects;
     }
 
+    @Override
     public ArrayList<PhysicalGameObject> getPhysicalGameObject() {
         return physicalGameObjects;
     }

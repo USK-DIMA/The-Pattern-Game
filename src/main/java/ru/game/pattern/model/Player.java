@@ -16,32 +16,70 @@ import java.io.IOException;
 
 /**
  * Игровой объект, созданный для примера
- * Представлят из себя обычный круг
+ * //TODO скорее всего многие поля из этого класса надо перенести в PhysicalGameObject
+ * @see ru.game.pattern.model.PhysicalGameObject
+ * @see ru.game.pattern.model.GameObject
  */
 public class Player extends PhysicalGameObject {
 
+    /**
+     * Сдвиг изображения объекта по оси X относительно центральной координаты объекта координаты объекта
+     */
     private static final int PLAYER_IMAGE_SHIFT_X = 23;
 
+    /**
+     * Сдвиг изображения объекта по оси Y относительно центральной координаты объекта координаты объекта
+     */
     private final static int PLAYER_IMAGE_SHIFT_Y =  45;
 
+    /**
+     * Сдвиг изображения индикатора выделения курсором по оси X относительно центральной координаты объекта координаты объекта
+     */
     private final static int SELECTING_INDICATOR_IMAGE_SHIFT_X =  14;
 
+    /**
+     * Сдвиг изображения индикатора выделения курсором по оси Y относительно центральной координаты объекта координаты объекта
+     */
     private final static int SELECTING_INDICATOR_IMAGE_SHIFT_Y =  PLAYER_IMAGE_SHIFT_Y + 34;
 
+    /**
+     * Скорость движения объекта
+     */
     public final int SPEED = 5;
 
+    /**
+     * Радиус, показывающий размер объекта
+     */
     private int TERITORY_RADIUS = 8;
 
+    /**
+     * местонахождение объекта
+     */
     private Point location;
 
+    /**
+     * точка, куда объекту следует двигаться
+     */
     volatile private Point targetLocation;
 
+    /**
+     * информация об окне
+     */
     private WindowInfo windowsInfo;
 
+    /**
+     * true, если объект выделен курсором, иначе false
+     */
     private boolean selectedByCursor;
 
+    /**
+     * Изображение игрового объекта
+     */
     private BufferedImage playerImage;
 
+    /**
+     * Изображение индикатора выделения курсором
+     */
     private BufferedImage selectiongIndicatorImage;
 
     public Player(WindowInfo windowsInfo) throws IOException {
@@ -84,7 +122,7 @@ public class Player extends PhysicalGameObject {
 
     @Override
     public void update(GameController gameController) {
-        if(targetLocation!=null) {
+        if(targetLocation!=null) { //пока только движение. Если двигаться объекту некуда, то ничего не делаем
             int x = location.x;
             int y = location.y;
             if (!(targetLocation.x == x && targetLocation.y == y)) {//если не достигли цели
@@ -117,7 +155,7 @@ public class Player extends PhysicalGameObject {
                     targetLocation=null;
                 }
 
-                //Проверяем объекты на столкновения
+                //Проверяем объекты на столкновения, чтобы объекты не входили друг в друга
 
                 //// TODO: 03.06.2016 закоментированный код не работает как надо. Пока вернём старый код, который тоже работает не как надо, но лучше
                 //// TODO: 03.06.2016 есди этот способ не будет как-то улучшен и использован, изменить сигнатуру  ArrayList<> getPhysicalGameObject на List<> getPhysicalGameObject (и все такие ArrayList-ы)

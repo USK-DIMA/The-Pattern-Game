@@ -20,8 +20,6 @@ import java.io.IOException;
  */
 public class GameBackground extends GameObject{
 
-    public static final Color color = Color.BLUE;
-
     private WindowInfo windowInfo;
 
     private BufferedImage image = null;
@@ -44,8 +42,6 @@ public class GameBackground extends GameObject{
 
     @Override
     public void draw(Graphics2D g) {
-        //g.setColor(color);
-        //g.fillRect(0, 0, windowInfo.getWidth(),  windowInfo.getHeight());
         g.drawImage(image, 0, 0, null);
     }
 

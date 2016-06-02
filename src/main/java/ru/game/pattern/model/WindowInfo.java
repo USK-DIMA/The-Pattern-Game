@@ -18,7 +18,9 @@ public class WindowInfo {
     private int height;
 
     private JFrame frame;
+
     private int windowBoard;
+
     private int windowsBarHeight;
 
     public WindowInfo(int width, int height, JFrame frame) {

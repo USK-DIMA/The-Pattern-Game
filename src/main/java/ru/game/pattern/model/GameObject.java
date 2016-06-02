@@ -15,9 +15,15 @@ import java.awt.event.MouseListener;
  */
 abstract public class GameObject {
 
-
+    /**
+     * Возвращает обработчик игрового объекта
+     */
     public abstract KeyListener getKeyListener();
 
+
+    /**
+     * Возвращает обработчик игрового объекта
+     */
     public abstract MouseListener getMouseListener();
 
     /**
@@ -32,9 +38,15 @@ abstract public class GameObject {
      */
     abstract public void update(GameController gameController);
 
-
+    /**
+     * Возвращает тип объекта
+     * @return тип объекта
+     */
     abstract public Type getType();
 
+    /**
+     * Типы игровых объектов
+     */
     public enum Type{
         player, other
     }

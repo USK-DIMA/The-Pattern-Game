@@ -28,5 +28,9 @@ public interface GameController {
      */
     List<GameObject> getAllGameObjects();
 
+    /**
+     * Возвращает список всех Физических игровых объектов (те, которые будут объектами на карте: игроки, элементы ландшафта и прочие)
+     * @return список всех Физических игровых объектов
+     */
     ArrayList<PhysicalGameObject> getPhysicalGameObject();
 }
