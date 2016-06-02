@@ -1,8 +1,16 @@
 package ru.game.pattern.model;
 
+import ru.game.pattern.controller.GameController;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -12,24 +20,21 @@ import java.awt.event.MouseListener;
  * Игровой объект, созданный для примера
  * Представлят из себя обычный круг
  */
-public class Player extends GameObject {
+public class Player extends PhysicalGameObject {
 
-    public final int SPEED = 20;
+    private static final int PLAYER_IMAGE_SHIFT_X = 23;
 
-    private int x;
+    private final static int PLAYER_IMAGE_SHIFT_Y =  45;
 
-    private int y;
+    private final static int SELECTING_INDICATOR_IMAGE_SHIFT_X =  14;
 
-    /**
-     * Радиус
-     */
-    private final int r = 5;
+    private final static int SELECTING_INDICATOR_IMAGE_SHIFT_Y =  PLAYER_IMAGE_SHIFT_Y + 34;
 
-    private Color color = Color.RED;
+    public final int SPEED = 5;
 
-    private Color selectingColor = Color.YELLOW;
+    private int TERITORY_RADIUS = 8;
 
-    private final static int SELECTING_BOARD_HEIGHT = 2;
+    private Point location;
 
     volatile private Point targetLocation;
 
@@ -37,17 +42,26 @@ public class Player extends GameObject {
 
     private boolean selectedByCursor;
 
-    public Player(WindowInfo windowsInfo) {
+    private BufferedImage playerImage;
+
+    private BufferedImage selectiongIndicatorImage;
+
+    public Player(WindowInfo windowsInfo) throws IOException {
         this.windowsInfo=windowsInfo;
-        this.x=windowsInfo.getWidth()/2;
-        this.y=windowsInfo.getHeight()/2;
+        this.location = new Point(windowsInfo.getWidth()/2, windowsInfo.getHeight()/2);
+        playerImage = ImageIO.read(new File("src/main/resources/player.png"));
+        selectiongIndicatorImage = ImageIO.read(new File("src/main/resources/selecting_player.png"));
         selectedByCursor=false;
         targetLocation=null;
     }
 
+    public void setLocation(Point location){
+        this.location=location;
+    }
+
     public void setLocation(int x, int y){
-        this.x=x;
-        this.x=y;
+        this.location.x=x;
+        this.location.y=y;
     }
 
     @Override
@@ -62,18 +76,19 @@ public class Player extends GameObject {
 
     @Override
     public void draw(Graphics2D g) {
+        int x = location.x;
+        int y = location.y;
         if(selectedByCursor){
-            g.setColor(selectingColor);
-            int selectingR = r+SELECTING_BOARD_HEIGHT;
-            g.fillOval(x-selectingR, y-selectingR, 2*selectingR, 2*selectingR);
+            g.drawImage(selectiongIndicatorImage, x-SELECTING_INDICATOR_IMAGE_SHIFT_X, y-SELECTING_INDICATOR_IMAGE_SHIFT_Y, null);
         }
-        g.setColor(color);
-        g.fillOval(x-r, y-r, 2*r, 2*r);
+        g.drawImage(playerImage, x-PLAYER_IMAGE_SHIFT_X, y-PLAYER_IMAGE_SHIFT_Y, null);
     }
 
     @Override
-    public void update() {
+    public void update(GameController gameController) {
         if(targetLocation!=null) {
+            int x = location.x;
+            int y = location.y;
             if (!(targetLocation.x == x && targetLocation.y == y)) {
                 double dx;
                 double dy;
@@ -101,10 +116,24 @@ public class Player extends GameObject {
                         dy = Math.abs(targetY - y);
                     }
                     dy*=Math.signum(targetLocation.getY() - y);
+                    targetLocation=null;
                 }
-
-                x += dx;
-                y += dy;
+                for(PhysicalGameObject o :gameController.getPhysicalGameObject()){
+                    if (o == this){ continue;}//сам с собой не проверяем
+                    int length = o.collision(x+dx, y+dy, TERITORY_RADIUS);
+                    System.out.println(length);
+                    if(length<0){
+                        if(dx!=0) {
+                            dx *= -((double) length / dx);
+                        }
+                        if(dy!=0) {
+                            dy *= -((double) length / dy);
+                        }
+                        targetLocation=null;
+                    }
+                }
+                location.x += dx;
+                location.y += dy;
             }
         }
     }
@@ -126,7 +155,31 @@ public class Player extends GameObject {
 
     @Override
     public Point getLocation() {
-        return new Point(x, y);
+        return location;
+    }
+
+    @Override
+    public int collision(PhysicalGameObject gameObject) {
+        if(gameObject==null){ return 0;}
+        int x = location.x;
+        int y = location.y;
+        int x2 = gameObject.getLocation().x;
+        int y2 = gameObject.getLocation().y;
+        double length = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
+        return (int)(length - (getTerritoryRadius() + gameObject.getTerritoryRadius()));
+    }
+
+    @Override
+    public int collision(double x, double y, int teritoryRadius) {
+        int x2 = location.x;
+        int y2 = location.y;
+        double length = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
+        return (int)(length - (getTerritoryRadius() + teritoryRadius));
+    }
+
+    @Override
+    public int getTerritoryRadius() {
+        return TERITORY_RADIUS;
     }
 
     @Override
@@ -134,22 +187,5 @@ public class Player extends GameObject {
         targetLocation=point;
     }
 
-    private void updateX(int dx) {
-        x+=dx;
-        if(x<0){
-            x=0;
-        } else if(x>windowsInfo.getWidth()){
-            x=windowsInfo.getWidth();
-        }
-    }
-
-    private void updateY(int dy) {
-        y+=dy;
-        if(y<0){
-            y=0;
-        } else if(y>windowsInfo.getHeight()){
-            y=windowsInfo.getHeight();
-        }
-    }
 
 }

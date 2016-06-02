@@ -3,6 +3,7 @@ package ru.game.pattern.controller;
 import ru.game.pattern.model.*;
 import ru.game.pattern.view.GameView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,9 @@ public class GameControllerImpl implements GameController, Runnable{
 
     private Cursor cursor;
 
-    private List<GameObject> gameObjects;
+    private List<GameObject> allGameObjects;
+
+    private List<PhysicalGameObject> physicalGameObjects;
 
     @Override
     public void run() {
@@ -49,11 +52,12 @@ public class GameControllerImpl implements GameController, Runnable{
     /**
      * @param windowInfo информация об окне
      */
-    public GameControllerImpl(WindowInfo windowInfo) {
+    public GameControllerImpl(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
-        gameObjects = new ArrayList<>();
+        allGameObjects = new ArrayList<>();
+        physicalGameObjects = new ArrayList<>();
         background = new GameBackground(windowInfo);
-        cursor = new Cursor(windowInfo, gameObjects);
+        cursor = new Cursor(windowInfo, physicalGameObjects);
 
         Player player1 = new Player(windowInfo);
         Player player2 = new Player(windowInfo);
@@ -62,11 +66,15 @@ public class GameControllerImpl implements GameController, Runnable{
         player3.setLocation(300, 300);
 
         /**Порядок добваленных элементов аналогичен порядку отрисовке на экране */
-        gameObjects.add(background);
-        gameObjects.add(player1);
-        gameObjects.add(player2);
-        gameObjects.add(player3);
-        gameObjects.add(cursor);
+        allGameObjects.add(background);
+        allGameObjects.add(player1);
+        allGameObjects.add(player2);
+        allGameObjects.add(player3);
+        allGameObjects.add(cursor);
+
+        physicalGameObjects.add(player1);
+        physicalGameObjects.add(player2);
+        physicalGameObjects.add(player3);
     }
 
     /**
@@ -99,8 +107,8 @@ public class GameControllerImpl implements GameController, Runnable{
                 System.err.println("Error of Thread.sleep in GameController.updateAll");
             }
 
-            for(GameObject o : gameObjects){
-                o.update();
+            for(GameObject o : allGameObjects){
+                o.update(this);
             }
         }
     }
@@ -111,9 +119,12 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     @Override
     public List<GameObject> getAllGameObjects(){
-        return gameObjects;
+        return allGameObjects;
     }
 
+    public List<PhysicalGameObject> getPhysicalGameObject() {
+        return physicalGameObjects;
+    }
 
     @Override
     protected void finalize() throws Throwable {

@@ -1,8 +1,9 @@
 package ru.game.pattern.model;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import ru.game.pattern.controller.GameController;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -37,7 +38,9 @@ public class Cursor extends GameObject {
 
     private CursorMouseListener mouseListener;
 
-    private List<GameObject> gameObjects;
+    private CursorKeyListener keyListener;
+
+    private List<PhysicalGameObject> selectingGameObjects;
 
     private int leftX;
 
@@ -47,15 +50,22 @@ public class Cursor extends GameObject {
 
     private int downY;
 
-    public Cursor(WindowInfo windowInfo, List<GameObject> gameObjects) {
+    /**
+     * нажата ли клавиша shift
+     */
+    private boolean shiftKey;
+
+    public Cursor(WindowInfo windowInfo, List<PhysicalGameObject> selectingGameObjects) {
         this.windowInfo = windowInfo;
         this.mouseListener = new CursorMouseListener();
-        this.gameObjects = gameObjects;
+        this.keyListener = new CursorKeyListener();
+        this.selectingGameObjects = selectingGameObjects;
+        shiftKey = false;
     }
 
     @Override
     public KeyListener getKeyListener() {
-        return null;
+        return keyListener;
     }
 
     @Override
@@ -88,7 +98,7 @@ public class Cursor extends GameObject {
     }
 
     @Override
-    public void update() {
+    public void update(GameController gameController) {
         if(drawAndUpdate){
             Point location = MouseInfo.getPointerInfo().getLocation();
             int x = (int) location.getX();
@@ -129,14 +139,14 @@ public class Cursor extends GameObject {
                 drawAndUpdate = false;
                 System.out.println("mouseReleased");
 
-                for (GameObject o : gameObjects) {
+                for (PhysicalGameObject o : selectingGameObjects) {
                     Point location = o.getLocation();
                     if (location != null) {
                         int x = location.x;
                         int y = location.y;
                         if (x >= leftX && x <= rightX && y >= upY && y <= downY) {
                             o.setSelectedByCursor(true);
-                        } else {
+                        } else if(!shiftKey){
                             o.setSelectedByCursor(false);
                         }
                     }
@@ -145,7 +155,7 @@ public class Cursor extends GameObject {
 
             if(e.getButton()==MouseEvent.BUTTON3) {
                 System.out.println("mouseReleased BUTTON3");
-                for(GameObject o: gameObjects){
+                for(PhysicalGameObject o: selectingGameObjects){
                     if(o.isSeletedByCursor()){
                         o.setClickCursorLocation(new Point(e.getX(), e.getY()));
                     }
@@ -162,6 +172,32 @@ public class Cursor extends GameObject {
         @Override
         public void mouseExited(MouseEvent e) {
            // System.out.println("mouseExited");
+        }
+    }
+
+    class CursorKeyListener implements KeyListener{
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            if(e.getKeyCode() == 0){//буква ё или 0
+                for (PhysicalGameObject o : selectingGameObjects) {
+                    o.setSelectedByCursor(true);
+                }
+            }
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if(e.getKeyCode()==KeyEvent.VK_SHIFT){
+                shiftKey = true;
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            if(e.getKeyCode()==KeyEvent.VK_SHIFT){
+                shiftKey = false;
+            }
         }
     }
 }

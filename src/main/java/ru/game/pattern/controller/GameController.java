@@ -1,6 +1,7 @@
 package ru.game.pattern.controller;
 
 import ru.game.pattern.model.GameObject;
+import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface GameController {
      * @return список всех игровых объектов
      */
     List<GameObject> getAllGameObjects();
+
+    List<PhysicalGameObject> getPhysicalGameObject();
 }

@@ -1,8 +1,14 @@
 package ru.game.pattern.model;
 
+import ru.game.pattern.controller.GameController;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -18,9 +24,12 @@ public class GameBackground extends GameObject{
 
     private WindowInfo windowInfo;
 
+    private BufferedImage image = null;
 
-    public GameBackground(WindowInfo windowInfo) {
+
+    public GameBackground(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
+        image = ImageIO.read(new File("src/main/resources/plane_lite_80.jpg"));
     }
 
     @Override
@@ -35,12 +44,13 @@ public class GameBackground extends GameObject{
 
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(color);
-        g.fillRect(0, 0, windowInfo.getWidth(),  windowInfo.getHeight());
+        //g.setColor(color);
+        //g.fillRect(0, 0, windowInfo.getWidth(),  windowInfo.getHeight());
+        g.drawImage(image, 0, 0, null);
     }
 
     @Override
-    public void update() {
+    public void update(GameController gameController) {
 
     }
 
