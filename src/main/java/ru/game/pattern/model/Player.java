@@ -1,6 +1,7 @@
 package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.Property;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -40,7 +41,7 @@ public class Player extends PhysicalGameObject {
     /**
      * Сдвиг изображения индикатора выделения курсором по оси Y относительно центральной координаты объекта координаты объекта
      */
-    private final static int SELECTING_INDICATOR_IMAGE_SHIFT_Y =  PLAYER_IMAGE_SHIFT_Y + 34;
+    private final static int SELECTING_INDICATOR_IMAGE_SHIFT_Y =  PLAYER_IMAGE_SHIFT_Y + 49;
 
     /**
      * Скорость движения объекта
@@ -73,21 +74,41 @@ public class Player extends PhysicalGameObject {
     private boolean selectedByCursor;
 
     /**
-     * Изображение игрового объекта
+     * Изображение игрового объекта при движении вправо
      */
-    private BufferedImage playerImage;
+    private BufferedImage playerRightImage;
+
+    /**
+     * Изображение игрового объекта при движении влево
+     */
+    private BufferedImage playerLeftImage;
+
+
+    /**
+     * ,Будет ссылаться на то изображение, которое будет отрисовываться
+     */
+    private BufferedImage playerImageForDraw;
+
+    private int maxHelth = 100;
+
+    private int helth = 75;
+
+    private Color helthColor = Color.RED;
 
     /**
      * Изображение индикатора выделения курсором
      */
     private BufferedImage selectiongIndicatorImage;
 
+
     public Player(WindowInfo windowsInfo) throws IOException {
         this.windowsInfo=windowsInfo;
         this.location = new Point(windowsInfo.getWidth()/2, windowsInfo.getHeight()/2);
-        playerImage = ImageIO.read(new File("src/main/resources/player.png"));
-        selectiongIndicatorImage = ImageIO.read(new File("src/main/resources/selecting_player.png"));
+        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "player_right.png"));
+        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "player_left.png"));
+        selectiongIndicatorImage = ImageIO.read(new File(Property.RESOURSES_PATH + "selecting_player.png"));
         selectedByCursor=false;
+        playerImageForDraw = playerRightImage;
         targetLocation=null;
     }
 
@@ -117,7 +138,12 @@ public class Player extends PhysicalGameObject {
         if(selectedByCursor){
             g.drawImage(selectiongIndicatorImage, x-SELECTING_INDICATOR_IMAGE_SHIFT_X, y-SELECTING_INDICATOR_IMAGE_SHIFT_Y, null);
         }
-        g.drawImage(playerImage, x-PLAYER_IMAGE_SHIFT_X, y-PLAYER_IMAGE_SHIFT_Y, null);
+        g.drawImage(playerImageForDraw, x-PLAYER_IMAGE_SHIFT_X, y-PLAYER_IMAGE_SHIFT_Y, null);
+
+        g.setColor(Color.black);
+        g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5, y-PLAYER_IMAGE_SHIFT_Y-12, PLAYER_IMAGE_SHIFT_X*2, 10);
+        g.setColor(helthColor);
+        g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5+1, y-PLAYER_IMAGE_SHIFT_Y-11, (int)((PLAYER_IMAGE_SHIFT_X*2-1)*(double)helth/maxHelth), 8);
     }
 
     @Override
@@ -249,6 +275,11 @@ public class Player extends PhysicalGameObject {
     @Override
     public void setClickCursorLocation(Point point) {
         targetLocation=point;
+        if(targetLocation.x>location.x){
+            playerImageForDraw = playerRightImage;
+        } else {
+            playerImageForDraw = playerLeftImage;
+        }
     }
 
 

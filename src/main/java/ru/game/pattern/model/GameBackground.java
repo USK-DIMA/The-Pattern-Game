@@ -1,6 +1,7 @@
 package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.Property;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,16 +19,18 @@ import java.io.IOException;
  * Объект, отвечающий за фон игры.
  * Если мы захотим, чтобы изображение на фоне было динамическое, изменения вносить здесь
  */
-public class GameBackground extends GameObject{
+public class GameBackground extends GameObject {
 
     private WindowInfo windowInfo;
 
     private BufferedImage image = null;
 
+    private String BACKGROUND_IMAGE_PATH = Property.RESOURSES_PATH + "plane_lite_80.jpg";
+
 
     public GameBackground(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
-        image = ImageIO.read(new File("src/main/resources/plane_lite_80.jpg"));
+        image = ImageIO.read(new File(BACKGROUND_IMAGE_PATH));
     }
 
     @Override
