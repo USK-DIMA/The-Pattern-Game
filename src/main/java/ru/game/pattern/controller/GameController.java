@@ -2,6 +2,7 @@ package ru.game.pattern.controller;
 
 import ru.game.pattern.model.GameObject;
 import ru.game.pattern.model.PhysicalGameObject;
+import ru.game.pattern.model.WindowInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,8 @@ import java.util.List;
  * Created by Uskov Dmitry on 27.05.2016.
  */
 public interface GameController {
+
+    WindowInfo getWindowInfo();
 
     /**
      * Запуск потока Thread updateThread

@@ -13,6 +13,11 @@ import java.awt.*;
 public abstract class PhysicalGameObject extends GameObject {
 
     /**
+     * местонахождение объекта
+     */
+    protected Point location;
+
+    /**
      * Провека, выбран ли данный объект курсором
      * Данный метод является методом по умолчанию для всех дочерних классов.
      * По умолчанию объекты нельзя выделить курсором.
@@ -46,7 +51,9 @@ public abstract class PhysicalGameObject extends GameObject {
      * Возвращает местоположение объекта на карте без учёта его размера (грубо говоря, возвращает координаты центра объекта)
      * @return местоположение объекта на карте
      */
-    abstract public Point getLocation();
+    public Point getLocation(){
+        return location;
+    }
 
     /**
      * отмена выполнения всех действий
@@ -64,8 +71,15 @@ public abstract class PhysicalGameObject extends GameObject {
      * @param gameObject  объект, с которым проверяется столкновение
      * @return расстояние между объектами. Если объекты налегли друг на друга, то число отрицательное.
      */
-    abstract public int collision(PhysicalGameObject gameObject);
-
+     public int collision(PhysicalGameObject gameObject){
+        if(gameObject==null){ return 0;}
+        int x = location.x;
+        int y = location.y;
+        int x2 = gameObject.getLocation().x;
+        int y2 = gameObject.getLocation().y;
+        double length = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
+        return (int)(length - (getTerritoryRadius() + gameObject.getTerritoryRadius()));
+    }
     /**
      * Возвращает расстояние между объектами.
      * Аналог функции abstract public int collision(PhysicalGameObject gameObject), но с другими вход параметрами
@@ -74,5 +88,51 @@ public abstract class PhysicalGameObject extends GameObject {
      * @param teritoryRadius радиус, обозначающий размер объекта, с которым проверяем столкновение
      * @return расстояние между объектами. Если объекты налегли друг на друга, то число отрицательное.
      */
-    public abstract int collision(double x, double y, int teritoryRadius);
+    public int collision(double x, double y, int teritoryRadius){
+        int x2 = location.x;
+        int y2 = location.y;
+        double length = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
+        return (int)(length - (getTerritoryRadius() + teritoryRadius));
+    }
+
+    /**
+     * Возвращает Point, где Point.x соответсвует dx, Point.y соответсвует dy,
+     * на основании местонахождения объекта, точку куда надо придыть и скорости объекта
+     * @param location
+     * @param targetLocation
+     * @param speed
+     * @return
+     */
+    /*public static Point getDeltaBySpeed(Point location, Point targetLocation, int speed){
+        int x = location.x;
+        int y = location.y;
+        double dx;
+        double dy;
+        double targetX = targetLocation.getX();
+        double targetY = targetLocation.getY();
+        if(targetX - x!=0) {
+            double tan = Math.abs((targetY - y) / (targetX - x));
+            dx = speed / Math.sqrt(1 + tan * tan);
+            if(dx > Math.abs(targetX - x)){
+                dx = Math.abs(targetX - x);
+            }
+            dx*= Math.signum(targetX - x);
+
+            dy = Math.abs(dx * tan);
+            if(dy > Math.abs(targetY - y)){
+                dy = Math.abs(targetY - y);
+            }
+            dy *= Math.signum(targetY - y);
+        }
+        else {
+            dx=0;
+            if(speed <Math.abs(targetY - y)) {
+                dy = speed;
+            } else {
+                dy = Math.abs(targetY - y);
+            }
+            dy*=Math.signum(targetLocation.getY() - y);
+        }
+        return new Point((int)dx, (int)dy);
+    }*/
 }

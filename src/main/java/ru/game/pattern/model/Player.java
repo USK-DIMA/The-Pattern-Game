@@ -54,11 +54,6 @@ public class Player extends PhysicalGameObject {
     private int TERITORY_RADIUS = 8;
 
     /**
-     * местонахождение объекта
-     */
-    private Point location;
-
-    /**
      * точка, куда объекту следует двигаться
      */
     volatile private Point targetLocation;
@@ -176,9 +171,9 @@ public class Player extends PhysicalGameObject {
                         dy = SPEED;
                     } else {
                         dy = Math.abs(targetY - y);
+                        targetLocation=null;
                     }
                     dy*=Math.signum(targetLocation.getY() - y);
-                    targetLocation=null;
                 }
 
                 //Проверяем объекты на столкновения, чтобы объекты не входили друг в друга
@@ -246,25 +241,6 @@ public class Player extends PhysicalGameObject {
     @Override
     void resetAction() {
         targetLocation=null;
-    }
-
-    @Override
-    public int collision(PhysicalGameObject gameObject) {
-        if(gameObject==null){ return 0;}
-        int x = location.x;
-        int y = location.y;
-        int x2 = gameObject.getLocation().x;
-        int y2 = gameObject.getLocation().y;
-        double length = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
-        return (int)(length - (getTerritoryRadius() + gameObject.getTerritoryRadius()));
-    }
-
-    @Override
-    public int collision(double x, double y, int teritoryRadius) {
-        int x2 = location.x;
-        int y2 = location.y;
-        double length = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
-        return (int)(length - (getTerritoryRadius() + teritoryRadius));
     }
 
     @Override

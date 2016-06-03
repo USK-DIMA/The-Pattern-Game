@@ -89,6 +89,12 @@ public class GameControllerImpl implements GameController, Runnable{
         physicalGameObjects.add(player3);
     }
 
+
+    @Override
+    public WindowInfo getWindowInfo() {
+        return windowInfo;
+    }
+
     /**
      * Запуск потока Thread updateThread
      * @param gameStatus ссылка на GameStatus gameStatus. Статус игры может меняться и другуми потоками других объектов
