@@ -5,6 +5,7 @@ import ru.game.pattern.view.GameView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,12 +47,12 @@ public class GameControllerImpl implements GameController, Runnable{
     /**
      * коллекция всех игровых объектов
      */
-    private List<GameObject> allGameObjects;
+    volatile private List<GameObject> allGameObjects;
 
     /**
      * коллекция всех физческих игровых объектов
      */
-    private ArrayList<PhysicalGameObject> physicalGameObjects;
+    volatile private ArrayList<PhysicalGameObject> physicalGameObjects;
 
     /**
      * @see java.lang.Runnable
@@ -67,6 +68,7 @@ public class GameControllerImpl implements GameController, Runnable{
     public GameControllerImpl(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
         allGameObjects = new ArrayList<>();
+        allGameObjects = Collections.synchronizedList(allGameObjects);
         physicalGameObjects = new ArrayList<>();
         background = new GameBackground(windowInfo);
         cursor = new Cursor(windowInfo, physicalGameObjects);
@@ -125,20 +127,41 @@ public class GameControllerImpl implements GameController, Runnable{
                 System.err.println("Error of Thread.sleep in GameController.updateAll");
             }
 
-            for(GameObject o : allGameObjects){
+
+            for(int i=0; i<allGameObjects.size(); i++){
+                GameObject o = allGameObjects.get(i);
+                if(o.isDestroy()){
+                    allGameObjects.remove(o);
+                    physicalGameObjects.remove(o);
+                    i--;
+                    continue;
+                }
                 o.update(this);
             }
+
         }
     }
 
     @Override
-    public List<GameObject> getAllGameObjects(){
+    public List<GameObject> getAllGameObjects() {
         return allGameObjects;
+    }
+
+    @Override
+    public List<GameObject> getAllGameObjectsClone(){
+        return new ArrayList<>(allGameObjects);
     }
 
     @Override
     public ArrayList<PhysicalGameObject> getPhysicalGameObject() {
         return physicalGameObjects;
+    }
+
+    @Override
+    public void addBullet(FireBall fireBall) {
+        //// TODO: 04.06.2016 Пока добавим патроны в список всех объектов.
+        allGameObjects.add(fireBall);
+        physicalGameObjects.add(fireBall);
     }
 
     @Override

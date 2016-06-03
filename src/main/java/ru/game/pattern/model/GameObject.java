@@ -15,6 +15,12 @@ import java.awt.event.MouseListener;
  */
 abstract public class GameObject {
 
+    protected boolean destroy;
+
+    public GameObject() {
+        this.destroy = false;
+    }
+
     /**
      * Возвращает обработчик игрового объекта
      */
@@ -44,11 +50,15 @@ abstract public class GameObject {
      */
     abstract public Type getType();
 
+    public boolean isDestroy() {
+        return destroy;
+    }
+
     /**
      * Типы игровых объектов
      */
     public enum Type{
-        player, other
+        player, bullet, other
     }
 
 }

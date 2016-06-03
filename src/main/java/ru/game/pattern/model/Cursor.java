@@ -163,7 +163,6 @@ public class Cursor extends GameObject {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            System.out.println("mousePressed");
             if(e.getButton()==MouseEvent.BUTTON1) { //выделение объектов на экране (отрисовка рамки)
                 drawAndUpdate = true;
                 startX = e.getX();
@@ -218,9 +217,9 @@ public class Cursor extends GameObject {
         @Override
         public void keyTyped(KeyEvent e) {
             //// TODO: 03.06.2016  неприавльная обработка нажатия клавишь. e.getKeyCode() всегда возвращает 0
-            System.out.println(e.getKeyCode());
             if(e.getKeyCode() == 0){//буква ё
                 System.out.println("000000000000000000000");
+                System.out.println("selectingGameObjects.size(): "+selectingGameObjects.size());
                 for (PhysicalGameObject o : selectingGameObjects) {
                     o.setSelectedByCursor(true);
                 }

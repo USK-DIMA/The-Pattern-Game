@@ -17,6 +17,15 @@ public abstract class PhysicalGameObject extends GameObject {
      */
     protected Point location;
 
+    protected int maxHelth = 100;
+
+    protected int helth = 100;
+
+    public PhysicalGameObject(int maxHelth) {
+        this.maxHelth = maxHelth;
+        this.helth  = maxHelth;
+    }
+
     /**
      * Провека, выбран ли данный объект курсором
      * Данный метод является методом по умолчанию для всех дочерних классов.
@@ -68,11 +77,14 @@ public abstract class PhysicalGameObject extends GameObject {
 
     /**
      * Возвращает расстояние между объектами.
-     * @param gameObject  объект, с которым проверяется столкновение
+     * @param gameObject  объект, с которым проверяется столкновение.
      * @return расстояние между объектами. Если объекты налегли друг на друга, то число отрицательное.
+     * Если передана ссылка на этот же объект возвращает ~0.
+     * Если gameObject==null, возвращает ~0.
      */
      public int collision(PhysicalGameObject gameObject){
-        if(gameObject==null){ return 0;}
+        if(gameObject==null){ return Integer.MAX_VALUE;}
+        if(gameObject==this){ return Integer.MAX_VALUE;}
         int x = location.x;
         int y = location.y;
         int x2 = gameObject.getLocation().x;
@@ -94,6 +106,17 @@ public abstract class PhysicalGameObject extends GameObject {
         double length = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
         return (int)(length - (getTerritoryRadius() + teritoryRadius));
     }
+
+    public void addHelth(int i){
+        helth+=i;
+        if(helth>maxHelth){
+            helth = maxHelth;
+        }
+        if(helth<=0){
+            destroy = true;
+        }
+    }
+
 
     /**
      * Возвращает Point, где Point.x соответсвует dx, Point.y соответсвует dy,

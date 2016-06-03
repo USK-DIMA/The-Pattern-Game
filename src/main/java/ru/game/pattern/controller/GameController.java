@@ -1,5 +1,6 @@
 package ru.game.pattern.controller;
 
+import ru.game.pattern.model.FireBall;
 import ru.game.pattern.model.GameObject;
 import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
@@ -31,9 +32,14 @@ public interface GameController {
      */
     List<GameObject> getAllGameObjects();
 
+    List<GameObject> getAllGameObjectsClone();
+
     /**
      * Возвращает список всех Физических игровых объектов (те, которые будут объектами на карте: игроки, элементы ландшафта и прочие)
      * @return список всех Физических игровых объектов
      */
     ArrayList<PhysicalGameObject> getPhysicalGameObject();
+
+    //// TODO: 04.06.2016 Скорее всего надо будет создать общий родительсукий класс Bullet пока будет захардкожен только FireBall
+    void addBullet(FireBall fireBall);
 }
