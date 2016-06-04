@@ -152,6 +152,11 @@ public class Player extends PhysicalGameObject {
         g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5, y-PLAYER_IMAGE_SHIFT_Y-12, PLAYER_IMAGE_SHIFT_X*2, 10);
         g.setColor(helthColor);
         g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5+1, y-PLAYER_IMAGE_SHIFT_Y-11, (int)((PLAYER_IMAGE_SHIFT_X*2-1)*(double)helth/maxHelth), 8);
+
+        if(atackPoints.size()>0) {
+            g.setColor(Color.WHITE);
+            g.drawString(Integer.toString(atackPoints.size()), x-PLAYER_IMAGE_SHIFT_X-4, y-PLAYER_IMAGE_SHIFT_Y-14);
+        }
     }
 
     @Override
@@ -284,12 +289,27 @@ public class Player extends PhysicalGameObject {
         if(fireTimer <= 0) {
             if (atackPoints.size() > 0) {
                 try {
-                    gameController.addBullet(new FireBall(new Point(location), atackPoints.remove(0), getTerritoryRadius(), this));
+                    Point point = atackPoints.remove(0);
+                    gameController.addBullet(new FireBall(new Point(location), point, getTerritoryRadius(), this));
                     fireTimer = ATTACK_PAUSE;
+
+
+                    if (point.x > location.x) { //во время стрельбы герой смотрит в сторону стрельбы
+                        playerImageForDraw = playerRightImage;
+                    } else {
+                        playerImageForDraw = playerLeftImage;
+                    }
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            } else  if(targetLocation!=null) {//но если стрелять не надо, то движемся лицом к цели
+                    if (targetLocation.x > location.x) {
+                        playerImageForDraw = playerRightImage;
+                    } else {
+                        playerImageForDraw = playerLeftImage;
+                    }
             }
         }
         else {
