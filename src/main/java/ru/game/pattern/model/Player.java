@@ -90,12 +90,15 @@ public class Player extends PhysicalGameObject {
      */
     private BufferedImage playerImageForDraw;
 
-    private static int MAX_HELTH = 100;
+    private BufferedImage targetPointImage;
 
+    private static int MAX_HELTH = 100;
 
     private Color helthColor = Color.RED;
 
     private int fireTimer;
+
+    private List<Point> targetLocationList;
 
     /**
      * Изображение индикатора выделения курсором
@@ -109,9 +112,11 @@ public class Player extends PhysicalGameObject {
         this.windowsInfo=windowsInfo;
         this.location = new Point(windowsInfo.getWidth()/2, windowsInfo.getHeight()/2);
         this.atackPoints = new LinkedList<>();
+        this.targetLocationList = new LinkedList<>();
         playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "player_right.png"));
         playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "player_left.png"));
         selectiongIndicatorImage = ImageIO.read(new File(Property.RESOURSES_PATH + "selecting_player.png"));
+        targetPointImage = ImageIO.read(new File(Property.RESOURSES_PATH + "flag.png"));
         selectedByCursor=false;
         mouseListener = new PlayerMouseListener();
         playerImageForDraw = playerRightImage;
@@ -143,25 +148,44 @@ public class Player extends PhysicalGameObject {
         if(destroy){ return; }
         int x = location.x;
         int y = location.y;
+
+        //отрисовка индикатора выделения
         if(selectedByCursor){
             g.drawImage(selectiongIndicatorImage, x-SELECTING_INDICATOR_IMAGE_SHIFT_X, y-SELECTING_INDICATOR_IMAGE_SHIFT_Y, null);
         }
+
+
+        // отрисовка героя
         g.drawImage(playerImageForDraw, x-PLAYER_IMAGE_SHIFT_X, y-PLAYER_IMAGE_SHIFT_Y, null);
 
+        //отрисовка HP
         g.setColor(Color.black);
         g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5, y-PLAYER_IMAGE_SHIFT_Y-12, PLAYER_IMAGE_SHIFT_X*2, 10);
         g.setColor(helthColor);
         g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5+1, y-PLAYER_IMAGE_SHIFT_Y-11, (int)((PLAYER_IMAGE_SHIFT_X*2-1)*(double)helth/maxHelth), 8);
 
+        //Отрисовка цифры, кол-ва патрон в очереди
         if(atackPoints.size()>0) {
             g.setColor(Color.WHITE);
             g.drawString(Integer.toString(atackPoints.size()), x-PLAYER_IMAGE_SHIFT_X-4, y-PLAYER_IMAGE_SHIFT_Y-14);
+        }
+
+        //Отрисовка точек движения
+        if(targetLocation!=null){
+            g.drawImage(targetPointImage, targetLocation.x-2, targetLocation.y-33, null);
+            if(targetLocationList.size()>0){
+                List<Point> points = new LinkedList<>(targetLocationList);
+                for(Point p : points){
+                    g.drawImage(targetPointImage, p.x-2, p.y-33, null);
+                }
+            }
         }
     }
 
     @Override
     public void update(GameController gameController) {
         attack(gameController);
+
         if(targetLocation!=null) { //пока только движение. Если двигаться объекту некуда, то ничего не делаем
             int x = location.x;
             int y = location.y;
@@ -198,28 +222,6 @@ public class Player extends PhysicalGameObject {
                     }
                 }
 
-                //Проверяем объекты на столкновения, чтобы объекты не входили друг в друга
-
-                //// TODO: 03.06.2016 закоментированный код не работает как надо. Пока вернём старый код, который тоже работает не как надо, но лучше
-                //// TODO: 03.06.2016 есди этот способ не будет как-то улучшен и использован, изменить сигнатуру  ArrayList<> getPhysicalGameObject на List<> getPhysicalGameObject (и все такие ArrayList-ы)
-                /*int  index = gameController.getPhysicalGameObject().indexOf(this);
-                System.err.println("index: "+index);
-                for(int i=index+1; i<gameController.getPhysicalGameObject().size(); i++){
-                    PhysicalGameObject o =  gameController.getPhysicalGameObject().get(i);
-                    if (o == this){ continue;}//сам с собой не проверяем
-                    int length = o.collision(x+dx, y+dy, TERITORY_RADIUS);
-                    System.out.println(length);
-                    if(length<0) {
-                        if (dx != 0) {
-                            dx *= -((double) length / dx);
-                        }
-                        if (dy != 0) {
-                            dy *= -((double) length / dy);
-                        }
-                        //targetLocation=null;
-                    }
-                }*/
-
                 for(PhysicalGameObject o :  gameController.getPhysicalGameObject()){
                     if (o == this){ continue;}//сам с собой не проверяем
                     int length = o.collision(x+dx, y+dy, TERITORY_RADIUS);
@@ -235,6 +237,12 @@ public class Player extends PhysicalGameObject {
                 }
                 location.x += dx;
                 location.y += dy;
+                if(location.equals(targetLocation)){
+                    targetLocation=null;
+                }
+            }
+            if(targetLocation==null && targetLocationList.size()>0){
+                targetLocation = targetLocationList.remove(0);
             }
         }
     }
@@ -255,13 +263,30 @@ public class Player extends PhysicalGameObject {
     }
 
     @Override
+    public void setClickCursorLocation(Point point, boolean isShiftDown) {
+        if(isShiftDown && targetLocation!=null){
+            targetLocationList.add(point);
+        }else {
+            targetLocationList.clear();
+            targetLocation = point;
+            if (targetLocation.x > location.x) {
+                playerImageForDraw = playerRightImage;
+            } else {
+                playerImageForDraw = playerLeftImage;
+            }
+        }
+    }
+
+    @Override
     public Point getLocation() {
         return location;
     }
 
     @Override
     void resetAction() {
+        targetLocationList.clear();
         targetLocation=null;
+        atackPoints.clear();
     }
 
     @Override
@@ -269,15 +294,6 @@ public class Player extends PhysicalGameObject {
         return TERITORY_RADIUS;
     }
 
-    @Override
-    public void setClickCursorLocation(Point point) {
-        targetLocation=point;
-        if(targetLocation.x>location.x){
-            playerImageForDraw = playerRightImage;
-        } else {
-            playerImageForDraw = playerLeftImage;
-        }
-    }
 
     private void armBullet(Point point) {
         atackPoints.add(point);
@@ -285,7 +301,6 @@ public class Player extends PhysicalGameObject {
     }
 
     private void attack(GameController gameController){
-        //System.out.println("Attack: atackPointsSize: "+ atackPoints.size());
         if(fireTimer <= 0) {
             if (atackPoints.size() > 0) {
                 try {

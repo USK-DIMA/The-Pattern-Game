@@ -87,17 +87,12 @@ public class Cursor extends GameObject {
      */
     private int downY;
 
-    /**
-     * нажата ли клавиша shift
-     */
-    private boolean shiftKey;
 
     public Cursor(WindowInfo windowInfo, List<PhysicalGameObject> selectingGameObjects) {
         this.windowInfo = windowInfo;
         this.mouseListener = new CursorMouseListener();
         this.keyListener = new CursorKeyListener();
         this.selectingGameObjects = selectingGameObjects;
-        shiftKey = false;
     }
 
     @Override
@@ -176,7 +171,6 @@ public class Cursor extends GameObject {
         public void mouseReleased(MouseEvent e) {
             if(e.getButton()==MouseEvent.BUTTON1) { //выделение объектов на экране (сообщение объектам, что они выделены)
                 drawAndUpdate = false;
-
                 for (PhysicalGameObject o : selectingGameObjects) {
                     Point location = o.getLocation();
                     if (location != null) {
@@ -184,7 +178,7 @@ public class Cursor extends GameObject {
                         int y = location.y;
                         if (x >= leftX && x <= rightX && y >= upY && y <= downY) { //Только те, которые попали в выделенную область
                             o.setSelectedByCursor(true);
-                        } else if(!shiftKey){ //остальные становяться не выделенными (если не нажата клавиша shift)
+                        } else if(!e.isShiftDown()){ //остальные становяться не выделенными (если не нажата клавиша shift)
                             o.setSelectedByCursor(false);
                         }
                     }
@@ -194,7 +188,7 @@ public class Cursor extends GameObject {
             if(e.getButton()==MouseEvent.BUTTON3) { //Клик по экрано ПКМ
                 for(PhysicalGameObject o: selectingGameObjects){
                     if(o.isSeletedByCursor()){
-                        o.setClickCursorLocation(new Point(e.getX(), e.getY()));
+                        o.setClickCursorLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
                     }
                 }
             }
@@ -202,6 +196,7 @@ public class Cursor extends GameObject {
 
         @Override
         public void mouseEntered(MouseEvent e) {
+
         }
 
         @Override
@@ -216,16 +211,18 @@ public class Cursor extends GameObject {
 
         @Override
         public void keyTyped(KeyEvent e) {
-            //// TODO: 03.06.2016  неприавльная обработка нажатия клавишь. e.getKeyCode() всегда возвращает 0
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            System.out.println("KeyKode: " +e.getKeyCode());
             if(e.getKeyCode() == 0){//буква ё
-                System.out.println("000000000000000000000");
-                System.out.println("selectingGameObjects.size(): "+selectingGameObjects.size());
                 for (PhysicalGameObject o : selectingGameObjects) {
                     o.setSelectedByCursor(true);
                 }
             }
             if(e.getKeyCode() == KeyEvent.VK_S){ //буква s
-                System.out.println("ssssssssssssssssssssss");
                 for (PhysicalGameObject o : selectingGameObjects) {
                     if(o.isSeletedByCursor()) {
                         o.resetAction();
@@ -235,17 +232,8 @@ public class Cursor extends GameObject {
         }
 
         @Override
-        public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode()==KeyEvent.VK_SHIFT){
-                shiftKey = true;
-            }
-        }
-
-        @Override
         public void keyReleased(KeyEvent e) {
-            if(e.getKeyCode()==KeyEvent.VK_SHIFT){
-                shiftKey = false;
-            }
+
         }
     }
 }

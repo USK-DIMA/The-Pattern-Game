@@ -54,7 +54,7 @@ public abstract class PhysicalGameObject extends GameObject {
      * Но некоторым объектам иногда неоходимо получать информацию всегда обо всех кликах (как правило ПКМ) на экране.
      * @param point координаты, куда кликнули курсором.
      */
-    abstract public void setClickCursorLocation(Point point);
+    abstract public void setClickCursorLocation(Point point, boolean isShiftDown);
 
     /**
      * Возвращает местоположение объекта на карте без учёта его размера (грубо говоря, возвращает координаты центра объекта)

@@ -37,6 +37,10 @@ public class FireBall extends PhysicalGameObject {
 
     public FireBall(Point location, Point targetLocation, int objectTerritoryRadius, GameObject parant) throws IOException {
         super(1);
+        if(targetLocation.equals(location)){
+            destroy=true;
+            return;
+        }
         this.location = location;
         this.startLocation = new Point(location);
         this.parant=parant;
@@ -76,7 +80,7 @@ public class FireBall extends PhysicalGameObject {
     }
 
     @Override
-    public void setClickCursorLocation(Point point) {
+    public void setClickCursorLocation(Point point, boolean isShiftDown) {
 
     }
 
