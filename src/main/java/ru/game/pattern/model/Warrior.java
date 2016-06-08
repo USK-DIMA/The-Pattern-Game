@@ -15,15 +15,26 @@ import java.io.IOException;
 /**
  * Created by Uskov Dmitry on 08.06.2016.
  */
+
+
+/**
+ * Класс: Player-объект. Игровой объект Воин
+ * @see ru.game.pattern.model.PhysicalGameObject
+ * @see ru.game.pattern.model.GameObject
+ * @see Player
+ */
 public class Warrior extends Player {
 
     private final static int ATTACK_PAUSE = 30;
 
     /**
-     * Скорость движения объекта
+     * Скорость движения объекта Воин
      */
     public final int SPEED = 9;
 
+    /**
+     * Максимальное кол-во здоровья объекта Воин
+     */
     private static int MAX_HELTH = 100;
 
     /**

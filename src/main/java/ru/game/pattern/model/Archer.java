@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 /**
- * Игровой объект Лучник
+ * Класс: Player-объект. Игровой объект Лучник
  * @see ru.game.pattern.model.PhysicalGameObject
  * @see ru.game.pattern.model.GameObject
  * @see Player

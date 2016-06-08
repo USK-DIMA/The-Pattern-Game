@@ -15,6 +15,9 @@ import java.util.List;
  * Created by Uskov Dmitry on 08.06.2016.
  */
 
+/**
+ * Родительский класс всех Player-объектов (т.е. персонажей, которыми будем играть)
+ */
 public abstract class Player  extends PhysicalGameObject{
 
     /**
@@ -63,12 +66,21 @@ public abstract class Player  extends PhysicalGameObject{
      */
     protected BufferedImage playerImageForDraw;
 
+    /**
+     * изображение метки, куда персонаж передвигается
+     */
     protected BufferedImage targetPointImage;
 
     protected Color helthColor = Color.RED;
 
+    /**
+     * Таймер, отсчитывающий время перезарядки
+     */
     protected int fireTimer;
 
+    /**
+     * Лист точек передвижения
+     */
     protected java.util.List<Point> targetLocationList;
 
     /**
@@ -101,42 +113,6 @@ public abstract class Player  extends PhysicalGameObject{
         this.location.y=y;
     }
 
-    /**
-     * Отрисовка изображения персонажа. Без индикатора выделения, здоровья и прочего. Только его тело.
-     * @param g
-     */
-    protected void drawPlayer(Graphics2D g) {
-        // отрисовка героя
-        if(isAutomaticTurnImagePlayer()) {
-            if (targetLocation != null && targetLocation.x < location.x) {
-                playerImageForDraw = getImageForMoveToLeft();
-            } else {
-                playerImageForDraw = getImageForMoveToRight();
-            }
-        }
-        g.drawImage(playerImageForDraw, location.x-PLAYER_IMAGE_SHIFT_X, location.y-PLAYER_IMAGE_SHIFT_Y, null);
-    }
-
-    /**
-     * Изображение, которое будет отрисоввываться при движении влево (т.к. может быть анимация, то логика этого метода должна быть определена в дочернем классе)
-     * @return изображение, которое будет отрисоввываться при движении влево
-     */
-    protected abstract BufferedImage getImageForMoveToLeft();
-
-    /**
-     * Изображение, которое будет отрисоввываться при движении вправо (т.к. может быть анимация, то логика этого метода должна быть определена в дочернем классе)
-     * @return изображение, которое будет отрисоввываться при движении вправо
-     */
-    protected abstract BufferedImage getImageForMoveToRight();
-
-    /**
-     * Возарщает сколько ударов (выстрелов) стоят в очереди атаки,
-     * т.е. если быстро нажать клавишу атаки 15 раз, то герой не ударит сразу 15 раз,
-     * у героя есть пауза между атаками. Поэтому все остальные атаки становяться в очередь.
-     * @return количество ударов(выстрелов) в очереди
-     */
-    protected abstract int getActivBulletCount();
-
     @Override
     public Type getType() {
         return Type.player;
@@ -146,19 +122,6 @@ public abstract class Player  extends PhysicalGameObject{
     public int getTerritoryRadius() {
         return TERITORY_RADIUS;
     }
-
-    /**
-     * В методе ОТРИСОВКИ изображения героя в классе Player идёт автоматическое определение
-     * движения персонажа и в заивисмости от того, двигается он вправо или влево,
-     * будет вызываться метод getImageForMoveToRight()  или getImageForMoveToLeft().
-     * Но бывает, что наджо сделать так, чтобы персонаж бежал задом к цели (например во время стрельбы)
-     * тогда логика присвоения ссылки объекту playerImageForDraw определяется в дочернем классе
-     * (как правило в методе update(GameController gameController)) и ф-я isAutomaticTurnImagePlayer должна возвращать false
-     *
-     * @return true, если автоматический поворот объекта в сторону движения должен быть вкл, false, если должен быть отключён
-     */
-    protected abstract boolean isAutomaticTurnImagePlayer();
-
 
     @Override
     public void draw(Graphics2D g) {
@@ -198,8 +161,29 @@ public abstract class Player  extends PhysicalGameObject{
         }
     }
 
+    @Override
+    public boolean isSeletedByCursor() {
+        return selectedByCursor;
+    }
+
+    @Override
+    public void setSelectedByCursor(boolean selectedByCursor) {
+        this.selectedByCursor = selectedByCursor;
+    }
+
+    @Override
+    public Point getLocation() {
+        return location;
+    }
+
     /**
-     * Логика движения объекта. Метод вызывается в методе update(GameController gameController)
+     * Возвращает скокрость объекта
+     * @return скорость объекта
+     */
+    public abstract int getSpeed();
+
+    /**
+     * Логика движения объекта. Метод должен вызываеться в методе update(GameController gameController)
      */
     protected void move(GameController gameController){
         if(targetLocation!=null) { //пока только движение. Если двигаться объекту некуда, то ничего не делаем
@@ -262,20 +246,51 @@ public abstract class Player  extends PhysicalGameObject{
         }
     }
 
-    @Override
-    public boolean isSeletedByCursor() {
-        return selectedByCursor;
+    /**
+     * Отрисовка изображения персонажа. Без индикатора выделения, здоровья и прочего. Только его тело.
+     * @param g
+     */
+    protected void drawPlayer(Graphics2D g) {
+        // отрисовка героя
+        if(isAutomaticTurnImagePlayer()) {
+            if (targetLocation != null && targetLocation.x < location.x) {
+                playerImageForDraw = getImageForMoveToLeft();
+            } else {
+                playerImageForDraw = getImageForMoveToRight();
+            }
+        }
+        g.drawImage(playerImageForDraw, location.x-PLAYER_IMAGE_SHIFT_X, location.y-PLAYER_IMAGE_SHIFT_Y, null);
     }
 
-    @Override
-    public void setSelectedByCursor(boolean selectedByCursor) {
-        this.selectedByCursor = selectedByCursor;
-    }
+    /**
+     * Изображение, которое будет отрисоввываться при движении влево (т.к. может быть анимация, то логика этого метода должна быть определена в дочернем классе)
+     * @return изображение, которое будет отрисоввываться при движении влево
+     */
+    protected abstract BufferedImage getImageForMoveToLeft();
 
-    @Override
-    public Point getLocation() {
-        return location;
-    }
+    /**
+     * Изображение, которое будет отрисоввываться при движении вправо (т.к. может быть анимация, то логика этого метода должна быть определена в дочернем классе)
+     * @return изображение, которое будет отрисоввываться при движении вправо
+     */
+    protected abstract BufferedImage getImageForMoveToRight();
 
-    public abstract int getSpeed();
+    /**
+     * Возарщает сколько ударов (выстрелов) стоят в очереди атаки,
+     * т.е. если быстро нажать клавишу атаки 15 раз, то герой не ударит сразу 15 раз,
+     * у героя есть пауза между атаками. Поэтому все остальные атаки становяться в очередь.
+     * @return количество ударов(выстрелов) в очереди
+     */
+    protected abstract int getActivBulletCount();
+
+    /**
+     * В методе ОТРИСОВКИ изображения героя в классе Player идёт автоматическое определение
+     * движения персонажа и в заивисмости от того, двигается он вправо или влево,
+     * будет вызываться метод getImageForMoveToRight()  или getImageForMoveToLeft().
+     * Но бывает, что наджо сделать так, чтобы персонаж бежал задом к цели (например во время стрельбы)
+     * тогда логика присвоения ссылки объекту playerImageForDraw определяется в дочернем классе
+     * (как правило в методе update(GameController gameController)) и ф-я isAutomaticTurnImagePlayer должна возвращать false
+     *
+     * @return true, если автоматический поворот объекта в сторону движения должен быть вкл, false, если должен быть отключён
+     */
+    protected abstract boolean isAutomaticTurnImagePlayer();
 }

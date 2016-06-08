@@ -15,6 +15,12 @@ import java.io.IOException;
 /**
  * Created by Uskov Dmitry on 03.06.2016.
  */
+
+/**
+ * Класс: Объект-пуля. Объектами-пулями стреляют герои дальнего боя.
+ * Этот класс представляет собой одну реализацию такого класса.
+ * Объекты данного класса будут создаваться во время стрельбы.
+ */
 public class FireBall extends PhysicalGameObject {
 
     private static final int SPEED = 20;
@@ -46,7 +52,7 @@ public class FireBall extends PhysicalGameObject {
         this.parant=parant;
         double targetX = targetLocation.getX();
         double targetY = targetLocation.getY();
-        //// TODO: 04.06.2016 По желанию можно убрать теперь, т.к. теперь каждый fireball знает своего родителя и не будет ему наносить урон
+        //// TODO: 04.06.2016 возможно можно убрать теперь, т.к. теперь каждый fireball знает своего родителя и не будет ему наносить урон
         int radius = objectTerritoryRadius+territoryRadius; //шар начинает движение не из центра объекта, а чуть дальше.
         if(image==null){
             image = ImageIO.read(new File(Property.RESOURSES_PATH + "fireball_min.png"));
