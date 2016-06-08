@@ -17,9 +17,15 @@ public abstract class PhysicalGameObject extends GameObject {
      */
     protected Point location;
 
-    protected int maxHelth = 100;
+    /**
+     * Максимальное кол-во здоровья объекта
+     */
+    protected int maxHelth;
 
-    protected int helth = 100;
+    /**
+     * Кол-во здоровья объекта
+     */
+    protected int helth;
 
     public PhysicalGameObject(int maxHelth) {
         this.maxHelth = maxHelth;
@@ -53,6 +59,7 @@ public abstract class PhysicalGameObject extends GameObject {
      * P.S. Как правило, этот метод вызывается, только у тех объектов, у котороых isSeletedByCursor() = true.
      * Но некоторым объектам иногда неоходимо получать информацию всегда обо всех кликах (как правило ПКМ) на экране.
      * @param point координаты, куда кликнули курсором.
+     * @param isShiftDown дыла ли нажата клавиша Shift в момент клика
      */
     abstract public void setClickCursorLocation(Point point, boolean isShiftDown);
 
@@ -70,7 +77,7 @@ public abstract class PhysicalGameObject extends GameObject {
     abstract void resetAction();
 
     /**
-     * Возвращает радиус объекта (то пространство, которое он занимает)
+     * Возвращает радиус объекта (т.е. пространство, которое он занимает)
      * @return
      */
     abstract public int getTerritoryRadius();
@@ -107,14 +114,31 @@ public abstract class PhysicalGameObject extends GameObject {
         return (int)(length - (getTerritoryRadius() + teritoryRadius));
     }
 
-    public void addHelth(int i){
-        helth+=i;
+    /**
+     * Добавляет жизней персонажу, но не может добавить больше максимума. Отрицательное значение соответсвует урону.
+     * Если жизней меньше или равно 0, объект сачитаетсы уничтоженным, т.е. destroy = true;
+     * @param h на сколько надо увеличить жизни
+     */
+    public void addHelth(int h){
+        helth+=h;
         if(helth>maxHelth){
             helth = maxHelth;
         }
         if(helth<=0){
             destroy = true;
         }
+    }
+
+    public double distanceBetweenCenter(PhysicalGameObject object) {
+        int dx = object.location.x - location.x;
+        int dy = object.location.y - location.y;
+        return Math.sqrt(dx*dx - dy*dy);
+    }
+
+    public double distanceBetweenEdge(PhysicalGameObject object) {
+        int dx = object.location.x - location.x;
+        int dy = object.location.y - location.y;
+        return Math.sqrt(dx*dx + dy*dy)- object.getTerritoryRadius() - this.getTerritoryRadius();
     }
 
 
