@@ -1,9 +1,13 @@
 package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.Property;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -39,10 +43,6 @@ public abstract class Player  extends PhysicalGameObject{
     protected int TERITORY_RADIUS = 8;
 
 
-    public Player(int maxHelth) {
-        super(maxHelth);
-    }
-
     /**
      * точка, куда объекту следует двигаться
      */
@@ -57,16 +57,6 @@ public abstract class Player  extends PhysicalGameObject{
      * true, если объект выделен курсором, иначе false
      */
     protected boolean selectedByCursor;
-
-    /**
-     * Изображение игрового объекта при движении вправо
-     */
-    protected BufferedImage playerRightImage;
-
-    /**
-     * Изображение игрового объекта при движении влево
-     */
-    protected BufferedImage playerLeftImage;
 
     /**
      * будет ссылаться на то изображение, которое будет отрисовываться
@@ -87,6 +77,21 @@ public abstract class Player  extends PhysicalGameObject{
     protected BufferedImage selectiongIndicatorImage;
 
 
+    public Player(int maxHelth, WindowInfo windowsInfo) throws IOException {
+        super(maxHelth);
+        this.windowsInfo=windowsInfo;
+
+        this.location = new Point(windowsInfo.getWidth()/2, windowsInfo.getHeight()/2);
+        this.targetLocationList = new LinkedList<>();
+
+        selectiongIndicatorImage = ImageIO.read(new File(Property.RESOURSES_PATH + "selecting_player.png"));
+        targetPointImage = ImageIO.read(new File(Property.RESOURSES_PATH + "flag.png"));
+        selectedByCursor=false;
+
+        targetLocation=null;
+        fireTimer = 0;
+    }
+
     public void setLocation(Point location){
         this.location=location;
     }
@@ -100,9 +105,36 @@ public abstract class Player  extends PhysicalGameObject{
      * Отрисовка изображения персонажа. Без индикатора выделения, здоровья и прочего. Только его тело.
      * @param g
      */
-    protected abstract void drawPlayer(Graphics2D g);
+    protected void drawPlayer(Graphics2D g) {
+        // отрисовка героя
+        if(isAutomaticTurnImagePlayer()) {
+            if (targetLocation != null && targetLocation.x < location.x) {
+                playerImageForDraw = getImageForMoveToLeft();
+            } else {
+                playerImageForDraw = getImageForMoveToRight();
+            }
+        }
+        g.drawImage(playerImageForDraw, location.x-PLAYER_IMAGE_SHIFT_X, location.y-PLAYER_IMAGE_SHIFT_Y, null);
+    }
 
+    /**
+     * Изображение, которое будет отрисоввываться при движении влево (т.к. может быть анимация, то логика этого метода должна быть определена в дочернем классе)
+     * @return изображение, которое будет отрисоввываться при движении влево
+     */
+    protected abstract BufferedImage getImageForMoveToLeft();
 
+    /**
+     * Изображение, которое будет отрисоввываться при движении вправо (т.к. может быть анимация, то логика этого метода должна быть определена в дочернем классе)
+     * @return изображение, которое будет отрисоввываться при движении вправо
+     */
+    protected abstract BufferedImage getImageForMoveToRight();
+
+    /**
+     * Возарщает сколько ударов (выстрелов) стоят в очереди атаки,
+     * т.е. если быстро нажать клавишу атаки 15 раз, то герой не ударит сразу 15 раз,
+     * у героя есть пауза между атаками. Поэтому все остальные атаки становяться в очередь.
+     * @return количество ударов(выстрелов) в очереди
+     */
     protected abstract int getActivBulletCount();
 
     @Override
@@ -110,11 +142,22 @@ public abstract class Player  extends PhysicalGameObject{
         return Type.player;
     }
 
-
     @Override
     public int getTerritoryRadius() {
         return TERITORY_RADIUS;
     }
+
+    /**
+     * В методе ОТРИСОВКИ изображения героя в классе Player идёт автоматическое определение
+     * движения персонажа и в заивисмости от того, двигается он вправо или влево,
+     * будет вызываться метод getImageForMoveToRight()  или getImageForMoveToLeft().
+     * Но бывает, что наджо сделать так, чтобы персонаж бежал задом к цели (например во время стрельбы)
+     * тогда логика присвоения ссылки объекту playerImageForDraw определяется в дочернем классе
+     * (как правило в методе update(GameController gameController)) и ф-я isAutomaticTurnImagePlayer должна возвращать false
+     *
+     * @return true, если автоматический поворот объекта в сторону движения должен быть вкл, false, если должен быть отключён
+     */
+    protected abstract boolean isAutomaticTurnImagePlayer();
 
 
     @Override
@@ -155,7 +198,9 @@ public abstract class Player  extends PhysicalGameObject{
         }
     }
 
-
+    /**
+     * Логика движения объекта. Метод вызывается в методе update(GameController gameController)
+     */
     protected void move(GameController gameController){
         if(targetLocation!=null) { //пока только движение. Если двигаться объекту некуда, то ничего не делаем
             int x = location.x;
@@ -203,7 +248,6 @@ public abstract class Player  extends PhysicalGameObject{
                         if (dy != 0) {
                             dy *= -((double) length / dy);
                         }
-                        //targetLocation=null;
                     }
                 }
                 location.x += dx;
@@ -216,6 +260,21 @@ public abstract class Player  extends PhysicalGameObject{
                 targetLocation = targetLocationList.remove(0);
             }
         }
+    }
+
+    @Override
+    public boolean isSeletedByCursor() {
+        return selectedByCursor;
+    }
+
+    @Override
+    public void setSelectedByCursor(boolean selectedByCursor) {
+        this.selectedByCursor = selectedByCursor;
+    }
+
+    @Override
+    public Point getLocation() {
+        return location;
     }
 
     public abstract int getSpeed();

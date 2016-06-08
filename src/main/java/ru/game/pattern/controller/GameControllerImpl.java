@@ -74,21 +74,26 @@ public class GameControllerImpl implements GameController, Runnable{
         cursor = new Cursor(windowInfo, physicalGameObjects);
 
         Archer archer1 = new Archer(windowInfo);
+        archer1.setLocation(100, 100);
         Archer archer2 = new Archer(windowInfo);
-        archer2.setLocation(100, 100);
+        archer2.setLocation(200, 200);
         Archer archer3 = new Archer(windowInfo);
         archer3.setLocation(300, 300);
+        Warrior warrior = new Warrior(windowInfo);
+        warrior.setLocation(400, 400);
 
         /**Порядок добваленных элементов аналогичен порядку отрисовке на экране */
         allGameObjects.add(background);
         allGameObjects.add(archer1);
         allGameObjects.add(archer2);
         allGameObjects.add(archer3);
+        allGameObjects.add(warrior);
         allGameObjects.add(cursor);
 
         physicalGameObjects.add(archer1);
         physicalGameObjects.add(archer2);
         physicalGameObjects.add(archer3);
+        physicalGameObjects.add(warrior);
     }
 
 

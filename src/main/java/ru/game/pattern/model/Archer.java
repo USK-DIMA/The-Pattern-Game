@@ -19,14 +19,14 @@ import java.util.List;
  */
 
 /**
- * Игровой объект, созданный для примера
- * //TODO скорее всего многие поля из этого класса надо перенести в PhysicalGameObject
+ * Игровой объект Лучник
  * @see ru.game.pattern.model.PhysicalGameObject
  * @see ru.game.pattern.model.GameObject
+ * @see Player
  */
 public class Archer extends Player {
 
-    private final static int ATTACK_PAUSE = 15;
+    private final static int ATTACK_PAUSE = 30;
 
     /**
      * Скорость движения объекта
@@ -39,21 +39,26 @@ public class Archer extends Player {
 
     private List<Point> atackPoints;
 
+    /**
+     * Изображение игрового объекта при движении вправо
+     */
+    private static BufferedImage playerRightImage;
+
+    /**
+     * Изображение игрового объекта при движении влево
+     */
+    private static BufferedImage playerLeftImage;
+
+
     public Archer(WindowInfo windowsInfo) throws IOException {
-        super(MAX_HELTH);
-        this.windowsInfo=windowsInfo;
-        this.location = new Point(windowsInfo.getWidth()/2, windowsInfo.getHeight()/2);
+        super(MAX_HELTH, windowsInfo);
         this.atackPoints = new LinkedList<>();
-        this.targetLocationList = new LinkedList<>();
+
         playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "player_right.png"));
         playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "player_left.png"));
-        selectiongIndicatorImage = ImageIO.read(new File(Property.RESOURSES_PATH + "selecting_player.png"));
-        targetPointImage = ImageIO.read(new File(Property.RESOURSES_PATH + "flag.png"));
-        selectedByCursor=false;
-        mouseListener = new PlayerMouseListener();
         playerImageForDraw = playerRightImage;
-        targetLocation=null;
-        fireTimer = 0;
+
+        mouseListener = new ArcherMouseListener();
     }
 
     @Override
@@ -66,12 +71,14 @@ public class Archer extends Player {
         return mouseListener;
     }
 
+    @Override
+    protected BufferedImage getImageForMoveToLeft() {
+        return playerLeftImage;
+    }
 
     @Override
-    protected void drawPlayer(Graphics2D g) {
-        // отрисовка героя
-        g.drawImage(playerImageForDraw, location.x-PLAYER_IMAGE_SHIFT_X, location.y-PLAYER_IMAGE_SHIFT_Y, null);
-
+    protected BufferedImage getImageForMoveToRight() {
+        return playerRightImage;
     }
 
     @Override
@@ -80,19 +87,43 @@ public class Archer extends Player {
     }
 
     @Override
+    protected boolean isAutomaticTurnImagePlayer() {
+        return false;
+    }
+
+    @Override
     public void update(GameController gameController) {
-        attack(gameController);
+        if(fireTimer <= 0) {
+            if (atackPoints.size() > 0) {
+                try {
+                    Point point = atackPoints.remove(0);
+                    gameController.addBullet(new FireBall(new Point(location), point, getTerritoryRadius(), this));
+                    fireTimer = ATTACK_PAUSE;
+
+
+                    if (point.x > location.x) { //во время стрельбы герой смотрит в сторону стрельбы
+                        playerImageForDraw = playerRightImage;
+                    } else {
+                        playerImageForDraw = playerLeftImage;
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else  if(targetLocation!=null) {//но если стрелять не надо, то движемся лицом к цели
+                if (targetLocation.x > location.x) {
+                    playerImageForDraw = playerRightImage;
+                } else {
+                    playerImageForDraw = playerLeftImage;
+                }
+            }
+        }
+        else {
+            fireTimer--;
+        }
+
         move(gameController);
-    }
-
-    @Override
-    public boolean isSeletedByCursor() {
-        return selectedByCursor;
-    }
-
-    @Override
-    public void setSelectedByCursor(boolean selectedByCursor) {
-        this.selectedByCursor = selectedByCursor;
     }
 
     @Override
@@ -116,11 +147,6 @@ public class Archer extends Player {
     }
 
     @Override
-    public Point getLocation() {
-        return location;
-    }
-
-    @Override
     void resetAction() {
         targetLocationList.clear();
         targetLocation=null;
@@ -132,39 +158,7 @@ public class Archer extends Player {
         System.out.println("Added bullet: "+ atackPoints.size());
     }
 
-    private void attack(GameController gameController){
-        if(fireTimer <= 0) {
-            if (atackPoints.size() > 0) {
-                try {
-                    Point point = atackPoints.remove(0);
-                    gameController.addBullet(new FireBall(new Point(location), point, getTerritoryRadius(), this));
-                    fireTimer = ATTACK_PAUSE;
-
-
-                    if (point.x > location.x) { //во время стрельбы герой смотрит в сторону стрельбы
-                        playerImageForDraw = playerRightImage;
-                    } else {
-                        playerImageForDraw = playerLeftImage;
-                    }
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else  if(targetLocation!=null) {//но если стрелять не надо, то движемся лицом к цели
-                    if (targetLocation.x > location.x) {
-                        playerImageForDraw = playerRightImage;
-                    } else {
-                        playerImageForDraw = playerLeftImage;
-                    }
-            }
-        }
-        else {
-            fireTimer--;
-        }
-    }
-
-    class PlayerMouseListener implements MouseListener{
+    class ArcherMouseListener implements MouseListener{
 
         @Override
         public void mouseClicked(MouseEvent e) {
