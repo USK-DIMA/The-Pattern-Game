@@ -28,7 +28,7 @@ public abstract class Player  extends PhysicalGameObject{
     /**
      * Сдвиг изображения объекта по оси Y относительно центральной координаты объекта координаты объекта
      */
-    protected final static int PLAYER_IMAGE_SHIFT_Y =  35;
+    protected final static int PLAYER_IMAGE_SHIFT_Y =  25;
 
     /**
      * Сдвиг изображения индикатора выделения курсором по оси X относительно центральной координаты объекта координаты объекта
@@ -149,17 +149,30 @@ public abstract class Player  extends PhysicalGameObject{
             g.drawString(Integer.toString(getActivBulletCount()), x-PLAYER_IMAGE_SHIFT_X-4, y-PLAYER_IMAGE_SHIFT_Y-14);
         }
 
-        //Отрисовка точек движения
-        if(targetLocation!=null){
-            g.drawImage(targetPointImage, targetLocation.x-2, targetLocation.y-33, null);
-            if(targetLocationList.size()>0){
-                List<Point> points = new LinkedList<>(targetLocationList);
-                for(Point p : points){
-                    g.drawImage(targetPointImage, p.x-2, p.y-33, null);
+        if(isDrawTargetLocation()) {
+            //Отрисовка точек движения
+            if (targetLocation != null) {
+                g.drawImage(targetPointImage, targetLocation.x - 2, targetLocation.y - 33, null);
+                if (targetLocationList.size() > 0) {
+                    List<Point> points = new LinkedList<>(targetLocationList);
+                    for (Point p : points) {
+                        g.drawImage(targetPointImage, p.x - 2, p.y - 33, null);
+                    }
                 }
             }
         }
+        drawSpecial(g);
     }
+
+    /**
+     * Если надо отрисовать что-то ещё особенное
+     * @param g
+     */
+    protected void drawSpecial(Graphics2D g){
+
+    }
+
+    protected abstract boolean isDrawTargetLocation();
 
     @Override
     public boolean isSeletedByCursor() {

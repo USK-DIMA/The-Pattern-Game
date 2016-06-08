@@ -142,6 +142,11 @@ public class Archer extends Player {
     }
 
     @Override
+    protected boolean isDrawTargetLocation() {
+        return true;
+    }
+
+    @Override
     public int getSpeed(){
         return SPEED;
     }
@@ -174,7 +179,6 @@ public class Archer extends Player {
         public void mouseReleased(MouseEvent e) {
 
             if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано СКМ
-                System.out.println("BUTTON2");
                 if(isSeletedByCursor()){
                     armBullet(new Point(e.getX(), e.getY()));
                 }

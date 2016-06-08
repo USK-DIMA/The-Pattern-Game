@@ -27,10 +27,14 @@ public class Warrior extends Player {
 
     private final static int ATTACK_PAUSE = 30;
 
+    private final static int ATTACK_RADIUS = 8;
+
     /**
      * Скорость движения объекта Воин
      */
-    public final int SPEED = 9;
+    public final static int SPEED = 9;
+
+    public final static int DAMAGE = 15;
 
     /**
      * Максимальное кол-во здоровья объекта Воин
@@ -47,13 +51,23 @@ public class Warrior extends Player {
      */
     private static BufferedImage playerLeftImage;
 
+    private static BufferedImage aimImage;
+
+    private Point clickAttack;
+
     private MouseListener mouseListener;
+
+    volatile private PhysicalGameObject objectForAttack;
+
+    private boolean drawTargetLocation;
 
     public Warrior(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo);
         playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_right.png"));
         playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_left.png"));
+        aimImage = ImageIO.read(new File(Property.RESOURSES_PATH + "aim2.png"));
         mouseListener = new WarriorMouseListener();
+        drawTargetLocation = true;
     }
 
     @Override
@@ -76,6 +90,11 @@ public class Warrior extends Player {
     @Override
     protected boolean isAutomaticTurnImagePlayer() {
         return true;
+    }
+
+    @Override
+    protected boolean isDrawTargetLocation() {
+        return drawTargetLocation;
     }
 
     @Override
@@ -116,7 +135,65 @@ public class Warrior extends Player {
 
     @Override
     public void update(GameController gameController) {
-        move(gameController);
+        setObjectForAttack(gameController);
+        if(objectForAttack !=null){
+            drawTargetLocation = false;
+            targetLocationList.clear();
+            targetLocation = objectForAttack.getLocation();
+            moveToObjectAndAttack(objectForAttack, gameController);
+        } else {
+            drawTargetLocation = true;
+            move(gameController);//просто бег
+        }
+    }
+
+    private void moveToObjectAndAttack(PhysicalGameObject object, GameController gameController) {
+        Point oldLocation = new Point(location);
+        if(object.distanceBetweenEdge(this)>ATTACK_RADIUS) {
+            move(gameController);
+        }
+        double distance = object.distanceBetweenEdge(this);
+        if(distance< ATTACK_RADIUS){//если уже можно достать для аттаки, то будем аатаковать
+            if(distance<0){  //но если объекты наложидись друг на друга, то чуть сдвинем данный объект
+                int dx = location.x - oldLocation.x;
+                int dy = location.y - oldLocation.y;
+                double dl = Math.sqrt(dx*dx + dy*dy);
+                double p = (dl + distance)/dl;
+                dx*=p;
+                dy*=p;
+                location.setLocation(oldLocation.getX()+dx, oldLocation.getY()+dy);
+            }
+            attack(object);
+        }
+    }
+
+    private void attack(PhysicalGameObject object) {
+        if(fireTimer <= 0) {
+                object.addHelth(-DAMAGE);
+                fireTimer = ATTACK_PAUSE;
+        }
+        else {
+            fireTimer--;
+        }
+    }
+
+    private void setObjectForAttack(GameController gameController) {
+        if(clickAttack!=null){
+            for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
+                if(o.collision(clickAttack.x, clickAttack.y, 2)<=0){
+                    objectForAttack = o;
+                    break;
+                }
+            }
+            clickAttack = null;
+        }
+    }
+
+    @Override
+    protected void drawSpecial(Graphics2D g){
+        if(objectForAttack!=null && !objectForAttack.isDestroy()){
+            g.drawImage(aimImage, objectForAttack.location.x - 14, objectForAttack.location.y - 14, null);
+        }
     }
 
     class WarriorMouseListener implements MouseListener{
@@ -133,8 +210,18 @@ public class Warrior extends Player {
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано ПКМ
+                if(isSeletedByCursor()){
+                    clickAttack = new Point(e.getX(), e.getY());
+                }
+            }
+
             if(e.getButton()==MouseEvent.BUTTON3) { //Клик по экрано ПКМ
                 if(isSeletedByCursor()){
+                    if(objectForAttack!=null) { //если есть объект для аттаки, то целевая локация для Война -- это координаты этого объекта
+                        objectForAttack = null;
+                        targetLocation = null; //поэтому сброисм их
+                    }
                     setClickCursorLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
                 }
             }

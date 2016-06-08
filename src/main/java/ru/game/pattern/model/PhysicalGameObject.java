@@ -129,6 +129,18 @@ public abstract class PhysicalGameObject extends GameObject {
         }
     }
 
+    public double distanceBetweenCenter(PhysicalGameObject object) {
+        int dx = object.location.x - location.x;
+        int dy = object.location.y - location.y;
+        return Math.sqrt(dx*dx - dy*dy);
+    }
+
+    public double distanceBetweenEdge(PhysicalGameObject object) {
+        int dx = object.location.x - location.x;
+        int dy = object.location.y - location.y;
+        return Math.sqrt(dx*dx + dy*dy)- object.getTerritoryRadius() - this.getTerritoryRadius();
+    }
+
 
     /**
      * Возвращает Point, где Point.x соответсвует dx, Point.y соответсвует dy,
