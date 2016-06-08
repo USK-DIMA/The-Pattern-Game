@@ -100,7 +100,8 @@ public class Warrior extends Player {
 
     @Override
     void resetAction() {
-
+        targetLocationList.clear();
+        targetLocation=null;
     }
 
     @Override
