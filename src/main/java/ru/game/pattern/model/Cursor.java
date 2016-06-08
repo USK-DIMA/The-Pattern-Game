@@ -185,6 +185,7 @@ public class Cursor extends GameObject {
                 }
             }
 
+            /*
             if(e.getButton()==MouseEvent.BUTTON3) { //Клик по экрано ПКМ
                 for(PhysicalGameObject o: selectingGameObjects){
                     if(o.isSeletedByCursor()){
@@ -192,6 +193,7 @@ public class Cursor extends GameObject {
                     }
                 }
             }
+            */
         }
 
         @Override

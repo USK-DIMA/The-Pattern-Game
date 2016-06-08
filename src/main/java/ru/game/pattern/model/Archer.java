@@ -24,7 +24,7 @@ import java.util.List;
  * @see ru.game.pattern.model.PhysicalGameObject
  * @see ru.game.pattern.model.GameObject
  */
-public class Player extends PhysicalGameObject {
+public class Archer extends PhysicalGameObject {
 
     /**
      * Сдвиг изображения объекта по оси X относительно центральной координаты объекта координаты объекта
@@ -107,7 +107,7 @@ public class Player extends PhysicalGameObject {
 
     private List<Point> atackPoints;
 
-    public Player(WindowInfo windowsInfo) throws IOException {
+    public Archer(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH);
         this.windowsInfo=windowsInfo;
         this.location = new Point(windowsInfo.getWidth()/2, windowsInfo.getHeight()/2);
@@ -346,11 +346,18 @@ public class Player extends PhysicalGameObject {
 
         @Override
         public void mouseReleased(MouseEvent e) {
+
             if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано СКМ
                 System.out.println("BUTTON2");
                 if(isSeletedByCursor()){
                     armBullet(new Point(e.getX(), e.getY()));
                 }
+            }
+
+            if(e.getButton()==MouseEvent.BUTTON3) { //Клик по экрано ПКМ
+                    if(isSeletedByCursor()){
+                        setClickCursorLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
+                    }
             }
         }
 
