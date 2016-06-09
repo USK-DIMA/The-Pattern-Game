@@ -91,6 +91,14 @@ public abstract class Player  extends PhysicalGameObject{
     protected BufferedImage selectiongIndicatorImage;
 
 
+    /**
+     * Дополнительный сдвиг вверх индикатора выделения.
+     * Если надо отрисовать ещё что-то под индикатором (например полоску маны).
+     * Переопределяется в дочернем классе
+     */
+    protected int additionalSelectingIndicatorShift = 0;
+
+
     public Player(int maxHelth, WindowInfo windowsInfo) throws IOException {
         super(maxHelth);
         this.windowsInfo=windowsInfo;
@@ -133,7 +141,7 @@ public abstract class Player  extends PhysicalGameObject{
 
         //отрисовка индикатора выделения
         if(selectedByCursor){
-            g.drawImage(selectiongIndicatorImage, x-SELECTING_INDICATOR_IMAGE_SHIFT_X, y-SELECTING_INDICATOR_IMAGE_SHIFT_Y, null);
+            g.drawImage(selectiongIndicatorImage, x-SELECTING_INDICATOR_IMAGE_SHIFT_X, y-SELECTING_INDICATOR_IMAGE_SHIFT_Y - additionalSelectingIndicatorShift, null);
         }
 
 
