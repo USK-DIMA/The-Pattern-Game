@@ -83,6 +83,8 @@ public class GameControllerImpl implements GameController, Runnable{
         warrior.setLocation(400, 400);
         Prist prist = new Prist(windowInfo);
         prist.setLocation(500, 500);
+        Mag mag = new Mag(windowInfo);
+        mag.setLocation(600, 600);
 
         /**Порядок добваленных элементов аналогичен порядку отрисовке на экране */
         allGameObjects.add(archer1);
@@ -91,12 +93,14 @@ public class GameControllerImpl implements GameController, Runnable{
         allGameObjects.add(warrior);
         allGameObjects.add(cursor);
         allGameObjects.add(prist);
+        allGameObjects.add(mag);
 
         physicalGameObjects.add(archer1);
         physicalGameObjects.add(archer2);
         physicalGameObjects.add(archer3);
         physicalGameObjects.add(warrior);
         physicalGameObjects.add(prist);
+        physicalGameObjects.add(mag);
     }
 
 

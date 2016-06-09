@@ -90,7 +90,6 @@ public abstract class Player  extends PhysicalGameObject{
      */
     protected BufferedImage selectiongIndicatorImage;
 
-
     /**
      * Дополнительный сдвиг вверх индикатора выделения.
      * Если надо отрисовать ещё что-то под индикатором (например полоску маны).
@@ -197,12 +196,6 @@ public abstract class Player  extends PhysicalGameObject{
     public Point getLocation() {
         return location;
     }
-
-    /**
-     * Возвращает скокрость объекта
-     * @return скорость объекта
-     */
-    public abstract int getSpeed();
 
     /**
      * Логика движения объекта. Метод должен вызываеться в методе update(GameController gameController)

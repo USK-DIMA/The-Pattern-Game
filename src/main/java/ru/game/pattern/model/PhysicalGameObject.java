@@ -27,6 +27,8 @@ public abstract class PhysicalGameObject extends GameObject {
      */
     protected int helth;
 
+    private double multSpeed = 1;
+
     public PhysicalGameObject(int maxHelth) {
         this.maxHelth = maxHelth;
         this.helth  = maxHelth;
@@ -139,6 +141,30 @@ public abstract class PhysicalGameObject extends GameObject {
         int dx = object.location.x - location.x;
         int dy = object.location.y - location.y;
         return Math.sqrt(dx*dx + dy*dy)- object.getTerritoryRadius() - this.getTerritoryRadius();
+    }
+
+    /**
+     * Возвращает скокрость объекта
+     * @return скорость объекта
+     */
+    public abstract int getSpeed();
+
+    /**
+     * Устанавдивает множитель скорости на одну итерацию
+     * @param multSpeed
+     */
+    public void setOneMultiSpeed(double multSpeed){
+        this.multSpeed = multSpeed;
+    }
+
+    /**
+     * Возвращает множитель скорости, обнуляя его
+     * @return
+     */
+    public double getOneMultiSpeed(){
+        double ans = multSpeed;
+        multSpeed = 1;
+        return  ans;
     }
 
 

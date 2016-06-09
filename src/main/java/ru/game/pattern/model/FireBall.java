@@ -97,6 +97,11 @@ public class FireBall extends PhysicalGameObject {
     }
 
     @Override
+    public int getSpeed() {
+        return (int)(SPEED*getOneMultiSpeed());
+    }
+
+    @Override
     public KeyListener getKeyListener() {
         return null;
     }

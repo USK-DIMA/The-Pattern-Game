@@ -16,7 +16,7 @@ import java.io.IOException;
  * Created by Uskov Dmitry on 09.06.2016.
  */
 
-public class Prist extends Player{
+public class Mag extends Player{
 
     /**
      * Скорость движения объекта
@@ -25,13 +25,11 @@ public class Prist extends Player{
 
     private static int MAX_HELTH = 100;
 
-    private static int HELTH_HILL = 5;
+    private static double FREEZE = 0.5;
 
-    private static int MAX_MANA = 100;
+    private static int MAX_MANA = 150;
 
-    private static int HILL_PAUSE = 10;
-
-    public static final int HILL_RADIUS = 80;
+    public static final int FREEZE_RADIUS = 90;
 
     /**
      * Изображение игрового объекта при движении вправо
@@ -47,7 +45,7 @@ public class Prist extends Player{
 
     private int mana = 100;
 
-    volatile private boolean hill;
+    volatile private boolean freeze;
 
     private Color manaColor = Color.BLUE;
 
@@ -56,13 +54,13 @@ public class Prist extends Player{
     private static int MANA_ADDING = 1;
 
 
-    public Prist(WindowInfo windowsInfo) throws IOException {
+    public Mag(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo);
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "prist_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "prist_left.png"));
+        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "mag_right.png"));
+        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "mag_left.png"));
         additionalSelectingIndicatorShift = 15;
         mouseListener = new PristMouseListener();
-        hill = false;
+        freeze = false;
     }
 
     @Override
@@ -72,7 +70,7 @@ public class Prist extends Player{
 
     @Override
     public int getSpeed() {
-        return (int)(SPEED * getOneMultiSpeed());
+        return SPEED;
     }
 
     @Override
@@ -97,7 +95,7 @@ public class Prist extends Player{
 
     @Override
     void resetAction() {
-        hill = false;
+        freeze = false;
         targetLocation = null;
         targetLocationList.clear();
     }
@@ -115,19 +113,19 @@ public class Prist extends Player{
     @Override
     public void update(GameController gameController) {
         recalculateMana();
-        recalculateHill();
-        hillObjects(gameController);
+        recalculateFreeze();
+        freezeObjects(gameController);
         move(gameController);
     }
 
-    private void recalculateHill() {
+    private void recalculateFreeze() {
         if(mana<=0){
-            hill = false;
+            freeze = false;
         }
     }
 
     private void recalculateMana() {
-        if (hill) {
+        if (freeze) {
             addMana(-getManaLosses());
         } else {
             addMana(getManaAdding());
@@ -149,33 +147,27 @@ public class Prist extends Player{
         return MANA_LOSSES;
     }
 
-    private void hillObjects(GameController gameController) {
-        if(hill){
-            if(fireTimer <= 0) {
-                fireTimer = HILL_PAUSE;
+    private void freezeObjects(GameController gameController) {
+        if(freeze){
                 for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
-                    if(o.distanceBetweenCenter(this)<=HILL_RADIUS){
-                        o.addHelth(HELTH_HILL);
+                    if(o.distanceBetweenCenter(this)<= FREEZE_RADIUS){
+                        o.setOneMultiSpeed(FREEZE);
                     }
                 }
-            }
-            else {
-                fireTimer--;
-            }
         }
     }
 
     @Override
     public void drawSpecialBeforeAll(Graphics2D g) {
-        if(hill){
+        if(freeze){
 
             g.setStroke(new BasicStroke(3));
-            g.setColor(Color.GREEN);
-            g.drawOval(location.x - HILL_RADIUS, location.y - HILL_RADIUS, 2*HILL_RADIUS, 2*HILL_RADIUS);
+            g.setColor(Color.BLUE);
+            g.drawOval(location.x - FREEZE_RADIUS, location.y - FREEZE_RADIUS, 2* FREEZE_RADIUS, 2* FREEZE_RADIUS);
 
             g.setStroke(new BasicStroke(1));
-            g.setColor(new Color(0, 255, 0, 70));
-            g.fillOval(location.x - HILL_RADIUS, location.y - HILL_RADIUS, 2*HILL_RADIUS, 2*HILL_RADIUS);
+            g.setColor(new Color(0, 0, 255, 70));
+            g.fillOval(location.x - FREEZE_RADIUS, location.y - FREEZE_RADIUS, 2* FREEZE_RADIUS, 2* FREEZE_RADIUS);
 
         }
     }
@@ -199,13 +191,13 @@ public class Prist extends Player{
         public void mouseReleasedSpecial(MouseEvent e) {
             if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано CКМ
                 if(isSeletedByCursor()){
-                   trySetHill(!hill);
+                   trySetHill(!freeze);
                 }
             }
         }
     }
 
     private void trySetHill(boolean hill ) {
-        this.hill = hill;
+        this.freeze = hill;
     }
 }

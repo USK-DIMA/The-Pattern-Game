@@ -99,7 +99,7 @@ public class Warrior extends Player {
 
     @Override
     public int getSpeed() {
-        return SPEED;
+        return (int)(SPEED * getOneMultiSpeed());
     }
 
     @Override
