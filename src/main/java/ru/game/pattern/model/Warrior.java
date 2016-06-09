@@ -103,21 +103,6 @@ public class Warrior extends Player {
     }
 
     @Override
-    public void setClickCursorLocation(Point point, boolean isShiftDown) {
-        if(isShiftDown && targetLocation!=null){
-            targetLocationList.add(point);
-        }else {
-            targetLocationList.clear();
-            targetLocation = point;
-            if (targetLocation.x > location.x) {
-                playerImageForDraw = playerRightImage;
-            } else {
-                playerImageForDraw = playerLeftImage;
-            }
-        }
-    }
-
-    @Override
     void resetAction() {
         targetLocationList.clear();
         targetLocation=null;
@@ -196,17 +181,7 @@ public class Warrior extends Player {
         }
     }
 
-    class WarriorMouseListener implements MouseListener{
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
+    class WarriorMouseListener extends PlayerMouseListener{
 
         @Override
         public void mouseReleased(MouseEvent e) {
@@ -222,19 +197,10 @@ public class Warrior extends Player {
                         objectForAttack = null;
                         targetLocation = null; //поэтому сброисм их
                     }
-                    setClickCursorLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
+                    setTargetLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
                 }
             }
         }
 
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
     }
 }

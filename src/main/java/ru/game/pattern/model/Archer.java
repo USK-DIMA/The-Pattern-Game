@@ -126,7 +126,7 @@ public class Archer extends Player {
         move(gameController);
     }
 
-    @Override
+    /*@Override
     public void setClickCursorLocation(Point point, boolean isShiftDown) {
         if(isShiftDown && targetLocation!=null){
             targetLocationList.add(point);
@@ -139,7 +139,7 @@ public class Archer extends Player {
                 playerImageForDraw = playerLeftImage;
             }
         }
-    }
+    }*/
 
     @Override
     protected boolean isDrawTargetLocation() {
@@ -163,42 +163,15 @@ public class Archer extends Player {
         System.out.println("Added bullet: "+ atackPoints.size());
     }
 
-    class ArcherMouseListener implements MouseListener{
+    class ArcherMouseListener extends PlayerMouseListener{
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
+        public void mouseReleasedSpecial(MouseEvent e) {
             if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано СКМ
                 if(isSeletedByCursor()){
                     armBullet(new Point(e.getX(), e.getY()));
                 }
             }
-
-            if(e.getButton()==MouseEvent.BUTTON3) { //Клик по экрано ПКМ
-                    if(isSeletedByCursor()){
-                        setClickCursorLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
-                    }
-            }
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
         }
     }
 

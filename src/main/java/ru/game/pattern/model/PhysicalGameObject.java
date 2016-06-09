@@ -61,7 +61,7 @@ public abstract class PhysicalGameObject extends GameObject {
      * @param point координаты, куда кликнули курсором.
      * @param isShiftDown дыла ли нажата клавиша Shift в момент клика
      */
-    abstract public void setClickCursorLocation(Point point, boolean isShiftDown);
+    /*abstract public void setClickCursorLocation(Point point, boolean isShiftDown);*/
 
     /**
      * Возвращает местоположение объекта на карте без учёта его размера (грубо говоря, возвращает координаты центра объекта)
