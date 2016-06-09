@@ -85,11 +85,6 @@ public class FireBall extends PhysicalGameObject {
         return destroy;
     }
 
-    @Override
-    public void setClickCursorLocation(Point point, boolean isShiftDown) {
-
-    }
-
 
     @Override
     void resetAction() {

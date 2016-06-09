@@ -125,7 +125,12 @@ public class GameView implements  Runnable{
                 System.err.println("Error of Thread.sleep in GameView.drawAll");
             }
 
+            gameController.getBackgound().draw(g);
+
             List<GameObject> gameObjectList = gameController.getAllGameObjectsClone();
+            for(GameObject o : gameObjectList){
+                o.drawSpecialBeforeAll(g); //Отрисовка объектов из контроллера
+            }
             for(GameObject o : gameObjectList){
                 o.draw(g); //Отрисовка объектов из контроллера
             }

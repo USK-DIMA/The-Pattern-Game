@@ -5,6 +5,8 @@ import ru.game.pattern.controller.Property;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -89,6 +91,14 @@ public abstract class Player  extends PhysicalGameObject{
     protected BufferedImage selectiongIndicatorImage;
 
 
+    /**
+     * Дополнительный сдвиг вверх индикатора выделения.
+     * Если надо отрисовать ещё что-то под индикатором (например полоску маны).
+     * Переопределяется в дочернем классе
+     */
+    protected int additionalSelectingIndicatorShift = 0;
+
+
     public Player(int maxHelth, WindowInfo windowsInfo) throws IOException {
         super(maxHelth);
         this.windowsInfo=windowsInfo;
@@ -131,7 +141,7 @@ public abstract class Player  extends PhysicalGameObject{
 
         //отрисовка индикатора выделения
         if(selectedByCursor){
-            g.drawImage(selectiongIndicatorImage, x-SELECTING_INDICATOR_IMAGE_SHIFT_X, y-SELECTING_INDICATOR_IMAGE_SHIFT_Y, null);
+            g.drawImage(selectiongIndicatorImage, x-SELECTING_INDICATOR_IMAGE_SHIFT_X, y-SELECTING_INDICATOR_IMAGE_SHIFT_Y - additionalSelectingIndicatorShift, null);
         }
 
 
@@ -165,8 +175,7 @@ public abstract class Player  extends PhysicalGameObject{
     }
 
     /**
-     * Если надо отрисовать что-то ещё особенное
-     * @param g
+     * Если надо отрисовать что-то ещё особенное поверх всего
      */
     protected void drawSpecial(Graphics2D g){
 
@@ -267,13 +276,28 @@ public abstract class Player  extends PhysicalGameObject{
         // отрисовка героя
         if(isAutomaticTurnImagePlayer()) {
             if (targetLocation != null && targetLocation.x < location.x) {
-                playerImageForDraw = getImageForMoveToLeft();
             } else {
                 playerImageForDraw = getImageForMoveToRight();
             }
         }
         g.drawImage(playerImageForDraw, location.x-PLAYER_IMAGE_SHIFT_X, location.y-PLAYER_IMAGE_SHIFT_Y, null);
     }
+
+
+    public void setTargetLocation(Point point, boolean isShiftDown){
+        if(isShiftDown && targetLocation!=null){
+            targetLocationList.add(point);
+        }else {
+            targetLocationList.clear();
+            targetLocation = point;
+            if (targetLocation.x > location.x) {
+                playerImageForDraw = getImageForMoveToRight();
+            } else {
+                playerImageForDraw = getImageForMoveToLeft();
+            }
+        }
+    }
+
 
     /**
      * Изображение, которое будет отрисоввываться при движении влево (т.к. может быть анимация, то логика этого метода должна быть определена в дочернем классе)
@@ -306,4 +330,43 @@ public abstract class Player  extends PhysicalGameObject{
      * @return true, если автоматический поворот объекта в сторону движения должен быть вкл, false, если должен быть отключён
      */
     protected abstract boolean isAutomaticTurnImagePlayer();
+
+    public class PlayerMouseListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+            if(e.getButton()==MouseEvent.BUTTON3) { //Клик по экрано ПКМ
+                if(isSeletedByCursor()){
+                    setTargetLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
+                }
+            }
+
+            mouseReleasedSpecial(e);
+        }
+
+        public void mouseReleasedSpecial(MouseEvent e){
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+    }
 }

@@ -61,7 +61,7 @@ public abstract class PhysicalGameObject extends GameObject {
      * @param point координаты, куда кликнули курсором.
      * @param isShiftDown дыла ли нажата клавиша Shift в момент клика
      */
-    abstract public void setClickCursorLocation(Point point, boolean isShiftDown);
+    /*abstract public void setClickCursorLocation(Point point, boolean isShiftDown);*/
 
     /**
      * Возвращает местоположение объекта на карте без учёта его размера (грубо говоря, возвращает координаты центра объекта)
@@ -132,7 +132,7 @@ public abstract class PhysicalGameObject extends GameObject {
     public double distanceBetweenCenter(PhysicalGameObject object) {
         int dx = object.location.x - location.x;
         int dy = object.location.y - location.y;
-        return Math.sqrt(dx*dx - dy*dy);
+        return Math.sqrt(dx*dx + dy*dy);
     }
 
     public double distanceBetweenEdge(PhysicalGameObject object) {

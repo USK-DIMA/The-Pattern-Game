@@ -81,19 +81,22 @@ public class GameControllerImpl implements GameController, Runnable{
         archer3.setLocation(300, 300);
         Warrior warrior = new Warrior(windowInfo);
         warrior.setLocation(400, 400);
+        Prist prist = new Prist(windowInfo);
+        prist.setLocation(500, 500);
 
         /**Порядок добваленных элементов аналогичен порядку отрисовке на экране */
-        allGameObjects.add(background);
         allGameObjects.add(archer1);
         allGameObjects.add(archer2);
         allGameObjects.add(archer3);
         allGameObjects.add(warrior);
         allGameObjects.add(cursor);
+        allGameObjects.add(prist);
 
         physicalGameObjects.add(archer1);
         physicalGameObjects.add(archer2);
         physicalGameObjects.add(archer3);
         physicalGameObjects.add(warrior);
+        physicalGameObjects.add(prist);
     }
 
 
@@ -132,7 +135,7 @@ public class GameControllerImpl implements GameController, Runnable{
                 System.err.println("Error of Thread.sleep in GameController.updateAll");
             }
 
-
+            getBackgound().update(this);
             for(int i=0; i<allGameObjects.size(); i++){
                 GameObject o = allGameObjects.get(i);
                 if(o.isDestroy()){
@@ -167,6 +170,11 @@ public class GameControllerImpl implements GameController, Runnable{
         //// TODO: 04.06.2016 Пока добавим патроны в список всех объектов.
         allGameObjects.add(fireBall);
         physicalGameObjects.add(fireBall);
+    }
+
+    @Override
+    public GameBackground getBackgound() {
+        return background;
     }
 
     @Override
