@@ -25,9 +25,13 @@ public class Prist extends Player{
 
     private static int MAX_HELTH = 100;
 
-    private static int HELTH_HILL = 3;
+    private static int HELTH_HILL = 5;
 
-    public static final int HILL_RADIUS = 40;
+    private static int MAX_MANA = 100;
+
+    private static int HILL_PAUSE = 10;
+
+    public static final int HILL_RADIUS = 100;
 
     /**
      * Изображение игрового объекта при движении вправо
@@ -41,13 +45,22 @@ public class Prist extends Player{
 
     private MouseListener mouseListener;
 
-    private boolean hill;
+    private int mana = 100;
+
+    volatile private boolean hill;
+
+    private Color manaColor = Color.BLUE;
+
+    private static int MANA_LOSSES = 1;
+
+    private static int MANA_ADDING = 1;
 
 
     public Prist(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo);
         playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "prist_right.png"));
         playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "prist_left.png"));
+        additionalSelectingIndicatorShift = 15;
         mouseListener = new PristMouseListener();
         hill = false;
     }
@@ -84,6 +97,7 @@ public class Prist extends Player{
 
     @Override
     void resetAction() {
+        hill = false;
         targetLocation = null;
         targetLocationList.clear();
     }
@@ -100,15 +114,84 @@ public class Prist extends Player{
 
     @Override
     public void update(GameController gameController) {
+        recalculateMana();
+        recalculateHill();
+        hillObjects(gameController);
         move(gameController);
+    }
+
+    private void recalculateHill() {
+        if(mana<=0){
+            hill = false;
+        }
+    }
+
+    private void recalculateMana() {
+        if (hill) {
+            addMana(-getManaLosses());
+        } else {
+            addMana(getManaAdding());
+        }
+    }
+
+    public void addMana(int addMana) {
+        this.mana +=addMana;
+        if(this.mana<0){
+            mana = 0;
+        }
+
+        if(this.mana>MAX_MANA){
+            this.mana = MAX_MANA;
+        }
+    }
+
+    public static int getManaLosses() {
+        return MANA_LOSSES;
+    }
+
+    private void hillObjects(GameController gameController) {
+        if(hill){
+            if(fireTimer <= 0) {
+                fireTimer = HILL_PAUSE;
+                for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
+                    if(o.distanceBetweenCenter(this)<=HILL_RADIUS){
+                        o.addHelth(HELTH_HILL);
+                    }
+                }
+            }
+            else {
+                fireTimer--;
+            }
+        }
     }
 
     @Override
     public void drawSpecialBeforeAll(Graphics2D g) {
         if(hill){
+
+            g.setStroke(new BasicStroke(3));
             g.setColor(Color.GREEN);
-            g.drawRect(location.x - HILL_RADIUS, location.y - HILL_RADIUS, 2*HILL_RADIUS, 2*HILL_RADIUS);
+            g.drawOval(location.x - HILL_RADIUS, location.y - HILL_RADIUS, 2*HILL_RADIUS, 2*HILL_RADIUS);
+
+            g.setStroke(new BasicStroke(1));
+            g.setColor(new Color(0, 255, 0, 70));
+            g.fillOval(location.x - HILL_RADIUS, location.y - HILL_RADIUS, 2*HILL_RADIUS, 2*HILL_RADIUS);
+
         }
+    }
+
+    @Override
+    protected void drawSpecial(Graphics2D g) {
+        //отрисовка полоски маны
+        g.setColor(Color.black);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2, 10);
+        g.setColor(manaColor);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-11-additionalSelectingIndicatorShift, (int)((PLAYER_IMAGE_SHIFT_X*2-2)*(double)mana/MAX_MANA), 8);
+
+    }
+
+    public int getManaAdding() {
+        return MANA_ADDING;
     }
 
     class PristMouseListener extends PlayerMouseListener{
