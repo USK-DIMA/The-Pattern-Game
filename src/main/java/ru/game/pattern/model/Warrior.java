@@ -185,7 +185,7 @@ public class Warrior extends Player {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано ПКМ
+            if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано CКМ
                 if(isSeletedByCursor()){
                     clickAttack = new Point(e.getX(), e.getY());
                 }

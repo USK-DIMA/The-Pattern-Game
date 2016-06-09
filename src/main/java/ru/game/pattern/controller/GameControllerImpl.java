@@ -85,7 +85,6 @@ public class GameControllerImpl implements GameController, Runnable{
         prist.setLocation(500, 500);
 
         /**Порядок добваленных элементов аналогичен порядку отрисовке на экране */
-        allGameObjects.add(background);
         allGameObjects.add(archer1);
         allGameObjects.add(archer2);
         allGameObjects.add(archer3);
@@ -136,7 +135,7 @@ public class GameControllerImpl implements GameController, Runnable{
                 System.err.println("Error of Thread.sleep in GameController.updateAll");
             }
 
-
+            getBackgound().update(this);
             for(int i=0; i<allGameObjects.size(); i++){
                 GameObject o = allGameObjects.get(i);
                 if(o.isDestroy()){
@@ -171,6 +170,11 @@ public class GameControllerImpl implements GameController, Runnable{
         //// TODO: 04.06.2016 Пока добавим патроны в список всех объектов.
         allGameObjects.add(fireBall);
         physicalGameObjects.add(fireBall);
+    }
+
+    @Override
+    public GameBackground getBackgound() {
+        return background;
     }
 
     @Override

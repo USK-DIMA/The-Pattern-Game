@@ -41,12 +41,15 @@ public class Prist extends Player{
 
     private MouseListener mouseListener;
 
+    private boolean hill;
+
 
     public Prist(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo);
         playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "prist_right.png"));
         playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "prist_left.png"));
         mouseListener = new PristMouseListener();
+        hill = false;
     }
 
     @Override
@@ -100,7 +103,26 @@ public class Prist extends Player{
         move(gameController);
     }
 
-    class PristMouseListener extends PlayerMouseListener{
+    @Override
+    public void drawSpecialBeforeAll(Graphics2D g) {
+        if(hill){
+            g.setColor(Color.GREEN);
+            g.drawRect(location.x - HILL_RADIUS, location.y - HILL_RADIUS, 2*HILL_RADIUS, 2*HILL_RADIUS);
+        }
+    }
 
+    class PristMouseListener extends PlayerMouseListener{
+        @Override
+        public void mouseReleasedSpecial(MouseEvent e) {
+            if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано CКМ
+                if(isSeletedByCursor()){
+                   trySetHill(!hill);
+                }
+            }
+        }
+    }
+
+    private void trySetHill(boolean hill ) {
+        this.hill = hill;
     }
 }
