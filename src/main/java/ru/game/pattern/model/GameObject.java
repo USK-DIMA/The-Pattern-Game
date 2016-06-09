@@ -22,6 +22,13 @@ abstract public class GameObject {
     }
 
     /**
+     * Если надо отрисовать что-то ещё особенное под всеми объеками кроме поля
+     */
+    public void drawSpecialBeforeAll(Graphics2D g){
+
+    }
+
+    /**
      * Возвращает обработчик игрового объекта
      */
     public abstract KeyListener getKeyListener();

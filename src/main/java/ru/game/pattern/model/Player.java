@@ -167,8 +167,7 @@ public abstract class Player  extends PhysicalGameObject{
     }
 
     /**
-     * Если надо отрисовать что-то ещё особенное
-     * @param g
+     * Если надо отрисовать что-то ещё особенное поверх всего
      */
     protected void drawSpecial(Graphics2D g){
 

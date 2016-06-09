@@ -25,6 +25,10 @@ public class Prist extends Player{
 
     private static int MAX_HELTH = 100;
 
+    private static int HELTH_HILL = 3;
+
+    public static final int HILL_RADIUS = 40;
+
     /**
      * Изображение игрового объекта при движении вправо
      */
