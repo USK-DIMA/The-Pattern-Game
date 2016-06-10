@@ -1,7 +1,9 @@
-package ru.game.pattern.model;
+package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.model.PhysicalGameObject;
+import ru.game.pattern.model.WindowInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -103,7 +105,7 @@ public class Warrior extends Player {
     }
 
     @Override
-    void resetAction() {
+    protected void resetAction() {
         targetLocationList.clear();
         targetLocation=null;
     }
@@ -177,7 +179,7 @@ public class Warrior extends Player {
     @Override
     protected void drawSpecial(Graphics2D g){
         if(objectForAttack!=null && !objectForAttack.isDestroy()){
-            g.drawImage(aimImage, objectForAttack.location.x - 14, objectForAttack.location.y - 14, null);
+            g.drawImage(aimImage, objectForAttack.getLocation().x - 14, objectForAttack.getLocation().y - 14, null);
         }
     }
 

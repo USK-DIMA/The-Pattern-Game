@@ -1,8 +1,13 @@
 package ru.game.pattern.model.fabrica;
 
 import ru.game.pattern.model.*;
+import ru.game.pattern.model.playes.Archer;
+import ru.game.pattern.model.playes.Mag;
+import ru.game.pattern.model.playes.Prist;
+import ru.game.pattern.model.playes.Warrior;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**

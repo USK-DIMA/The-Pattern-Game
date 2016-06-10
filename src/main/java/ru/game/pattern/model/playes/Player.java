@@ -1,7 +1,9 @@
-package ru.game.pattern.model;
+package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.model.PhysicalGameObject;
+import ru.game.pattern.model.WindowInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -20,7 +22,7 @@ import java.util.List;
 /**
  * Родительский класс всех Player-объектов (т.е. персонажей, которыми будем играть)
  */
-public abstract class Player  extends PhysicalGameObject{
+public abstract class Player  extends PhysicalGameObject {
 
     /**
      * Сдвиг изображения объекта по оси X относительно центральной координаты объекта координаты объекта

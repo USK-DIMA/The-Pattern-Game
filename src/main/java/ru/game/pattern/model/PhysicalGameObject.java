@@ -76,7 +76,7 @@ public abstract class PhysicalGameObject extends GameObject {
     /**
      * отмена выполнения всех действий
      */
-    abstract void resetAction();
+    protected abstract void resetAction();
 
     /**
      * Возвращает радиус объекта (т.е. пространство, которое он занимает)

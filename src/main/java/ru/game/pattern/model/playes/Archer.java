@@ -1,7 +1,9 @@
-package ru.game.pattern.model;
+package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.model.FireBall;
+import ru.game.pattern.model.WindowInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -152,7 +154,7 @@ public class Archer extends Player {
     }
 
     @Override
-    void resetAction() {
+    protected void resetAction() {
         targetLocationList.clear();
         targetLocation=null;
         atackPoints.clear();

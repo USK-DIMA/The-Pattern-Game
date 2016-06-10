@@ -87,7 +87,7 @@ public class FireBall extends PhysicalGameObject {
 
 
     @Override
-    void resetAction() {
+    protected void resetAction() {
 
     }
 
