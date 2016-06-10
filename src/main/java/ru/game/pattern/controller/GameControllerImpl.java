@@ -1,6 +1,10 @@
 package ru.game.pattern.controller;
 
 import ru.game.pattern.model.*;
+import ru.game.pattern.model.playes.Archer;
+import ru.game.pattern.model.playes.Mag;
+import ru.game.pattern.model.playes.Prist;
+import ru.game.pattern.model.playes.Warrior;
 import ru.game.pattern.view.GameView;
 
 import java.io.IOException;
@@ -44,6 +48,8 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     private Cursor cursor;
 
+    private GameBoard gameBoard;
+
     /**
      * коллекция всех игровых объектов
      */
@@ -72,6 +78,7 @@ public class GameControllerImpl implements GameController, Runnable{
         physicalGameObjects = new ArrayList<>();
         background = new GameBackground(windowInfo);
         cursor = new Cursor(windowInfo, physicalGameObjects);
+        gameBoard = new GameBoard(windowInfo);
 
         Archer archer1 = new Archer(windowInfo);
         archer1.setLocation(100, 100);
@@ -83,6 +90,8 @@ public class GameControllerImpl implements GameController, Runnable{
         warrior.setLocation(400, 400);
         Prist prist = new Prist(windowInfo);
         prist.setLocation(500, 500);
+        Mag mag = new Mag(windowInfo);
+        mag.setLocation(600, 600);
 
         /**Порядок добваленных элементов аналогичен порядку отрисовке на экране */
         allGameObjects.add(archer1);
@@ -91,14 +100,15 @@ public class GameControllerImpl implements GameController, Runnable{
         allGameObjects.add(warrior);
         allGameObjects.add(cursor);
         allGameObjects.add(prist);
+        allGameObjects.add(mag);
 
         physicalGameObjects.add(archer1);
         physicalGameObjects.add(archer2);
         physicalGameObjects.add(archer3);
         physicalGameObjects.add(warrior);
         physicalGameObjects.add(prist);
+        physicalGameObjects.add(mag);
     }
-
 
     @Override
     public WindowInfo getWindowInfo() {
@@ -146,7 +156,7 @@ public class GameControllerImpl implements GameController, Runnable{
                 }
                 o.update(this);
             }
-
+            getGameBoard().update(this);
         }
     }
 
@@ -175,6 +185,11 @@ public class GameControllerImpl implements GameController, Runnable{
     @Override
     public GameBackground getBackgound() {
         return background;
+    }
+
+    @Override
+    public GameBoard getGameBoard() {
+        return gameBoard;
     }
 
     @Override

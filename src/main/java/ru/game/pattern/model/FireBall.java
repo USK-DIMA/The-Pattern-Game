@@ -87,13 +87,18 @@ public class FireBall extends PhysicalGameObject {
 
 
     @Override
-    void resetAction() {
+    protected void resetAction() {
 
     }
 
     @Override
     public int getTerritoryRadius() {
         return territoryRadius;
+    }
+
+    @Override
+    public int getSpeed() {
+        return (int)(SPEED*getOneMultiSpeed());
     }
 
     @Override

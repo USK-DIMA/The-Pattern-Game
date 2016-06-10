@@ -65,7 +65,7 @@ abstract public class GameObject {
      * Типы игровых объектов
      */
     public enum Type{
-        player, bullet, other
+        player, bullet, board, other
     }
 
 }

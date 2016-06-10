@@ -41,4 +41,6 @@ public interface GameController {
     void addBullet(FireBall fireBall);
 
     GameBackground getBackgound();
+
+    GameBoard getGameBoard();
 }

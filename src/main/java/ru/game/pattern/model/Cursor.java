@@ -218,7 +218,6 @@ public class Cursor extends GameObject {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            System.out.println("KeyKode: " +e.getKeyCode());
             if(e.getKeyCode() == 0){//буква ё
                 for (PhysicalGameObject o : selectingGameObjects) {
                     o.setSelectedByCursor(true);

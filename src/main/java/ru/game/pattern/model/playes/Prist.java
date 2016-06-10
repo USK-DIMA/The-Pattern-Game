@@ -1,7 +1,9 @@
-package ru.game.pattern.model;
+package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.model.PhysicalGameObject;
+import ru.game.pattern.model.WindowInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,6 +20,10 @@ import java.io.IOException;
 
 public class Prist extends Player{
 
+    public static final int COST = 75;
+
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "prist_icon1.jpg";
+
     /**
      * Скорость движения объекта
      */
@@ -31,7 +37,7 @@ public class Prist extends Player{
 
     private static int HILL_PAUSE = 10;
 
-    public static final int HILL_RADIUS = 100;
+    public static final int HILL_RADIUS = 80;
 
     /**
      * Изображение игрового объекта при движении вправо
@@ -72,7 +78,7 @@ public class Prist extends Player{
 
     @Override
     public int getSpeed() {
-        return SPEED;
+        return (int)(SPEED * getOneMultiSpeed());
     }
 
     @Override
@@ -96,7 +102,7 @@ public class Prist extends Player{
     }
 
     @Override
-    void resetAction() {
+    protected void resetAction() {
         hill = false;
         targetLocation = null;
         targetLocationList.clear();
