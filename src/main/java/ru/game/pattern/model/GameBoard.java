@@ -4,9 +4,11 @@ import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.fabrica.PlayerFabrica;
 import ru.game.pattern.model.fabrica.PlayerFabricaLvl1;
+import ru.game.pattern.model.playes.Player;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -62,12 +64,17 @@ public class GameBoard extends GameObject {
 
     private int dead = 0;
 
+    private int tryBuyPlayerNumber = -1;
+
+    private KeyListener keyListener;
+
     Color impossibleByColor = new Color(100, 100, 100);
 
     public GameBoard(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
         moneyImage = ImageIO.read(new File(Property.RESOURSES_PATH+"money.png"));
         playerFabrica = createFabricaByLvl(1);
+        keyListener = new GameBoardKeyListener();
         wight = 4 * (IMAGE_SIZE + BORDER) + BORDER + INFO_WIDTH;
         height = IMAGE_SIZE + 2 * BORDER + COST_HEIGHT;
     }
@@ -93,7 +100,7 @@ public class GameBoard extends GameObject {
 
     @Override
     public KeyListener getKeyListener() {
-        return null;
+        return keyListener;
     }
 
     @Override
@@ -172,11 +179,90 @@ public class GameBoard extends GameObject {
 
     @Override
     public void update(GameController gameController) {
-
+        try {
+            tryBuyPlayer(gameController);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Type getType() {
         return board;
+    }
+
+    private void setTryBuyPlayerNumber(int i) {
+        tryBuyPlayerNumber = i;
+    }
+
+    private void tryBuyPlayer(GameController gameController) throws IOException {
+        if(tryBuyPlayerNumber==-1){ return;}
+        int cost = 0;
+        int i=tryBuyPlayerNumber;
+        tryBuyPlayerNumber = -1;
+        switch (i){
+            case 1: cost = archerCost;
+                break;
+            case 2: cost = warriorCost;
+                break;
+            case 3: cost = pristCost;
+                break;
+            case 4: cost = magCost;
+                break;
+        }
+        if(cost<=money) {
+            money -= cost;
+            Player player = null;
+            switch (i) {
+                case 1:
+                    player = playerFabrica.createArhcer(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
+                    break;
+                case 2:
+                    player = playerFabrica.createWarrior(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
+                    break;
+                case 3:
+                    player = playerFabrica.createPrist(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
+                    break;
+                case 4:
+                    player = playerFabrica.createMag(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
+                    break;
+            }
+            gameController.addPlayer(player);
+        }
+    }
+
+
+    class GameBoardKeyListener implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            System.out.println(e.getKeyCode());
+            if(e.getKeyCode()==KeyEvent.VK_Q){
+                System.out.println(1);
+                setTryBuyPlayerNumber(1);
+            }
+            if(e.getKeyCode()==KeyEvent.VK_W){
+                System.out.println(2);
+                setTryBuyPlayerNumber(2);
+            }
+            if(e.getKeyCode()==KeyEvent.VK_E){
+                System.out.println(3);
+                setTryBuyPlayerNumber(3);
+            }
+            if(e.getKeyCode()==KeyEvent.VK_R){
+                System.out.println(4);
+                setTryBuyPlayerNumber(4);
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
     }
 }

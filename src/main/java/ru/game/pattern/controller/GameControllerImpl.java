@@ -1,15 +1,13 @@
 package ru.game.pattern.controller;
 
 import ru.game.pattern.model.*;
-import ru.game.pattern.model.playes.Archer;
-import ru.game.pattern.model.playes.Mag;
-import ru.game.pattern.model.playes.Prist;
-import ru.game.pattern.model.playes.Warrior;
+import ru.game.pattern.model.playes.*;
 import ru.game.pattern.view.GameView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -61,6 +59,11 @@ public class GameControllerImpl implements GameController, Runnable{
     volatile private ArrayList<PhysicalGameObject> physicalGameObjects;
 
     /**
+     * Объект, куда будут передоваться только что созданные игровые объекты для регистрации листенера
+     */
+    volatile private ObjectNotifer objectNotifer;
+
+    /**
      * @see java.lang.Runnable
      */
     @Override
@@ -108,6 +111,11 @@ public class GameControllerImpl implements GameController, Runnable{
         physicalGameObjects.add(warrior);
         physicalGameObjects.add(prist);
         physicalGameObjects.add(mag);
+    }
+
+    @Override
+    public void setObjectNotifer(ObjectNotifer objectNotifer) {
+        this.objectNotifer = objectNotifer;
     }
 
     @Override
@@ -190,6 +198,13 @@ public class GameControllerImpl implements GameController, Runnable{
     @Override
     public GameBoard getGameBoard() {
         return gameBoard;
+    }
+
+    @Override
+    public void addPlayer(Player player) {
+        allGameObjects.add(player);
+        physicalGameObjects.add(player);
+        objectNotifer.addListeners(player);
     }
 
     @Override
