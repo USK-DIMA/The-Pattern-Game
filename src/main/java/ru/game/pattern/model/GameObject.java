@@ -1,6 +1,7 @@
 package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.model.playes.Player;
 
 import java.awt.*;
 import java.awt.event.KeyListener;
@@ -17,6 +18,8 @@ abstract public class GameObject {
 
     protected boolean destroy;
 
+    private GameObjectDestroyNotifer gameObjectDestroyNotifer = null;
+
     public GameObject() {
         this.destroy = false;
     }
@@ -26,6 +29,10 @@ abstract public class GameObject {
      */
     public void drawSpecialBeforeAll(Graphics2D g){
 
+    }
+
+    public void setPlayerDestroyNotifer(GameObjectDestroyNotifer gameObjectDestroyNotifer) {
+        this.gameObjectDestroyNotifer = gameObjectDestroyNotifer;
     }
 
     /**
@@ -61,11 +68,22 @@ abstract public class GameObject {
         return destroy;
     }
 
+    public void destroy(){
+        destroy = true;
+        if(gameObjectDestroyNotifer!=null) {
+            gameObjectDestroyNotifer.objectIsDistroy(this);
+        }
+    }
+
     /**
      * Типы игровых объектов
      */
     public enum Type{
         player, bullet, board, other
+    }
+
+    public interface GameObjectDestroyNotifer {
+        void objectIsDistroy(GameObject player);
     }
 
 }

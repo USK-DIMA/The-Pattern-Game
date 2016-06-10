@@ -83,6 +83,7 @@ public class GameControllerImpl implements GameController, Runnable{
         cursor = new Cursor(windowInfo, physicalGameObjects);
         gameBoard = new GameBoard(windowInfo);
 
+        /*
         Archer archer1 = new Archer(windowInfo);
         archer1.setLocation(100, 100);
         Archer archer2 = new Archer(windowInfo);
@@ -95,13 +96,14 @@ public class GameControllerImpl implements GameController, Runnable{
         prist.setLocation(500, 500);
         Mag mag = new Mag(windowInfo);
         mag.setLocation(600, 600);
+        */
 
         /**Порядок добваленных элементов аналогичен порядку отрисовке на экране */
+        /*
         allGameObjects.add(archer1);
         allGameObjects.add(archer2);
         allGameObjects.add(archer3);
         allGameObjects.add(warrior);
-        allGameObjects.add(cursor);
         allGameObjects.add(prist);
         allGameObjects.add(mag);
 
@@ -111,6 +113,9 @@ public class GameControllerImpl implements GameController, Runnable{
         physicalGameObjects.add(warrior);
         physicalGameObjects.add(prist);
         physicalGameObjects.add(mag);
+        */
+
+        allGameObjects.add(cursor);
     }
 
     @Override

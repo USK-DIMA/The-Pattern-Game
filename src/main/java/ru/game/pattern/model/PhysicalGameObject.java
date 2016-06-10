@@ -127,7 +127,7 @@ public abstract class PhysicalGameObject extends GameObject {
             helth = maxHelth;
         }
         if(helth<=0){
-            destroy = true;
+            destroy();
         }
     }
 
