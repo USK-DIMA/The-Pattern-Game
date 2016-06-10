@@ -7,10 +7,8 @@ import ru.game.pattern.model.playes.Mag;
 import ru.game.pattern.model.playes.Prist;
 import ru.game.pattern.model.playes.Warrior;
 
-import javax.imageio.ImageIO;
+
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -18,19 +16,24 @@ import java.io.IOException;
  */
 public class PlayerFabricaLvl1 implements  PlayerFabrica{
 
-    BufferedImage archerIcon;
+    private PlayerInfo archerInfo;
 
-    BufferedImage warriorIcon;
+    private PlayerInfo warriorInfo;
 
-    BufferedImage magIcon;
+    private PlayerInfo pristInfo;
 
-    BufferedImage pristIcon;
+    private PlayerInfo magInfo;
 
     public PlayerFabricaLvl1() throws IOException {
-        archerIcon = ImageIO.read(new File(Property.RESOURSES_PATH + "archer_icon1.jpg"));
-        warriorIcon = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_icon1.jpg"));
-        magIcon = ImageIO.read(new File(Property.RESOURSES_PATH + "mag_icon1.jpg"));
-        pristIcon = ImageIO.read(new File(Property.RESOURSES_PATH + "prist_icon1.jpg"));
+        archerInfo = new PlayerInfo(Archer.ICON_PATH, Archer.COST, "archer");
+        warriorInfo = new PlayerInfo(Warrior.ICON_PATH, Warrior.COST, "warrior");
+        pristInfo = new PlayerInfo(Prist.ICON_PATH, Prist.COST, "prist");
+        magInfo =  new PlayerInfo(Mag.ICON_PATH, Mag.COST, "mag");
+    }
+
+    @Override
+    public int nexUpdate() {
+        return 300;
     }
 
     @Override
@@ -70,22 +73,23 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
     }
 
     @Override
-    public BufferedImage getArcherImage() {
-        return archerIcon;
+    public PlayerInfo getArcherInfo() {
+        return archerInfo;
     }
 
     @Override
-    public BufferedImage getWarrirImage() {
-        return warriorIcon;
+    public PlayerInfo getWarriorInfo() {
+        return warriorInfo;
     }
 
     @Override
-    public BufferedImage getPristImage() {
-        return pristIcon;
+    public PlayerInfo getPristInfo() {
+        return pristInfo;
     }
 
     @Override
-    public BufferedImage getMagImage() {
-        return magIcon;
+    public PlayerInfo getMagInfo() {
+        return magInfo;
     }
+
 }

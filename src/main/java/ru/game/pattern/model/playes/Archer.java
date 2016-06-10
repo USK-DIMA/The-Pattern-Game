@@ -28,7 +28,11 @@ import java.util.List;
  */
 public class Archer extends Player {
 
+    public static final int COST = 90;
+
     private final static int ATTACK_PAUSE = 30;
+
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "archer_icon1.jpg";
 
     /**
      * Скорость движения объекта
@@ -59,7 +63,6 @@ public class Archer extends Player {
         playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "player_right.png"));
         playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "player_left.png"));
         playerImageForDraw = playerRightImage;
-
         mouseListener = new ArcherMouseListener();
     }
 

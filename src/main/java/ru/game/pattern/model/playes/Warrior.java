@@ -38,6 +38,10 @@ public class Warrior extends Player {
 
     public final static int DAMAGE = 15;
 
+    public static final int COST = 100;
+
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "warrior_icon1.jpg";
+
     /**
      * Максимальное кол-во здоровья объекта Воин
      */
@@ -107,6 +111,7 @@ public class Warrior extends Player {
     @Override
     protected void resetAction() {
         targetLocationList.clear();
+        objectForAttack = null;
         targetLocation=null;
     }
 

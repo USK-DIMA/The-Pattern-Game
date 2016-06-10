@@ -99,7 +99,6 @@ public abstract class Player  extends PhysicalGameObject {
      */
     protected int additionalSelectingIndicatorShift = 0;
 
-
     public Player(int maxHelth, WindowInfo windowsInfo) throws IOException {
         super(maxHelth);
         this.windowsInfo=windowsInfo;
@@ -292,7 +291,6 @@ public abstract class Player  extends PhysicalGameObject {
             }
         }
     }
-
 
     /**
      * Изображение, которое будет отрисоввываться при движении влево (т.к. может быть анимация, то логика этого метода должна быть определена в дочернем классе)

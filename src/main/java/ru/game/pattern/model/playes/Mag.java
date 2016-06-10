@@ -20,16 +20,19 @@ import java.io.IOException;
 
 public class Mag extends Player{
 
+    public static final int COST = 50;
     /**
      * Скорость движения объекта
      */
     public final int SPEED = 7;
 
-    private static int MAX_HELTH = 100;
+    public static int MAX_HELTH = 100;
 
-    private static double FREEZE = 0.5;
+    public static double FREEZE = 0.5;
 
-    private static int MAX_MANA = 150;
+    public static int MAX_MANA = 150;
+
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "mag_icon1.jpg";
 
     public static final int FREEZE_RADIUS = 90;
 

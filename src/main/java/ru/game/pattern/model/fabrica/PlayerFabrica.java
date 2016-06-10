@@ -14,6 +14,9 @@ import java.io.IOException;
  * Created by Uskov Dmitry on 09.06.2016.
  */
 public interface PlayerFabrica {
+
+    int nexUpdate();
+
     Archer createArhcer(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException;
 
     Warrior createWarrior(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException;
@@ -21,5 +24,13 @@ public interface PlayerFabrica {
     Prist createPrist(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException;
 
     Mag createMag(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException;
+
+    PlayerInfo getArcherInfo();
+
+    PlayerInfo getWarriorInfo();
+
+    PlayerInfo getPristInfo();
+
+    PlayerInfo getMagInfo();
 
 }

@@ -20,6 +20,10 @@ import java.io.IOException;
 
 public class Prist extends Player{
 
+    public static final int COST = 75;
+
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "prist_icon1.jpg";
+
     /**
      * Скорость движения объекта
      */
