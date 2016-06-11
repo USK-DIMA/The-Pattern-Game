@@ -58,7 +58,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private int nextUpdate;
 
-    private int money = 180;
+    private int money = 400;
 
     private int playerCount = 0;
 
@@ -220,6 +220,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
     }
 
     private void tryBuyPlayer(GameController gameController) throws IOException {
+
+        PlayerCreator creator = null;
+
         if(buyTimer>=BUY_PAUSE) {
             if (tryBuyPlayerNumber == -1) {
                 return;
@@ -230,34 +233,26 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
             switch (i) {
                 case 1:
                     cost = archerCost;
+                    creator = playerFabrica::createArhcer;
                     break;
                 case 2:
                     cost = warriorCost;
+                    creator = playerFabrica::createWarrior;
                     break;
                 case 3:
                     cost = pristCost;
+                    creator = playerFabrica::createPrist;
                     break;
                 case 4:
                     cost = magCost;
+                    creator = playerFabrica::createMag;
                     break;
             }
+            if(creator==null) { return; }
+
             if (cost <= money) {
                 money -= cost;
-                Player player = null;
-                switch (i) {
-                    case 1:
-                        player = playerFabrica.createArhcer(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
-                        break;
-                    case 2:
-                        player = playerFabrica.createWarrior(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
-                        break;
-                    case 3:
-                        player = playerFabrica.createPrist(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
-                        break;
-                    case 4:
-                        player = playerFabrica.createMag(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
-                        break;
-                }
+                Player player = creator.create(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
                 playerCount++;
                 buyTimer=0;
                 player.setPlayerDestroyNotifer(this);
@@ -309,5 +304,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         public void keyReleased(KeyEvent e) {
 
         }
+    }
+
+    interface PlayerCreator{
+        Player create(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException;
     }
 }
