@@ -1,13 +1,10 @@
 package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.Property;
-import ru.game.pattern.model.FireBall;
 import ru.game.pattern.model.FireBallLvl1;
-import ru.game.pattern.model.GameObject;
 import ru.game.pattern.model.WindowInfo;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +19,7 @@ public class ArcherLvl1 extends Archer {
 
     private final static int ATTACK_PAUSE = 30;
 
-    public static final String ICON_PATH = Property.RESOURSES_PATH + "archer_icon1.jpg";
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "archer/archer_icon1.jpg";
 
     /**
      * Скорость движения объекта
@@ -44,8 +41,8 @@ public class ArcherLvl1 extends Archer {
 
     public ArcherLvl1(WindowInfo windowsInfo) throws IOException {
         super(windowsInfo, FireBallLvl1::new, SPEED, MAX_HELTH, ATTACK_PAUSE);
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "archer_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "archer_left.png"));
+        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "archer/archer_right.png"));
+        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "archer/archer_left.png"));
 
     }
 

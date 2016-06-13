@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 public class WarriorLvl2 extends Warrior {
 
-    public static final String ICON_PATH = Property.RESOURSES_PATH + "warrior_icon1.jpg";
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "warrior/warrior_icon2.jpg";
 
     public static final int COST = 100;
 
@@ -55,8 +55,8 @@ public class WarriorLvl2 extends Warrior {
 
     public WarriorLvl2(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo, ATTACK_PAUSE, ATTACK_RADIUS, SPEED, DAMAGE );
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_left.png"));
+        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior/warrior_right2.png"));
+        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior/warrior_left2.png"));
 
     }
 

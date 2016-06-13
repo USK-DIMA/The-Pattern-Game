@@ -60,7 +60,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private int nextUpdate;
 
-    private int money = 400;
+    private int money = 2000;
 
     private int playerCount = 0;
 
