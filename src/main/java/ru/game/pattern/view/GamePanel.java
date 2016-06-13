@@ -1,5 +1,6 @@
 package ru.game.pattern.view;
 
+import ru.game.pattern.controller.GameController;
 import ru.game.pattern.model.GameObject;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ import java.util.*;
  * На данном будет накладываться объект Graphics2D g.
  * На объекте Graphics2D g происходит отрисовка всех объектов. после чего, этот объект g отображается на GamePanel
  */
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements GameController.ObjectNotifer{
 
     private int width;
 
@@ -37,6 +38,25 @@ public class GamePanel extends JPanel {
             if(object.getMouseListener()!=null) {
                 addMouseListener(object.getMouseListener());
             }
+        }
+    }
+
+    public void addGameObjectListener(GameObject object) {
+            if(object.getKeyListener()!=null) {
+                addKeyListener(object.getKeyListener());
+            }
+            if(object.getMouseListener()!=null) {
+                addMouseListener(object.getMouseListener());
+            }
+    }
+
+    @Override
+    public void addListeners(GameObject object) {
+        if(object.getKeyListener()!=null) {
+            addKeyListener(object.getKeyListener());
+        }
+        if(object.getMouseListener()!=null) {
+            addMouseListener(object.getMouseListener());
         }
     }
 }

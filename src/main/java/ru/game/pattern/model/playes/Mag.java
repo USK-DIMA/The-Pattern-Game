@@ -48,7 +48,7 @@ public class Mag extends Player{
 
     private MouseListener mouseListener;
 
-    private int mana = 100;
+    private int mana = MAX_MANA;
 
     volatile private boolean freeze;
 

@@ -132,7 +132,12 @@ public class Warrior extends Player {
             drawTargetLocation = false;
             targetLocationList.clear();
             targetLocation = objectForAttack.getLocation();
-            moveToObjectAndAttack(objectForAttack, gameController);
+            if(!objectForAttack.isDestroy()) {
+                moveToObjectAndAttack(objectForAttack, gameController);
+            } else{
+                objectForAttack = null;
+                targetLocation = null;
+            }
         } else {
             drawTargetLocation = true;
             move(gameController);//просто бег

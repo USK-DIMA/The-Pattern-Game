@@ -35,16 +35,16 @@ public class FireBall extends PhysicalGameObject {
 
     private static BufferedImage image;
 
-    private int dx;
+    private double dx;
 
-    private int dy;
+    private double dy;
 
     private Point startLocation;
 
     public FireBall(Point location, Point targetLocation, int objectTerritoryRadius, GameObject parant) throws IOException {
         super(1);
         if(targetLocation.equals(location)){
-            destroy=true;
+            destroy();
             return;
         }
         this.location = location;
@@ -60,7 +60,7 @@ public class FireBall extends PhysicalGameObject {
 
         if(targetX - location.x!=0) {
             double tan = Math.abs((targetY - location.y) / (targetX - location.x));
-            dx = (int)(SPEED / Math.sqrt(1 + tan * tan));
+            dx = (int)(getSpeed() / Math.sqrt(1 + tan * tan));
             dx*= Math.signum(targetX - location.x);
 
             dy = (int)Math.abs(dx * tan);
@@ -68,8 +68,8 @@ public class FireBall extends PhysicalGameObject {
         }
         else {
             dx=0;
-            if(SPEED <Math.abs(targetY - location.y)) {
-                dy = SPEED;
+            if(getSpeed() <Math.abs(targetY - location.y)) {
+                dy = getSpeed();
             } else {
                 dy = (int)Math.abs(targetY - location.y);
             }
@@ -80,11 +80,6 @@ public class FireBall extends PhysicalGameObject {
         this.location.x+=dx*n;
         this.location.y+=dy*n;
     }
-
-    public boolean isDestroy() {
-        return destroy;
-    }
-
 
     @Override
     protected void resetAction() {
@@ -98,7 +93,7 @@ public class FireBall extends PhysicalGameObject {
 
     @Override
     public int getSpeed() {
-        return (int)(SPEED*getOneMultiSpeed());
+        return SPEED;
     }
 
     @Override
@@ -113,7 +108,7 @@ public class FireBall extends PhysicalGameObject {
 
     @Override
     public void draw(Graphics2D g) {
-        if(destroy){ return;}
+        if(isDestroy()){ return;}
         g.drawImage(image, location.x-5, location.y-5, null);
     }
 
@@ -121,8 +116,7 @@ public class FireBall extends PhysicalGameObject {
     public void update(GameController gameController) {
         if(location.x>gameController.getWindowInfo().getWidth()+territoryRadius || location.x<-territoryRadius ||
           location.y>gameController.getWindowInfo().getHeight()+territoryRadius || location.y<-territoryRadius){
-            System.out.println("D1");
-            destroy = true;
+            destroy();
         }
         for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
             if(o==parant){
@@ -130,17 +124,16 @@ public class FireBall extends PhysicalGameObject {
             }
             if(o.collision(this)<=0){
                 o.addHelth(-DAMAGE);
-                System.out.println("D2");
-                destroy = true;
+                destroy();
                 break;
             }
         }
-        this.location.x += dx;
-        this.location.y += dy;
+        this.location.x += dx*getOneMultiSpeed();
+        this.location.y += dy*getOneMultiSpeed();
         int dx = location.x - startLocation.x;
         int dy = location.y - location.y;
         if(Math.sqrt(dx*dx + dy*dy)>=MAX_DISTANSE){
-            destroy = true;
+            destroy();
         }
     }
 
