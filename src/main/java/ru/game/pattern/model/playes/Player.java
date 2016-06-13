@@ -93,7 +93,7 @@ public abstract class Player  extends PhysicalGameObject {
     protected BufferedImage selectiongIndicatorImage;
 
     /**
-     * Дополнительный сдвиг вверх индикатора выделения.
+     * Дополнительный сдвиг индикатора выделения вверх.
      * Если надо отрисовать ещё что-то под индикатором (например полоску маны).
      * Переопределяется в дочернем классе
      */
@@ -135,7 +135,7 @@ public abstract class Player  extends PhysicalGameObject {
 
     @Override
     public void draw(Graphics2D g) {
-        if(destroy){ return; }
+        if(isDestroy()){ return; }
         int x = location.x;
         int y = location.y;
 
@@ -362,4 +362,5 @@ public abstract class Player  extends PhysicalGameObject {
 
         }
     }
+
 }

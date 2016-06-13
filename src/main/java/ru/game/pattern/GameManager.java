@@ -15,6 +15,7 @@ public class GameManager {
     public GameManager(GameController gameController, GameView gameView) {
         this.gameController = gameController;
         this.gameView = gameView;
+        this.gameController.setObjectNotifer(gameView.getGamePanel()); //устанавливаем объкт, который будет оповещать о всех нажатиях
     }
 
     public void startGame(){

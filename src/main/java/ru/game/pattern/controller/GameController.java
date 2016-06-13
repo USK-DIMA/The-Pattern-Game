@@ -1,6 +1,7 @@
 package ru.game.pattern.controller;
 
 import ru.game.pattern.model.*;
+import ru.game.pattern.model.playes.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
  * Created by Uskov Dmitry on 27.05.2016.
  */
 public interface GameController {
+
+    void setObjectNotifer(GameControllerImpl.ObjectNotifer objectNotifer);
 
     WindowInfo getWindowInfo();
 
@@ -43,4 +46,10 @@ public interface GameController {
     GameBackground getBackgound();
 
     GameBoard getGameBoard();
+
+    void addPlayer(Player player);
+
+    public static interface ObjectNotifer{
+        void addListeners(GameObject object);
+    }
 }

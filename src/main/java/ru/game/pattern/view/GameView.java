@@ -84,7 +84,7 @@ public class GameView implements  Runnable{
         g = (Graphics2D) image.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         gamePanel.addGameObjectListeners(gameController.getAllGameObjects());
-
+        gamePanel.addGameObjectListener(gameController.getGameBoard());
         gameController.startUpdate(gameStatus);
         this.startDraw();
         mainFrame.setVisible(true);
@@ -134,6 +134,9 @@ public class GameView implements  Runnable{
             for(GameObject o : gameObjectList){
                 o.draw(g); //Отрисовка объектов из контроллера
             }
+            for(GameObject o : gameObjectList){
+                o.drawSpecialAfterAll(g); //Отрисовка объектов из контроллера
+            }
             gameController.getGameBoard().draw(g);
             gameDraw();
         }
@@ -160,4 +163,7 @@ public class GameView implements  Runnable{
         }
     }
 
+    public GamePanel getGamePanel() {
+        return gamePanel;
+    }
 }

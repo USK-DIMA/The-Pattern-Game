@@ -1,71 +1,56 @@
 package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
-import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
  * Created by Uskov Dmitry on 09.06.2016.
  */
 
-public class Mag extends Player{
+abstract public class Mag extends Player{
 
-    public static final int COST = 50;
     /**
      * Скорость движения объекта
      */
-    public final int SPEED = 7;
+    private final int speed;
 
-    public static int MAX_HELTH = 100;
+    private final double freeze;
 
-    public static double FREEZE = 0.5;
+    private final int maxMana;
 
-    public static int MAX_MANA = 150;
+    private final int freezeRadius;
 
-    public static final String ICON_PATH = Property.RESOURSES_PATH + "mag_icon1.jpg";
+    private final int manaLosses;
 
-    public static final int FREEZE_RADIUS = 90;
-
-    /**
-     * Изображение игрового объекта при движении вправо
-     */
-    private static BufferedImage playerRightImage;
-
-    /**
-     * Изображение игрового объекта при движении влево
-     */
-    private static BufferedImage playerLeftImage;
+    private final int manaAdding;
 
     private MouseListener mouseListener;
 
-    private int mana = 100;
+    private int mana;
 
-    volatile private boolean freeze;
+    volatile private boolean isFreeze;
 
     private Color manaColor = Color.BLUE;
 
-    private static int MANA_LOSSES = 1;
-
-    private static int MANA_ADDING = 1;
-
-
-    public Mag(WindowInfo windowsInfo) throws IOException {
-        super(MAX_HELTH, windowsInfo);
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "mag_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "mag_left.png"));
+    public Mag(int MaxHelth, WindowInfo windowsInfo, int speed, double freeze, int maxMana, int freezeRadius, int manaLosses, int manaAdding) throws IOException {
+        super(MaxHelth, windowsInfo);
+        this.speed = speed;
+        this.freeze = freeze;
+        this.maxMana = maxMana;
+        this.freezeRadius = freezeRadius;
+        this.manaLosses = manaLosses;
+        this.manaAdding = manaAdding;
         additionalSelectingIndicatorShift = 15;
+        mana = this.maxMana;
         mouseListener = new PristMouseListener();
-        freeze = false;
+        isFreeze = false;
     }
 
     @Override
@@ -75,17 +60,7 @@ public class Mag extends Player{
 
     @Override
     public int getSpeed() {
-        return SPEED;
-    }
-
-    @Override
-    protected BufferedImage getImageForMoveToLeft() {
-        return playerLeftImage;
-    }
-
-    @Override
-    protected BufferedImage getImageForMoveToRight() {
-        return playerRightImage;
+        return speed;
     }
 
     @Override
@@ -100,7 +75,7 @@ public class Mag extends Player{
 
     @Override
     protected void resetAction() {
-        freeze = false;
+        isFreeze = false;
         targetLocation = null;
         targetLocationList.clear();
     }
@@ -125,12 +100,12 @@ public class Mag extends Player{
 
     private void recalculateFreeze() {
         if(mana<=0){
-            freeze = false;
+            isFreeze = false;
         }
     }
 
     private void recalculateMana() {
-        if (freeze) {
+        if (isFreeze) {
             addMana(-getManaLosses());
         } else {
             addMana(getManaAdding());
@@ -143,20 +118,20 @@ public class Mag extends Player{
             mana = 0;
         }
 
-        if(this.mana>MAX_MANA){
-            this.mana = MAX_MANA;
+        if(this.mana> maxMana){
+            this.mana = maxMana;
         }
     }
 
-    public static int getManaLosses() {
-        return MANA_LOSSES;
+    public int getManaLosses() {
+        return manaLosses;
     }
 
     private void freezeObjects(GameController gameController) {
-        if(freeze){
+        if(isFreeze){
                 for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
-                    if(o.distanceBetweenCenter(this)<= FREEZE_RADIUS){
-                        o.setOneMultiSpeed(FREEZE);
+                    if(o.distanceBetweenCenter(this)<= freezeRadius){
+                        o.setOneMultiSpeed(freeze);
                     }
                 }
         }
@@ -164,15 +139,15 @@ public class Mag extends Player{
 
     @Override
     public void drawSpecialBeforeAll(Graphics2D g) {
-        if(freeze){
+        if(isFreeze){
 
             g.setStroke(new BasicStroke(3));
             g.setColor(Color.BLUE);
-            g.drawOval(location.x - FREEZE_RADIUS, location.y - FREEZE_RADIUS, 2* FREEZE_RADIUS, 2* FREEZE_RADIUS);
+            g.drawOval(location.x - freezeRadius, location.y - freezeRadius, 2* freezeRadius, 2* freezeRadius);
 
             g.setStroke(new BasicStroke(1));
             g.setColor(new Color(0, 0, 255, 70));
-            g.fillOval(location.x - FREEZE_RADIUS, location.y - FREEZE_RADIUS, 2* FREEZE_RADIUS, 2* FREEZE_RADIUS);
+            g.fillOval(location.x - freezeRadius, location.y - freezeRadius, 2* freezeRadius, 2* freezeRadius);
 
         }
     }
@@ -183,12 +158,12 @@ public class Mag extends Player{
         g.setColor(Color.black);
         g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2, 10);
         g.setColor(manaColor);
-        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-11-additionalSelectingIndicatorShift, (int)((PLAYER_IMAGE_SHIFT_X*2-2)*(double)mana/MAX_MANA), 8);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-11-additionalSelectingIndicatorShift, (int)((PLAYER_IMAGE_SHIFT_X*2-2)*(double)mana/ maxMana), 8);
 
     }
 
     public int getManaAdding() {
-        return MANA_ADDING;
+        return manaAdding;
     }
 
     class PristMouseListener extends PlayerMouseListener{
@@ -196,13 +171,13 @@ public class Mag extends Player{
         public void mouseReleasedSpecial(MouseEvent e) {
             if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано CКМ
                 if(isSeletedByCursor()){
-                   trySetHill(!freeze);
+                   trySetHill(!isFreeze);
                 }
             }
         }
     }
 
     private void trySetHill(boolean hill ) {
-        this.freeze = hill;
+        this.isFreeze = hill;
     }
 }
