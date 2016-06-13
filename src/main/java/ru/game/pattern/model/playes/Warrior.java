@@ -161,7 +161,7 @@ abstract public class Warrior extends Player {
     }
 
     @Override
-    protected void drawSpecial(Graphics2D g){
+    public void drawSpecialAfterAll(Graphics2D g){
         if(objectForAttack!=null && !objectForAttack.isDestroy()){
             g.drawImage(aimImage, objectForAttack.getLocation().x - 14, objectForAttack.getLocation().y - 14, null);
         }
