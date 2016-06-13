@@ -4,6 +4,8 @@ import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.fabrica.PlayerFabrica;
 import ru.game.pattern.model.fabrica.PlayerFabricaLvl1;
+import ru.game.pattern.model.fabrica.PlayerFabricaLvl2;
+import ru.game.pattern.model.fabrica.PlayerFabricaLvl3;
 import ru.game.pattern.model.playes.Player;
 
 import javax.imageio.ImageIO;
@@ -74,32 +76,38 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     Color impossibleByColor = new Color(100, 100, 100);
 
+    private boolean isLvlUp = false;
+
     public GameBoard(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
         moneyImage = ImageIO.read(new File(Property.RESOURSES_PATH+"money.png"));
-        playerFabrica = createFabricaByLvl(1);
+        initFabricaByLvl(1);
         keyListener = new GameBoardKeyListener();
         wight = 4 * (IMAGE_SIZE + BORDER) + BORDER + INFO_WIDTH;
         height = IMAGE_SIZE + 2 * BORDER + COST_HEIGHT;
     }
 
-    private PlayerFabrica createFabricaByLvl(int i) throws IOException {
+    private void initFabricaByLvl(int i) throws IOException {
         switch (i){
-            case 1:
-                PlayerFabrica fabrica = new PlayerFabricaLvl1();
-                archerImage = ImageIO.read(new File(fabrica.getArcherInfo().getIconPath()));
-                warriorImage = ImageIO.read(new File(fabrica.getWarriorInfo().getIconPath()));
-                pristImage = ImageIO.read(new File(fabrica.getPristInfo().getIconPath()));
-                magImage = ImageIO.read(new File(fabrica.getMagInfo().getIconPath()));
-
-                archerCost = fabrica.getArcherInfo().getCost();
-                warriorCost = fabrica.getWarriorInfo().getCost();
-                pristCost = fabrica.getPristInfo().getCost();
-                magCost = fabrica.getMagInfo().getCost();
-                nextUpdate = fabrica.nexUpdate();
-                return fabrica;
-            default: return null;
+            case 1: playerFabrica = new PlayerFabricaLvl1();
+                break;
+            case 2: playerFabrica = new PlayerFabricaLvl2();
+                break;
+            case 3: playerFabrica = new PlayerFabricaLvl3();
+                break;
+            default: return;
         }
+
+        archerImage = ImageIO.read(new File(playerFabrica.getArcherInfo().getIconPath()));
+        warriorImage = ImageIO.read(new File(playerFabrica.getWarriorInfo().getIconPath()));
+        pristImage = ImageIO.read(new File(playerFabrica.getPristInfo().getIconPath()));
+        magImage = ImageIO.read(new File(playerFabrica.getMagInfo().getIconPath()));
+
+        archerCost = playerFabrica.getArcherInfo().getCost();
+        warriorCost = playerFabrica.getWarriorInfo().getCost();
+        pristCost = playerFabrica.getPristInfo().getCost();
+        magCost = playerFabrica.getMagInfo().getCost();
+        nextUpdate = playerFabrica.nexUpdate();
     }
 
     @Override
@@ -174,8 +182,11 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         int y2 = BORDER;
 
         setColor(g, nextUpdate, money);
-
-        g.drawString("UP(U): "+nextUpdate, x2, y2 + y);
+        if(nextUpdate!=-1) {
+            g.drawString("UP(U): " + nextUpdate, x2, y2 + y);
+        } else {
+            g.drawString("MAX LVL", x2, y2 + y);
+        }
 
         g.setColor(Color.WHITE);
         g.drawString(playerCount +"/"+ maxPlayerCount, x2, y2 + 2*y+8);
@@ -201,11 +212,27 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     @Override
     public void update(GameController gameController) {
+        if(isLvlUp){
+            isLvlUp = false;
+            lvlUp();
+        }
         try {
             tryBuyPlayer(gameController);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void lvlUp() {
+        if(money>=nextUpdate){
+            money-=nextUpdate;
+        }
+        try {
+            initFabricaByLvl(playerFabrica.getLvl()+1);
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+
     }
 
     @Override
@@ -248,6 +275,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
                     creator = playerFabrica::createMag;
                     break;
             }
+
             if(creator==null) { return; }
 
             if (cost <= money) {
@@ -298,6 +326,10 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
                 System.out.println(4);
                 setTryBuyPlayerNumber(4);
             }
+
+            if(e.getKeyCode()==KeyEvent.VK_U) {
+                tryLvlUp();
+            }
         }
 
         @Override
@@ -306,6 +338,13 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         }
     }
 
+    private void tryLvlUp() {
+        if(money>=nextUpdate){
+            isLvlUp = true;
+        }
+    }
+
+    @FunctionalInterface
     interface PlayerCreator{
         Player create(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException;
     }

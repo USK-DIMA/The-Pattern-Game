@@ -15,7 +15,13 @@ import java.io.IOException;
  */
 public interface PlayerFabrica {
 
+    /**
+     * Возвращает цену обновления до след уровня.
+     * @return Цена обновления до след уровня или -1, если обновиться невозможно (например максимальный уровень обновления уже достигнут)
+     */
     int nexUpdate();
+
+    int getLvl();
 
     Archer createArhcer(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException;
 
