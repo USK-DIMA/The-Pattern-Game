@@ -31,6 +31,13 @@ abstract public class GameObject {
 
     }
 
+    /**
+     * Если надо отрисовать что-то ещё особенное под всеми объеками кроме поля
+     */
+    public void drawSpecialAfterAll(Graphics2D g){
+
+    }
+
     public void setPlayerDestroyNotifer(GameObjectDestroyNotifer gameObjectDestroyNotifer) {
         this.gameObjectDestroyNotifer = gameObjectDestroyNotifer;
     }
