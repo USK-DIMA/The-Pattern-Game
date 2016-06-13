@@ -25,7 +25,7 @@ public class GameBackground extends GameObject {
 
     private BufferedImage image = null;
 
-    private String BACKGROUND_IMAGE_PATH = Property.RESOURSES_PATH + "plane_lite_80.jpg";
+    private String BACKGROUND_IMAGE_PATH = Property.RESOURSES_PATH + "plane_lite_80.png";
 
 
     public GameBackground(WindowInfo windowInfo) throws IOException {

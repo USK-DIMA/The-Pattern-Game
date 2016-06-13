@@ -27,7 +27,7 @@ public class ArcherLvl1 extends Archer {
     /**
      * Скорость движения объекта
      */
-    public static final int SPEED = 5;
+    public static final int SPEED = 2;
 
     public static int MAX_HELTH = 100;
 
@@ -44,8 +44,8 @@ public class ArcherLvl1 extends Archer {
 
     public ArcherLvl1(WindowInfo windowsInfo) throws IOException {
         super(windowsInfo, FireBallLvl1::new, SPEED, MAX_HELTH, ATTACK_PAUSE);
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "player_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "player_left.png"));
+        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "archer_right.png"));
+        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "archer_left.png"));
 
     }
 

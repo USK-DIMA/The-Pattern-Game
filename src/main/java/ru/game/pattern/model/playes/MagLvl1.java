@@ -17,7 +17,7 @@ public class MagLvl1 extends Mag {
     /**
      * Скорость движения объекта
      */
-    public static int SPEED = 7;
+    public static int SPEED = 3;
 
     public static int MAX_HELTH = 100;
 

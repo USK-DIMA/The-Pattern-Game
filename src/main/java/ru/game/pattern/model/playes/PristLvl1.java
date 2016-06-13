@@ -19,7 +19,7 @@ public class PristLvl1 extends Prist {
 
     private static final int MAX_HELTH = 75;
 
-    private static final int SPEED = 5;
+    private static final int SPEED = 3;
 
     private static final int HELTH_HILL = 5;
 

@@ -38,7 +38,7 @@ public class WarriorLvl1 extends Warrior {
     /**
      * Скорость движения объекта Воин
      */
-    public final static int SPEED = 9;
+    public final static int SPEED = 4;
 
     public final static int DAMAGE = 15;
 

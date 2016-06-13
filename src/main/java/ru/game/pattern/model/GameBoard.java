@@ -70,7 +70,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private KeyListener keyListener;
 
-    private int BUY_PAUSE = 200;
+    private int BUY_PAUSE = 5;
 
     private int buyTimer = BUY_PAUSE;
 
