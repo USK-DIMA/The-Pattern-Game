@@ -34,6 +34,11 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
     }
 
     @Override
+    public int getLvl() {
+        return 1;
+    }
+
+    @Override
     public Archer createArhcer(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Archer archer = new ArcherLvl1(windowInfo);
         archer.setLocation(location);

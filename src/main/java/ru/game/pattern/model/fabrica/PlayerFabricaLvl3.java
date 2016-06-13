@@ -29,7 +29,12 @@ public class PlayerFabricaLvl3 implements  PlayerFabrica{
 
     @Override
     public int nexUpdate() {
-        return 300;
+        return -1;
+    }
+
+    @Override
+    public int getLvl() {
+        return 3;
     }
 
     @Override

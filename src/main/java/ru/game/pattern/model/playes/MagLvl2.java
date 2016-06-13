@@ -21,13 +21,13 @@ public class MagLvl2 extends Mag {
 
     public static int MAX_HELTH = 100;
 
-    public static double FREEZE = 0.5;
+    public static double FREEZE = 0.4;
 
-    public static int MAX_MANA = 150;
+    public static int MAX_MANA = 300;
 
     public static final String ICON_PATH = Property.RESOURSES_PATH + "mag_icon1.jpg";
 
-    public static final int FREEZE_RADIUS = 90;
+    public static final int FREEZE_RADIUS = 150;
 
     private static int MANA_LOSSES = 1;
 
