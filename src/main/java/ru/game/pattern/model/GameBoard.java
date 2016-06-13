@@ -248,6 +248,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
                     creator = playerFabrica::createMag;
                     break;
             }
+
             if(creator==null) { return; }
 
             if (cost <= money) {
@@ -306,6 +307,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         }
     }
 
+    @FunctionalInterface
     interface PlayerCreator{
         Player create(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException;
     }
