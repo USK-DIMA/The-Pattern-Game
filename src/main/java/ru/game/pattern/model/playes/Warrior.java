@@ -1,7 +1,9 @@
-package ru.game.pattern.model;
+package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.model.PhysicalGameObject;
+import ru.game.pattern.model.WindowInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -23,33 +25,18 @@ import java.io.IOException;
  * @see ru.game.pattern.model.GameObject
  * @see Player
  */
-public class Warrior extends Player {
+abstract public class Warrior extends Player {
 
-    private final static int ATTACK_PAUSE = 30;
+    private final int attackPause;
 
-    private final static int ATTACK_RADIUS = 8;
+    private final int attackRadius;
 
     /**
      * Скорость движения объекта Воин
      */
-    public final static int SPEED = 9;
+    private final int speed;
 
-    public final static int DAMAGE = 15;
-
-    /**
-     * Максимальное кол-во здоровья объекта Воин
-     */
-    private static int MAX_HELTH = 100;
-
-    /**
-     * Изображение игрового объекта при движении вправо
-     */
-    private static BufferedImage playerRightImage;
-
-    /**
-     * Изображение игрового объекта при движении влево
-     */
-    private static BufferedImage playerLeftImage;
+    private final int damage;
 
     private static BufferedImage aimImage;
 
@@ -61,23 +48,16 @@ public class Warrior extends Player {
 
     private boolean drawTargetLocation;
 
-    public Warrior(WindowInfo windowsInfo) throws IOException {
-        super(MAX_HELTH, windowsInfo);
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_left.png"));
+
+    public Warrior(int maxHelth, WindowInfo windowsInfo, int attackPause, int attackRadius, int speed, int damage) throws IOException {
+        super(maxHelth, windowsInfo);
+        this.attackPause = attackPause;
+        this.attackRadius = attackRadius;
+        this.speed = speed;
+        this.damage = damage;
         aimImage = ImageIO.read(new File(Property.RESOURSES_PATH + "aim2.png"));
         mouseListener = new WarriorMouseListener();
         drawTargetLocation = true;
-    }
-
-    @Override
-    protected BufferedImage getImageForMoveToLeft() {
-        return playerLeftImage;
-    }
-
-    @Override
-    protected BufferedImage getImageForMoveToRight() {
-        return playerRightImage;
     }
 
     @Override
@@ -99,12 +79,13 @@ public class Warrior extends Player {
 
     @Override
     public int getSpeed() {
-        return (int)(SPEED * getOneMultiSpeed());
+        return (int)(speed * getOneMultiSpeed());
     }
 
     @Override
-    void resetAction() {
+    protected void resetAction() {
         targetLocationList.clear();
+        objectForAttack = null;
         targetLocation=null;
     }
 
@@ -125,7 +106,12 @@ public class Warrior extends Player {
             drawTargetLocation = false;
             targetLocationList.clear();
             targetLocation = objectForAttack.getLocation();
-            moveToObjectAndAttack(objectForAttack, gameController);
+            if(!objectForAttack.isDestroy()) {
+                moveToObjectAndAttack(objectForAttack, gameController);
+            } else{
+                objectForAttack = null;
+                targetLocation = null;
+            }
         } else {
             drawTargetLocation = true;
             move(gameController);//просто бег
@@ -134,11 +120,11 @@ public class Warrior extends Player {
 
     private void moveToObjectAndAttack(PhysicalGameObject object, GameController gameController) {
         Point oldLocation = new Point(location);
-        if(object.distanceBetweenEdge(this)>ATTACK_RADIUS) {
+        if(object.distanceBetweenEdge(this)> attackRadius) {
             move(gameController);
         }
         double distance = object.distanceBetweenEdge(this);
-        if(distance< ATTACK_RADIUS){//если уже можно достать для аттаки, то будем аатаковать
+        if(distance< attackRadius){//если уже можно достать для аттаки, то будем аатаковать
             if(distance<0){  //но если объекты наложидись друг на друга, то чуть сдвинем данный объект
                 int dx = location.x - oldLocation.x;
                 int dy = location.y - oldLocation.y;
@@ -154,8 +140,8 @@ public class Warrior extends Player {
 
     private void attack(PhysicalGameObject object) {
         if(fireTimer <= 0) {
-                object.addHelth(-DAMAGE);
-                fireTimer = ATTACK_PAUSE;
+                object.addHelth(-damage);
+                fireTimer = attackPause;
         }
         else {
             fireTimer--;
@@ -177,7 +163,7 @@ public class Warrior extends Player {
     @Override
     protected void drawSpecial(Graphics2D g){
         if(objectForAttack!=null && !objectForAttack.isDestroy()){
-            g.drawImage(aimImage, objectForAttack.location.x - 14, objectForAttack.location.y - 14, null);
+            g.drawImage(aimImage, objectForAttack.getLocation().x - 14, objectForAttack.getLocation().y - 14, null);
         }
     }
 

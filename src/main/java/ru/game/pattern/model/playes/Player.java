@@ -1,7 +1,9 @@
-package ru.game.pattern.model;
+package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.model.PhysicalGameObject;
+import ru.game.pattern.model.WindowInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -20,7 +22,7 @@ import java.util.List;
 /**
  * Родительский класс всех Player-объектов (т.е. персонажей, которыми будем играть)
  */
-public abstract class Player  extends PhysicalGameObject{
+public abstract class Player  extends PhysicalGameObject {
 
     /**
      * Сдвиг изображения объекта по оси X относительно центральной координаты объекта координаты объекта
@@ -91,12 +93,11 @@ public abstract class Player  extends PhysicalGameObject{
     protected BufferedImage selectiongIndicatorImage;
 
     /**
-     * Дополнительный сдвиг вверх индикатора выделения.
+     * Дополнительный сдвиг индикатора выделения вверх.
      * Если надо отрисовать ещё что-то под индикатором (например полоску маны).
      * Переопределяется в дочернем классе
      */
     protected int additionalSelectingIndicatorShift = 0;
-
 
     public Player(int maxHelth, WindowInfo windowsInfo) throws IOException {
         super(maxHelth);
@@ -134,7 +135,7 @@ public abstract class Player  extends PhysicalGameObject{
 
     @Override
     public void draw(Graphics2D g) {
-        if(destroy){ return; }
+        if(isDestroy()){ return; }
         int x = location.x;
         int y = location.y;
 
@@ -291,7 +292,6 @@ public abstract class Player  extends PhysicalGameObject{
         }
     }
 
-
     /**
      * Изображение, которое будет отрисоввываться при движении влево (т.к. может быть анимация, то логика этого метода должна быть определена в дочернем классе)
      * @return изображение, которое будет отрисоввываться при движении влево
@@ -362,4 +362,5 @@ public abstract class Player  extends PhysicalGameObject{
 
         }
     }
+
 }
