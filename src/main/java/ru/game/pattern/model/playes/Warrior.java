@@ -179,6 +179,7 @@ abstract public class Warrior extends Player {
     private void setObjectForAttack(GameController gameController) {
         if(clickAttack!=null){
             for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
+                if(o == this) { continue; }
                 if(o.collision(clickAttack.x, clickAttack.y, 2)<=0){
                     objectForAttack = o;
                     break;
