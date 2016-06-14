@@ -15,11 +15,11 @@ public class PristLvl1 extends Prist {
 
     public static final int COST = 75;
 
-    public static final String ICON_PATH = Property.RESOURSES_PATH + "prist_icon1.jpg";
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "prist/prist_icon1.jpg";
 
     private static final int MAX_HELTH = 75;
 
-    private static final int SPEED = 5;
+    private static final int SPEED = 3;
 
     private static final int HELTH_HILL = 5;
 
@@ -45,8 +45,8 @@ public class PristLvl1 extends Prist {
 
     public PristLvl1(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo, SPEED, HELTH_HILL, MAX_MANA, HILL_PAUSE, HILL_RADIUS, MANA_LOSES, MANA_ADDING);
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "prist_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "prist_left.png"));
+        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "prist/prist_right.png"));
+        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "prist/prist_left.png"));
     }
 
     @Override

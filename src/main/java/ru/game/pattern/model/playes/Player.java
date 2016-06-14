@@ -27,17 +27,17 @@ public abstract class Player  extends PhysicalGameObject {
     /**
      * Сдвиг изображения объекта по оси X относительно центральной координаты объекта координаты объекта
      */
-    protected static final int PLAYER_IMAGE_SHIFT_X = 23;
+    protected static final int PLAYER_IMAGE_SHIFT_X = 14;
 
     /**
      * Сдвиг изображения объекта по оси Y относительно центральной координаты объекта координаты объекта
      */
-    protected final static int PLAYER_IMAGE_SHIFT_Y =  25;
+    protected final static int PLAYER_IMAGE_SHIFT_Y =  19;
 
     /**
      * Сдвиг изображения индикатора выделения курсором по оси X относительно центральной координаты объекта координаты объекта
      */
-    protected final static int SELECTING_INDICATOR_IMAGE_SHIFT_X =  14;
+    protected final static int SELECTING_INDICATOR_IMAGE_SHIFT_X =  10;
 
     /**
      * Сдвиг изображения индикатора выделения курсором по оси Y относительно центральной координаты объекта координаты объекта
@@ -47,7 +47,7 @@ public abstract class Player  extends PhysicalGameObject {
     /**
      * Радиус, показывающий размер объекта
      */
-    protected int TERITORY_RADIUS = 8;
+    protected int TERITORY_RADIUS = 6;
 
 
     /**
@@ -149,9 +149,9 @@ public abstract class Player  extends PhysicalGameObject {
 
         //отрисовка HP
         g.setColor(Color.black);
-        g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5, y-PLAYER_IMAGE_SHIFT_Y-12, PLAYER_IMAGE_SHIFT_X*2, 10);
+        g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5, y-PLAYER_IMAGE_SHIFT_Y-12, PLAYER_IMAGE_SHIFT_X*2+5, 10);
         g.setColor(helthColor);
-        g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5+1, y-PLAYER_IMAGE_SHIFT_Y-11, (int)((PLAYER_IMAGE_SHIFT_X*2-1)*(double)helth/maxHelth), 8);
+        g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5+1, y-PLAYER_IMAGE_SHIFT_Y-11, (int)((PLAYER_IMAGE_SHIFT_X*2+4)*(double)helth/maxHelth), 8);
 
         //Отрисовка цифры, кол-ва патрон в очереди
         if(getActivBulletCount()>0) {
@@ -162,11 +162,11 @@ public abstract class Player  extends PhysicalGameObject {
         if(isDrawTargetLocation()) {
             //Отрисовка точек движения
             if (targetLocation != null) {
-                g.drawImage(targetPointImage, targetLocation.x - 2, targetLocation.y - 33, null);
+                g.drawImage(targetPointImage, targetLocation.x - 1, targetLocation.y - 27, null);
                 if (targetLocationList.size() > 0) {
                     List<Point> points = new LinkedList<>(targetLocationList);
                     for (Point p : points) {
-                        g.drawImage(targetPointImage, p.x - 2, p.y - 33, null);
+                        g.drawImage(targetPointImage, p.x - 1, p.y - 27, null);
                     }
                 }
             }

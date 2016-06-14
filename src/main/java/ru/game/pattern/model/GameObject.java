@@ -38,6 +38,10 @@ abstract public class GameObject {
 
     }
 
+    /**
+     * Устанавливаем объект, который будем оповещать о уничтожении данного объекта
+     * @param gameObjectDestroyNotifer объект, которы йнеобходимо оповестить
+     */
     public void setPlayerDestroyNotifer(GameObjectDestroyNotifer gameObjectDestroyNotifer) {
         this.gameObjectDestroyNotifer = gameObjectDestroyNotifer;
     }
@@ -75,6 +79,9 @@ abstract public class GameObject {
         return destroy;
     }
 
+    /**
+     * Разрушаем объект и оповещаем об этом наблюдателя
+     */
     public void destroy(){
         destroy = true;
         if(gameObjectDestroyNotifer!=null) {
@@ -89,6 +96,9 @@ abstract public class GameObject {
         player, bullet, board, other
     }
 
+    /**
+     * Объекты, реализующие данный интерфейс можно будет оповестить об уничтожении какого-либо игрово объекта
+     */
     public interface GameObjectDestroyNotifer {
         void objectIsDistroy(GameObject player);
     }

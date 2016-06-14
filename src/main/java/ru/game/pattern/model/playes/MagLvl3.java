@@ -25,7 +25,7 @@ public class MagLvl3 extends Mag {
 
     public static int MAX_MANA = 150;
 
-    public static final String ICON_PATH = Property.RESOURSES_PATH + "mag_icon1.jpg";
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "mag/mag_icon3.jpg";
 
     public static final int FREEZE_RADIUS = 200;
 
@@ -45,8 +45,8 @@ public class MagLvl3 extends Mag {
 
     public MagLvl3(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo, SPEED, FREEZE, MAX_MANA, FREEZE_RADIUS, MANA_LOSSES, MANA_ADDING);
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "mag_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "mag_left.png"));
+        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "mag/mag_right3.png"));
+        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "mag/mag_left3.png"));
     }
 
     @Override

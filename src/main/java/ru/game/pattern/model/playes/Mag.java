@@ -1,7 +1,6 @@
 package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
-import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
 
 import java.awt.*;
@@ -14,6 +13,13 @@ import java.io.IOException;
  * Created by Uskov Dmitry on 09.06.2016.
  */
 
+
+/**
+ * Класс: Player-объект. Игровой объект Маг
+ * @see ru.game.pattern.model.PhysicalGameObject
+ * @see ru.game.pattern.model.GameObject
+ * @see Player
+ */
 abstract public class Mag extends Player{
 
     /**
@@ -21,20 +27,41 @@ abstract public class Mag extends Player{
      */
     private final int speed;
 
+    /**
+     * Множитель, который показыает, во сколько раз измениться скорость движения объекта, попавшего в радиус поражения
+     */
     private final double freeze;
 
+    /**
+     * Максимальный запас маны
+     */
     private final int maxMana;
 
+    /**
+     * Радиус поражения
+     */
     private final int freezeRadius;
 
+    /**
+     * Потери маны при исопльзовании способности за одну итерацию (т.е. за один вызов метода update(GameController gc)
+     */
     private final int manaLosses;
 
+    /**
+     * Восстановление маны при отключёной способности за одну итерацию  (т.е. за один вызов метода update(GameController gc)
+     */
     private final int manaAdding;
 
     private MouseListener mouseListener;
 
+    /**
+     * Запас маны
+     */
     private int mana;
 
+    /**
+     * Включена ли способность
+     */
     volatile private boolean isFreeze;
 
     private Color manaColor = Color.BLUE;
@@ -98,12 +125,18 @@ abstract public class Mag extends Player{
         move(gameController);
     }
 
+    /**
+     * Проверка остатка маны. Если маны нет, то способность отключается
+     */
     private void recalculateFreeze() {
         if(mana<=0){
             isFreeze = false;
         }
     }
 
+    /**
+     * Пересчёт маны. Если способность включена, То мана уменьшается, если способность выключениа, то мана увеличивается
+     */
     private void recalculateMana() {
         if (isFreeze) {
             addMana(-getManaLosses());
@@ -112,6 +145,10 @@ abstract public class Mag extends Player{
         }
     }
 
+    /**
+     * Метод, увеличивающий ману, но не больше максимума
+     * @param addMana на сколько увеличиваем ману
+     */
     public void addMana(int addMana) {
         this.mana +=addMana;
         if(this.mana<0){
@@ -127,13 +164,16 @@ abstract public class Mag extends Player{
         return manaLosses;
     }
 
+    /**
+     * Замедляем объекты, попавшие в радиус поражения
+     * @param gameController
+     */
     private void freezeObjects(GameController gameController) {
         if(isFreeze){
-                for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
-                    if(o.distanceBetweenCenter(this)<= freezeRadius){
-                        o.setOneMultiSpeed(freeze);
-                    }
-                }
+            gameController.getPhysicalGameObject().stream()
+                    .filter(o -> o.distanceBetweenCenter(this) <= freezeRadius)
+                    .forEach(o -> o.setOneMultiSpeed(freeze)
+            );
         }
     }
 
@@ -156,9 +196,9 @@ abstract public class Mag extends Player{
     protected void drawSpecial(Graphics2D g) {
         //отрисовка полоски маны
         g.setColor(Color.black);
-        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2, 10);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2+5, 10);
         g.setColor(manaColor);
-        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-11-additionalSelectingIndicatorShift, (int)((PLAYER_IMAGE_SHIFT_X*2-2)*(double)mana/ maxMana), 8);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-11-additionalSelectingIndicatorShift, (int)((PLAYER_IMAGE_SHIFT_X*2+4)*(double)mana/ maxMana), 8);
 
     }
 
@@ -171,13 +211,13 @@ abstract public class Mag extends Player{
         public void mouseReleasedSpecial(MouseEvent e) {
             if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано CКМ
                 if(isSeletedByCursor()){
-                   trySetHill(!isFreeze);
+                   setFreeze(!isFreeze);
                 }
             }
         }
     }
 
-    private void trySetHill(boolean hill ) {
-        this.isFreeze = hill;
+    private void setFreeze(boolean isFreeze) {
+        this.isFreeze = isFreeze;
     }
 }

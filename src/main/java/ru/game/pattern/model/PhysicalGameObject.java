@@ -131,12 +131,22 @@ public abstract class PhysicalGameObject extends GameObject {
         }
     }
 
+    /**
+     * Находит расстояние между центрами объктов
+     * @param object объект, с которым надо найти расстояние от центров
+     * @return расстояние между центрами.
+     */
     public double distanceBetweenCenter(PhysicalGameObject object) {
         int dx = object.location.x - location.x;
         int dy = object.location.y - location.y;
         return Math.sqrt(dx*dx + dy*dy);
     }
 
+    /**
+     * Находит расстояние между краями объктов (т.е минимальное между ними)
+     * @param object объект, с которым надо найти расстояние от краёв
+     * @return расстояние между объектами. Число отрицательное, если объекты налегли дрург на друга
+     */
     public double distanceBetweenEdge(PhysicalGameObject object) {
         int dx = object.location.x - location.x;
         int dy = object.location.y - location.y;

@@ -14,8 +14,15 @@ import java.io.IOException;
  * Created by Uskov Dmitry on 09.06.2016.
  */
 
+/**
+ * Класс: Player-объект. Игровой объект Жрец
+ * Очень многое аналогично объекту-магу.
+ * @see Mag
+ * @see ru.game.pattern.model.PhysicalGameObject
+ * @see ru.game.pattern.model.GameObject
+ * @see Player
+ */
 abstract public class Prist extends Player{
-
 
     /**
      * Скорость движения объекта
@@ -168,9 +175,9 @@ abstract public class Prist extends Player{
     protected void drawSpecial(Graphics2D g) {
         //отрисовка полоски маны
         g.setColor(Color.black);
-        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2, 10);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2+5, 10);
         g.setColor(manaColor);
-        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-11-additionalSelectingIndicatorShift, (int)((PLAYER_IMAGE_SHIFT_X*2-2)*(double)mana/ maxMana), 8);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-11-additionalSelectingIndicatorShift, (int)((PLAYER_IMAGE_SHIFT_X*2+3)*(double)mana/ maxMana), 8);
 
     }
 
