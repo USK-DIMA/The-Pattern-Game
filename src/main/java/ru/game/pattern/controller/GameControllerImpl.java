@@ -1,9 +1,12 @@
 package ru.game.pattern.controller;
 
 import ru.game.pattern.model.*;
+import ru.game.pattern.model.Cursor;
 import ru.game.pattern.model.playes.*;
+import ru.game.pattern.model.staticObjects.Stone;
 import ru.game.pattern.view.GameView;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,39 +86,10 @@ public class GameControllerImpl implements GameController, Runnable{
         cursor = new Cursor(windowInfo, physicalGameObjects);
         gameBoard = new GameBoard(windowInfo);
 
-        /*
-        Archer archer1 = new Archer(windowInfo);
-        archer1.setLocation(100, 100);
-        Archer archer2 = new Archer(windowInfo);
-        archer2.setLocation(200, 200);
-        Archer archer3 = new Archer(windowInfo);
-        archer3.setLocation(300, 300);
-        Warrior warrior = new Warrior(windowInfo);
-        warrior.setLocation(400, 400);
-        Prist prist = new Prist(windowInfo);
-        prist.setLocation(500, 500);
-        Mag mag = new Mag(windowInfo);
-        mag.setLocation(600, 600);
-        */
-
-        /**Порядок добваленных элементов аналогичен порядку отрисовке на экране */
-        /*
-        allGameObjects.add(archer1);
-        allGameObjects.add(archer2);
-        allGameObjects.add(archer3);
-        allGameObjects.add(warrior);
-        allGameObjects.add(prist);
-        allGameObjects.add(mag);
-
-        physicalGameObjects.add(archer1);
-        physicalGameObjects.add(archer2);
-        physicalGameObjects.add(archer3);
-        physicalGameObjects.add(warrior);
-        physicalGameObjects.add(prist);
-        physicalGameObjects.add(mag);
-        */
-
         allGameObjects.add(cursor);
+        Stone stone = new Stone(new Point(500, 500));
+        allGameObjects.add(stone);
+        physicalGameObjects.add(stone);
     }
 
     @Override
