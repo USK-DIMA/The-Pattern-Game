@@ -154,6 +154,7 @@ public class Cursor extends GameObject {
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            System.out.println("X: "+ e.getX()+"   Y:"+e.getY());
         }
 
         @Override

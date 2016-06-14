@@ -288,7 +288,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
             if (cost <= money) {
                 money -= cost;
-                Player player = creator.create(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
+                Player player = creator.create(new Point(115, windowInfo.getHeight() + 100), new Point(115, windowInfo.getHeight() - 100), windowInfo);
                 playerCount++;
                 buyTimer=0;
                 player.setPlayerDestroyNotifer(this);

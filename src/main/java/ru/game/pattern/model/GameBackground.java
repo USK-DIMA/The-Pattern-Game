@@ -25,12 +25,22 @@ public class GameBackground extends GameObject {
 
     private BufferedImage image = null;
 
+    private BufferedImage imageTree = null;
+
     private String BACKGROUND_IMAGE_PATH = Property.RESOURSES_PATH + "plane_lite_80.png";
+
+    private String BACKGROUND_IMAGE_PATH_THREE = Property.RESOURSES_PATH + "plane_lite_81.png";
 
 
     public GameBackground(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
         image = ImageIO.read(new File(BACKGROUND_IMAGE_PATH));
+        imageTree = ImageIO.read(new File(BACKGROUND_IMAGE_PATH_THREE));
+    }
+
+    @Override
+    public void drawSpecialAfterAll(Graphics2D g) {
+        g.drawImage(imageTree, 0, 0, null);
     }
 
     @Override
