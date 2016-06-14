@@ -31,7 +31,9 @@ public class StaticPhysicalGameObject extends PhysicalGameObject {
         super(Integer.MAX_VALUE);
         this.location = location;
         this.territoryRadius = territoryRadius;
-        this.image = ImageIO.read(new File(imagePath));
+        if(imagePath!=null) {
+            this.image = ImageIO.read(new File(imagePath));
+        }
         this.imageSize = imageSize;
     }
 
@@ -62,7 +64,9 @@ public class StaticPhysicalGameObject extends PhysicalGameObject {
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(image, location.x - imageSize.x/2, location.y - imageSize.y/2, null);
+        if(image!=null && imageSize !=null) {
+            g.drawImage(image, location.x - imageSize.x / 2, location.y - imageSize.y / 2, null);
+        }
         if(printTerritoryRadius){
             g.drawOval(location.x - territoryRadius, location.y - territoryRadius, 2 * territoryRadius, 2 * territoryRadius);
         }

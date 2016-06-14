@@ -3,6 +3,7 @@ package ru.game.pattern.controller;
 import ru.game.pattern.model.*;
 import ru.game.pattern.model.Cursor;
 import ru.game.pattern.model.playes.*;
+import ru.game.pattern.model.staticObjects.InvisibleStaticObject;
 import ru.game.pattern.model.staticObjects.Stone;
 import ru.game.pattern.view.GameView;
 
@@ -90,6 +91,18 @@ public class GameControllerImpl implements GameController, Runnable{
         Stone stone = new Stone(new Point(500, 500));
         allGameObjects.add(stone);
         physicalGameObjects.add(stone);
+
+        InvisibleStaticObject invisibleStaticObject = new InvisibleStaticObject(new Point(1100, 650), 20);
+        allGameObjects.add(invisibleStaticObject);
+        physicalGameObjects.add(invisibleStaticObject);
+
+        invisibleStaticObject = new InvisibleStaticObject(new Point(1125, 625), 20);
+        allGameObjects.add(invisibleStaticObject);
+        physicalGameObjects.add(invisibleStaticObject);
+
+        invisibleStaticObject = new InvisibleStaticObject(new Point(1150, 600), 20);
+        allGameObjects.add(invisibleStaticObject);
+        physicalGameObjects.add(invisibleStaticObject);
     }
 
     @Override
