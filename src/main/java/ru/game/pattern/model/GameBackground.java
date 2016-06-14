@@ -41,6 +41,10 @@ public class GameBackground extends GameObject {
     @Override
     public void drawSpecialAfterAll(Graphics2D g) {
         g.drawImage(imageTree, 0, 0, null);
+        g.setColor(Color.WHITE);
+        g.drawRect(windowInfo.getBorderLeft(), windowInfo.getBorderTop(),
+                    windowInfo.getWidth() - windowInfo.getBorderLeft() - windowInfo.getBorderRight(),
+                    windowInfo.getHeight() - windowInfo.getBorderTop() - windowInfo.getBorderBottom());
     }
 
     @Override

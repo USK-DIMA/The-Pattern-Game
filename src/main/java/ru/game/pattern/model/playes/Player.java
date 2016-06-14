@@ -4,6 +4,7 @@ import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
+import ru.game.pattern.model.staticObjects.StaticPhysicalGameObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -99,6 +100,8 @@ public abstract class Player  extends PhysicalGameObject {
      */
     protected int additionalSelectingIndicatorShift = 0;
 
+    private static List<StaticPhysicalGameObject> staticObjects = null;
+
     public Player(int maxHelth, WindowInfo windowsInfo) throws IOException {
         super(maxHelth);
         this.windowsInfo=windowsInfo;
@@ -121,6 +124,10 @@ public abstract class Player  extends PhysicalGameObject {
     public void setLocation(int x, int y){
         this.location.x=x;
         this.location.y=y;
+    }
+
+    public static void setStaticObjects(List<StaticPhysicalGameObject> staticObjectsIn) {
+        staticObjects = staticObjectsIn;
     }
 
     @Override
@@ -279,6 +286,8 @@ public abstract class Player  extends PhysicalGameObject {
 
 
     public void setTargetLocation(Point point, boolean isShiftDown){
+        if(outsideClick(point)){ return;}
+        if(clickToStaticObject(point)){return;}
         if(isShiftDown && targetLocation!=null){
             targetLocationList.add(point);
         }else {
@@ -290,6 +299,24 @@ public abstract class Player  extends PhysicalGameObject {
                 playerImageForDraw = getImageForMoveToLeft();
             }
         }
+    }
+
+    private boolean outsideClick(Point point) {
+        return (point.x>windowsInfo.getBorderLeft()
+                && point.x<windowsInfo.getWidth() - windowsInfo.getBorderTop()
+                && point.y>windowsInfo.getBorderTop()
+                && point.y>windowsInfo.getHeight() - windowsInfo.getBorderBottom());
+    }
+
+    protected boolean clickToStaticObject(Point targetClock){
+        if(staticObjects==null){ return true;}
+        for(StaticPhysicalGameObject o: staticObjects){
+            if(o.collision(targetClock.getX(), targetClock.getY(), 0)<=0){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

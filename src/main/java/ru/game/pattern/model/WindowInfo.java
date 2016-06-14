@@ -8,10 +8,19 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Класс, хронящий в себе всю необходимую информацию об окне.
+ * Класс, хронящий в себе всю необходимую информацию об окне и о игровм поле.
  * объект этого класса передаётся из GameView другим объектам, которым нужна информация об окне (например об размере окна)
  */
 public class WindowInfo {
+
+    //// TODO: 14.06.2016 убрать это от сюда нахер
+    private static int borderLeft = 10;
+
+    private static int borderRight = 15;
+
+    private static int borderTop = 20;
+
+    private static int borderBottom = 22;
 
     private int width;
 
@@ -27,6 +36,23 @@ public class WindowInfo {
         this.width = width;
         this.height = height;
         this.frame = frame;
+    }
+
+
+    public int getBorderBottom() {
+        return borderBottom;
+    }
+
+    public int getBorderTop() {
+        return borderTop;
+    }
+
+    public int getBorderRight() {
+        return borderRight;
+    }
+
+    public int getBorderLeft() {
+        return borderLeft;
     }
 
     public int getWidth() {

@@ -4,6 +4,7 @@ import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
+import ru.game.pattern.model.staticObjects.StaticPhysicalGameObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -179,7 +180,7 @@ abstract public class Warrior extends Player {
     private void setObjectForAttack(GameController gameController) {
         if(clickAttack!=null){
             for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
-                if(o == this) { continue; }
+                if(o == this || o instanceof StaticPhysicalGameObject) { continue; }
                 if(o.collision(clickAttack.x, clickAttack.y, 2)<=0){
                     objectForAttack = o;
                     break;

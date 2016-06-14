@@ -61,6 +61,8 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     volatile private ArrayList<PhysicalGameObject> physicalGameObjects;
 
+    private List<StaticPhysicalGameObject> staticPhysicalGameObjects;
+
     /**
      * Объект, куда будут передоваться только что созданные игровые объекты для регистрации листенера
      */
@@ -82,12 +84,15 @@ public class GameControllerImpl implements GameController, Runnable{
         allGameObjects = new ArrayList<>();
         allGameObjects = Collections.synchronizedList(allGameObjects);
         physicalGameObjects = new ArrayList<>();
+        staticPhysicalGameObjects = new ArrayList<>();
         background = new GameBackground(windowInfo);
         cursor = new Cursor(windowInfo, physicalGameObjects);
         gameBoard = new GameBoard(windowInfo);
 
         initStaticObjects();
         allGameObjects.add(cursor);
+
+        Player.setStaticObjects(getStaticPhysicalGameObjects());
     }
 
     private void initStaticObjects() throws IOException{
@@ -134,7 +139,7 @@ public class GameControllerImpl implements GameController, Runnable{
 
         addStaticObject(new InvisibleStaticObject(new Point(11, 443), 18));
 
-        addStaticObject(new InvisibleStaticObject(new Point(29, 313), 13));
+        addStaticObject(new InvisibleStaticObject(new Point(20, 313), 18));
 
         addStaticObject(new InvisibleStaticObject(new Point(1175, 540), 60));
 
@@ -143,11 +148,43 @@ public class GameControllerImpl implements GameController, Runnable{
         addStaticObject(new InvisibleStaticObject(new Point(910, 75), 60));
 
         addStaticObject(new InvisibleStaticObject(new Point(25, 655), 20));
+
+        addStaticObject(new InvisibleStaticObject(new Point(952, 706), 35));
+        addStaticObject(new InvisibleStaticObject(new Point(1007, 695), 35));
+        addStaticObject(new InvisibleStaticObject(new Point(1064, 710), 30));
+        addStaticObject(new InvisibleStaticObject(new Point(1221, 674), 65));
+
+
+        addStaticObject(new InvisibleStaticObject(new Point(8, 115), 35));
+
+        addStaticObject(new InvisibleStaticObject(new Point(1171, 261), 20));
+        addStaticObject(new InvisibleStaticObject(new Point(1199, 229), 20));
+        addStaticObject(new InvisibleStaticObject(new Point(1255, 164), 45));
+        addStaticObject(new InvisibleStaticObject(new Point(1262, 278), 45));
+
+        addStaticObject(new InvisibleStaticObject(new Point(1254, 422), 40));
+
+        addStaticObject(new InvisibleStaticObject(new Point(1345, 0), 200));
+
+        addStaticObject(new InvisibleStaticObject(new Point(986, 83), 30));
+        addStaticObject(new InvisibleStaticObject(new Point(989, 15), 45));
+
+        addStaticObject(new InvisibleStaticObject(new Point(115, 694), 45));
+        addStaticObject(new InvisibleStaticObject(new Point(172, 693), 20));
+
+        addStaticObject(new InvisibleStaticObject(new Point(61, 698), 18));
+
+        addStaticObject(new InvisibleStaticObject(new Point(694, -5), 50));
     }
 
     private void addStaticObject(StaticPhysicalGameObject object) {
         allGameObjects.add(object);
         physicalGameObjects.add(object);
+        staticPhysicalGameObjects.add(object);
+    }
+
+    public List<StaticPhysicalGameObject> getStaticPhysicalGameObjects() {
+        return staticPhysicalGameObjects;
     }
 
     @Override

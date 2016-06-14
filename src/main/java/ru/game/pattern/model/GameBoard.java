@@ -60,11 +60,11 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private int nextUpdate;
 
-    private int money = 2000;
+    private int money = 5000;
 
     private int playerCount = 0;
 
-    private int maxPlayerCount = 6;
+    private int maxPlayerCount = 30;
 
     private int tryBuyPlayerNumber = -1;
 
