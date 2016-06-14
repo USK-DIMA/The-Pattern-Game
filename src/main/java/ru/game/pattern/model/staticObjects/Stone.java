@@ -19,6 +19,5 @@ public class Stone extends StaticPhysicalGameObject {
 
     public Stone(Point location) throws IOException{
         super(location, TERRITORY_RADIUS, IMAGE_PATH, IMAGE_SIZE);
-        printTerritoryRadius = true;
     }
 }

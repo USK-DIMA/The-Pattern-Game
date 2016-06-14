@@ -1,6 +1,5 @@
 package ru.game.pattern.model.fabrica;
 
-import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.*;
 import ru.game.pattern.model.playes.*;
 
@@ -42,7 +41,7 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
     public Archer createArhcer(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Archer archer = new ArcherLvl1(windowInfo);
         archer.setLocation(location);
-        archer.setTargetLocation(targetLocation, false);
+        archer.setTargetLocation(targetLocation);
         //// TODO: 09.06.2016 выкл флажёк при выходе
         return archer;
     }
@@ -51,7 +50,7 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
     public Warrior createWarrior(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Warrior warrior = new WarriorLvl1(windowInfo);
         warrior.setLocation(location);
-        warrior.setTargetLocation(targetLocation, false);
+        warrior.setTargetLocation(targetLocation);
         //// TODO: 09.06.2016 выкл флажёк при выходе
         return warrior;
     }
@@ -60,7 +59,7 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
     public Prist createPrist(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Prist prist = new PristLvl1(windowInfo);
         prist.setLocation(location);
-        prist.setTargetLocation(targetLocation, false);
+        prist.setTargetLocation(targetLocation);
         //// TODO: 09.06.2016 выкл флажёк при выходе
         return prist;
     }
@@ -69,7 +68,7 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
     public Mag createMag(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Mag mag = new MagLvl1(windowInfo);
         mag.setLocation(location);
-        mag.setTargetLocation(targetLocation, false);
+        mag.setTargetLocation(targetLocation);
         //// TODO: 09.06.2016 выкл флажёк при выходе
         return mag;
     }

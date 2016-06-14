@@ -213,7 +213,7 @@ abstract public class Warrior extends Player {
                         objectForAttack = null;
                         targetLocation = null; //поэтому сброисм их
                     }
-                    setTargetLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
+                    trySetTargetLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
                 }
             }
         }

@@ -285,7 +285,7 @@ public abstract class Player  extends PhysicalGameObject {
     }
 
 
-    public void setTargetLocation(Point point, boolean isShiftDown){
+    public void trySetTargetLocation(Point point, boolean isShiftDown){
         if(outsideClick(point)){ return;}
         if(clickToStaticObject(point)){return;}
         if(isShiftDown && targetLocation!=null){
@@ -301,11 +301,15 @@ public abstract class Player  extends PhysicalGameObject {
         }
     }
 
+    public void setTargetLocation(Point point){
+        targetLocation = point;
+    }
+
     private boolean outsideClick(Point point) {
-        return (point.x>windowsInfo.getBorderLeft()
-                && point.x<windowsInfo.getWidth() - windowsInfo.getBorderTop()
+        return !(point.x>windowsInfo.getBorderLeft()
+                && point.x<windowsInfo.getWidth() - windowsInfo.getBorderRight()
                 && point.y>windowsInfo.getBorderTop()
-                && point.y>windowsInfo.getHeight() - windowsInfo.getBorderBottom());
+                && point.y<windowsInfo.getHeight() - windowsInfo.getBorderBottom());
     }
 
     protected boolean clickToStaticObject(Point targetClock){
@@ -368,7 +372,7 @@ public abstract class Player  extends PhysicalGameObject {
 
             if(e.getButton()==MouseEvent.BUTTON3) { //Клик по экрано ПКМ
                 if(isSeletedByCursor()){
-                    setTargetLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
+                    trySetTargetLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
                 }
             }
 

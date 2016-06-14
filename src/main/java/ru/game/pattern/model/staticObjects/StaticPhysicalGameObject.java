@@ -24,7 +24,7 @@ public class StaticPhysicalGameObject extends PhysicalGameObject {
 
     private Point imageSize;
 
-    protected boolean printTerritoryRadius = true;
+    protected boolean printTerritoryRadius = false;
 
     protected int additionalIamgeShift = 0;
 

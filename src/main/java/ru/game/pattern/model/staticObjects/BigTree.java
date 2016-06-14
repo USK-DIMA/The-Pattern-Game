@@ -27,7 +27,6 @@ public class BigTree extends StaticPhysicalGameObject {
     public BigTree(Point location) throws IOException{
         super(location, TERRITORY_RADIUS, IMAGE_PATH, IMAGE_SIZE);
         leavesImage = ImageIO.read(new File(LEAVES_IMAGE_PATH));
-        printTerritoryRadius = true;
         additionalIamgeShift = -24;
     }
 

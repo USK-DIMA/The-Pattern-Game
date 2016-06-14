@@ -169,7 +169,13 @@ public class GameControllerImpl implements GameController, Runnable{
         addStaticObject(new InvisibleStaticObject(new Point(986, 83), 30));
         addStaticObject(new InvisibleStaticObject(new Point(989, 15), 45));
 
-        addStaticObject(new InvisibleStaticObject(new Point(115, 694), 45));
+        addStaticObject(new InvisibleStaticObject(new Point(145, 690), 10));
+        addStaticObject(new InvisibleStaticObject(new Point(85, 690), 10));
+
+        addStaticObject(new InvisibleStaticObject(new Point(140, 675), 10));
+        addStaticObject(new InvisibleStaticObject(new Point(90, 675), 10));
+
+
         addStaticObject(new InvisibleStaticObject(new Point(172, 693), 20));
 
         addStaticObject(new InvisibleStaticObject(new Point(61, 698), 18));

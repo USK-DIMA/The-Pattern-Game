@@ -10,7 +10,6 @@ public class InvisibleStaticObject extends StaticPhysicalGameObject {
 
     public InvisibleStaticObject(Point location, int territoryRadius) throws IOException {
         super(location, territoryRadius, null, null);
-        printTerritoryRadius = true;
     }
 
 }

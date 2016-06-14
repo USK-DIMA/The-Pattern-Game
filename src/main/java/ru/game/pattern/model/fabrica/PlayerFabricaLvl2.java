@@ -41,7 +41,7 @@ public class PlayerFabricaLvl2 implements  PlayerFabrica{
     public Archer createArhcer(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Archer archer = new ArcherLvl2(windowInfo);
         archer.setLocation(location);
-        archer.setTargetLocation(targetLocation, false);
+        archer.setTargetLocation(targetLocation);
         //// TODO: 09.06.2016 выкл флажёк при выходе
         return archer;
     }
@@ -50,7 +50,7 @@ public class PlayerFabricaLvl2 implements  PlayerFabrica{
     public Warrior createWarrior(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Warrior warrior = new WarriorLvl2(windowInfo);
         warrior.setLocation(location);
-        warrior.setTargetLocation(targetLocation, false);
+        warrior.setTargetLocation(targetLocation);
         //// TODO: 09.06.2016 выкл флажёк при выходе
         return warrior;
     }
@@ -59,7 +59,7 @@ public class PlayerFabricaLvl2 implements  PlayerFabrica{
     public Prist createPrist(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Prist prist = new PristLvl2(windowInfo);
         prist.setLocation(location);
-        prist.setTargetLocation(targetLocation, false);
+        prist.setTargetLocation(targetLocation);
         //// TODO: 09.06.2016 выкл флажёк при выходе
         return prist;
     }
@@ -68,7 +68,7 @@ public class PlayerFabricaLvl2 implements  PlayerFabrica{
     public Mag createMag(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Mag mag = new MagLvl2(windowInfo);
         mag.setLocation(location);
-        mag.setTargetLocation(targetLocation, false);
+        mag.setTargetLocation(targetLocation);
         //// TODO: 09.06.2016 выкл флажёк при выходе
         return mag;
     }
