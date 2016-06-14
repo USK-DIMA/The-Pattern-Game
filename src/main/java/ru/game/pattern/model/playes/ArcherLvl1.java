@@ -24,7 +24,7 @@ public class ArcherLvl1 extends Archer {
     /**
      * Скорость движения объекта
      */
-    public static final int SPEED = 2;
+    public static final int SPEED = 3;
 
     public static int MAX_HELTH = 100;
 

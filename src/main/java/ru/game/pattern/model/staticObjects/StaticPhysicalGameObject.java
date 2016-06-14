@@ -24,7 +24,9 @@ public class StaticPhysicalGameObject extends PhysicalGameObject {
 
     private Point imageSize;
 
-    protected boolean printTerritoryRadius = false;
+    protected boolean printTerritoryRadius = true;
+
+    protected int additionalIamgeShift = 0;
 
 
     public StaticPhysicalGameObject(Point location, int territoryRadius, String imagePath, Point imageSize) throws IOException {
@@ -65,7 +67,7 @@ public class StaticPhysicalGameObject extends PhysicalGameObject {
     @Override
     public void draw(Graphics2D g) {
         if(image!=null && imageSize !=null) {
-            g.drawImage(image, location.x - imageSize.x / 2, location.y - imageSize.y / 2, null);
+            g.drawImage(image, location.x - imageSize.x / 2, location.y - imageSize.y / 2 + additionalIamgeShift, null);
         }
         if(printTerritoryRadius){
             g.drawOval(location.x - territoryRadius, location.y - territoryRadius, 2 * territoryRadius, 2 * territoryRadius);

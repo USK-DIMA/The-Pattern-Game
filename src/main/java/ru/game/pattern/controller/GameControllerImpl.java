@@ -3,8 +3,7 @@ package ru.game.pattern.controller;
 import ru.game.pattern.model.*;
 import ru.game.pattern.model.Cursor;
 import ru.game.pattern.model.playes.*;
-import ru.game.pattern.model.staticObjects.InvisibleStaticObject;
-import ru.game.pattern.model.staticObjects.Stone;
+import ru.game.pattern.model.staticObjects.*;
 import ru.game.pattern.view.GameView;
 
 import java.awt.*;
@@ -87,22 +86,68 @@ public class GameControllerImpl implements GameController, Runnable{
         cursor = new Cursor(windowInfo, physicalGameObjects);
         gameBoard = new GameBoard(windowInfo);
 
+        initStaticObjects();
         allGameObjects.add(cursor);
-        Stone stone = new Stone(new Point(500, 500));
-        allGameObjects.add(stone);
-        physicalGameObjects.add(stone);
+    }
 
-        InvisibleStaticObject invisibleStaticObject = new InvisibleStaticObject(new Point(1100, 650), 20);
-        allGameObjects.add(invisibleStaticObject);
-        physicalGameObjects.add(invisibleStaticObject);
+    private void initStaticObjects() throws IOException{
+        initInvisibleStaticObject();
 
-        invisibleStaticObject = new InvisibleStaticObject(new Point(1125, 625), 20);
-        allGameObjects.add(invisibleStaticObject);
-        physicalGameObjects.add(invisibleStaticObject);
+        addStaticObject(new Stone(new Point(323, 542)));
+        addStaticObject(new Stone(new Point(70, 198)));
+        addStaticObject(new Stone(new Point(600, 103)));
+        addStaticObject(new Stone(new Point(798, 353)));
+        addStaticObject(new Stone(new Point(1022, 348)));
+        addStaticObject(new Stone(new Point(1022, 348)));
 
-        invisibleStaticObject = new InvisibleStaticObject(new Point(1150, 600), 20);
-        allGameObjects.add(invisibleStaticObject);
-        physicalGameObjects.add(invisibleStaticObject);
+
+        addStaticObject(new SmallTree(new Point(585, 590)));
+        addStaticObject(new MediumTree(new Point(528, 615)));
+        addStaticObject(new BigTree(new Point(566, 629)));
+
+        addStaticObject(new MediumTree(new Point(407, 406)));
+        addStaticObject(new MediumTree(new Point(658, 220)));
+
+        addStaticObject(new SmallTree(new Point(277, 182)));
+        addStaticObject(new MediumTree(new Point(257, 192)));
+
+        addStaticObject(new MediumTree(new Point(219, 642)));
+        addStaticObject(new MediumTree(new Point(901, 648)));
+
+        addStaticObject(new BigTree(new Point(985, 281)));
+
+        addStaticObject(new BigTree(new Point(855, 501)));
+        addStaticObject(new SmallTree(new Point(800, 499)));
+    }
+
+    private void initInvisibleStaticObject() throws IOException {
+        addStaticObject(new InvisibleStaticObject(new Point(85, 70), 13));
+        addStaticObject(new InvisibleStaticObject(new Point(1100, 650), 20));
+        addStaticObject(new InvisibleStaticObject(new Point(1125, 625), 20));
+        addStaticObject(new InvisibleStaticObject(new Point(1150, 600), 20));
+        addStaticObject(new InvisibleStaticObject(new Point(757, 80), 18));
+        addStaticObject(new InvisibleStaticObject(new Point(757, 55), 18));
+        addStaticObject(new InvisibleStaticObject(new Point(329, 81), 15));
+
+        addStaticObject(new InvisibleStaticObject(new Point(49, 358), 14));
+        addStaticObject(new InvisibleStaticObject(new Point(1137, 433), 13));
+
+        addStaticObject(new InvisibleStaticObject(new Point(11, 443), 18));
+
+        addStaticObject(new InvisibleStaticObject(new Point(29, 313), 13));
+
+        addStaticObject(new InvisibleStaticObject(new Point(1175, 540), 60));
+
+        addStaticObject(new InvisibleStaticObject(new Point(1225, 490), 60));
+
+        addStaticObject(new InvisibleStaticObject(new Point(910, 75), 60));
+
+        addStaticObject(new InvisibleStaticObject(new Point(25, 655), 20));
+    }
+
+    private void addStaticObject(StaticPhysicalGameObject object) {
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
     }
 
     @Override
