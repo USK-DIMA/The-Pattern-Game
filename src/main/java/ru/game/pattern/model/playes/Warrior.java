@@ -36,16 +36,30 @@ abstract public class Warrior extends Player {
      */
     private final int speed;
 
+    /**
+     * Наносимый урон
+     */
     private final int damage;
 
     private static BufferedImage aimImage;
 
+    /**
+     * Место, куда кликнули для атаки. Если на врага не попали, то ничего не произойдёт
+     */
     private Point clickAttack;
 
     private MouseListener mouseListener;
 
+    /**
+     * Объект, который атакуем
+     */
     volatile private PhysicalGameObject objectForAttack;
 
+    /**
+     * отрисовывать ли конечную цель.
+     * Прикол в том, что при попытке атаковать врага, targetLocation для война, это местоположение его врага.
+     * Но при попытке атаковать врага не нужно отрисовывать флаг перемещения, хоть и targetLocation != null.
+     */
     private boolean drawTargetLocation;
 
 
@@ -118,6 +132,12 @@ abstract public class Warrior extends Player {
         }
     }
 
+    /**
+     * Логика движения к объекту, который хотим атаковать
+     * @param object объект для атаки
+     * @param gameController контроллер, предоствляющий всякую нужную нам информацию.
+     *                       (он нужен тк. мы будем исопльзовать метод move, а он требует себе на вход данный объект)
+     */
     private void moveToObjectAndAttack(PhysicalGameObject object, GameController gameController) {
         Point oldLocation = new Point(location);
         if(object.distanceBetweenEdge(this)> attackRadius) {
@@ -138,6 +158,10 @@ abstract public class Warrior extends Player {
         }
     }
 
+    /**
+     * Непосредсвтенно сама атака
+     * @param object объект для атаки
+     */
     private void attack(PhysicalGameObject object) {
         if(fireTimer <= 0) {
                 object.addHelth(-damage);
@@ -148,6 +172,10 @@ abstract public class Warrior extends Player {
         }
     }
 
+    /**
+     * Попытка выбрать объект для атаки. Смотрим, кликнули ли мы на объект или в пустое место.
+     * @param gameController дёргаем из этиого параметра все объекты на поле и смотрим их координаты
+     */
     private void setObjectForAttack(GameController gameController) {
         if(clickAttack!=null){
             for(PhysicalGameObject o : gameController.getPhysicalGameObject()){

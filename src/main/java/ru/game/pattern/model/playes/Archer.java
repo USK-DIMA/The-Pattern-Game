@@ -31,12 +31,28 @@ abstract public class Archer extends Player {
 
     private MouseListener mouseListener;
 
+    /**
+     * Список точек, куда наносить последующие удары.
+     * обнуляется при вызове метода resetAction() (т.е. стрельба прекращается)
+     */
     private List<Point> atackPoints;
 
+    /**
+     * Объект класса BulletCreater, отвечающий за создание патрон.
+     * Как правило он передаётся из дочернего класса,
+     * т.е. дочерний класс сам выбирыет какими патронами будет стрелять
+     * @see BulletCreater
+     */
     private BulletCreater bulletCreater;
 
+    /**
+     * Скорость объекта
+     */
     private final int speed;
 
+    /**
+     * Пауза между атаками
+     */
     private final int attackPause;
 
     public Archer(WindowInfo windowsInfo, BulletCreater bulletCreater, int speed, int maxHelth, int attackPause) throws IOException {
@@ -121,6 +137,10 @@ abstract public class Archer extends Player {
         atackPoints.clear();
     }
 
+    /**
+     * Добавить новую точку в массив для атаки
+     * @param point координаты точки для атаки
+     */
     private void armBullet(Point point) {
         atackPoints.add(point);
         System.out.println("Added bullet: "+ atackPoints.size());
@@ -138,7 +158,22 @@ abstract public class Archer extends Player {
         }
     }
 
+    /**
+     * Класс, отвечающий за создание патрон.
+     * Как правило он определяется в дочернем классе и передаётся в класс Archer,
+     * т.е. дочерний класс сам выбирыет какими патронами будет стрелять
+     */
     protected interface BulletCreater{
+        /**
+         * создаёт патрон
+         * @param location местополежения патрона, от куда он выпущен
+         * @param targetLocation куда летит патрон
+         * @param objectTerritoryRadius размер объекта-родителя (т.е. которые стреляет).
+         *                              Типа патрон появляется не в центре объкта-родителя, а рябом с ним
+         * @param parant ссылка на объкт-родителя, сделавшего выстрел (чтобы не стрелять по себе)
+         * @return объект-патрон
+         * @throws IOException если ресурсы не удалось подгрузить
+         */
         FireBall create(Point location, Point targetLocation, int objectTerritoryRadius, GameObject parant) throws IOException;
     }
 

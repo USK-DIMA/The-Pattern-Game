@@ -198,9 +198,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     /**
      * Если не хвататет денег, то цвет меняем на более тёмный, если хвататет, оставляем белым
-     * @param g
-     * @param cost
-     * @param money
+     * @param g там, где установим нужный цвет
+     * @param cost стоимость
+     * @param money кол-во денег
      */
     private void setColor(Graphics2D g, int cost, int money) {
         if(money>=cost){
@@ -223,6 +223,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         }
     }
 
+    /**
+     * Увеличение уровня базы, если хватает денег
+     */
     private void lvlUp() {
         if(money>=nextUpdate){
             money-=nextUpdate;
@@ -246,6 +249,11 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         }
     }
 
+    /**
+     * Попытка купить игрока. Проверяются таймер покупки, и вообще была ли нажата клавиша покупки
+     * @param gameController
+     * @throws IOException если не удалюсь подрузить ресурсы объекта-игрока, который мы хотим купить
+     */
     private void tryBuyPlayer(GameController gameController) throws IOException {
 
         PlayerCreator creator = null;
@@ -338,6 +346,10 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         }
     }
 
+    /**
+     * Попытка установить флаг увеличения уровня базы в true (если хвататет денег).
+     * Если флаг стоит в true, то на следующей итерации метода update(...) база увеличит уровень.
+     */
     private void tryLvlUp() {
         if(money>=nextUpdate){
             isLvlUp = true;

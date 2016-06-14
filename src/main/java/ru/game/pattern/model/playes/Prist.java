@@ -14,8 +14,15 @@ import java.io.IOException;
  * Created by Uskov Dmitry on 09.06.2016.
  */
 
+/**
+ * Класс: Player-объект. Игровой объект Жрец
+ * Очень многое аналогично объекту-магу.
+ * @see Mag
+ * @see ru.game.pattern.model.PhysicalGameObject
+ * @see ru.game.pattern.model.GameObject
+ * @see Player
+ */
 abstract public class Prist extends Player{
-
 
     /**
      * Скорость движения объекта
