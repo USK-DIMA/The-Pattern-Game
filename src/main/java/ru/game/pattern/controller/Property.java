@@ -28,12 +28,12 @@ public class Property {
     public static int FIREBALL_LVL1_SPEED = 30;
     public static int FIREBALL_LVL1_TERRITORY_RADIUS = 4;
     public static int FIREBALL_LVL1_MAX_DISTANSE = 400;
-    public static int FIREBALL_LVL1_DAMAGE = 40;
+    public static int FIREBALL_LVL1_DAMAGE = 10;
 
 
     public static int ENEMY_ATTACK_RADIUS = 7;
     public static int ENEMY_OVERVIEW_RADIUS = 200;
-    public static int ENEMY_SPEED = 4;
+    public static int ENEMY_SPEED = 3;
     public static int ENEMY_DAMAGE = 1;
     public static int ENEMY_DAMAGE_PAUSE = 2;
     public static int ENEMY_TERITORY_RADIUS = 8;

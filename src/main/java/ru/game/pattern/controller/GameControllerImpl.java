@@ -102,6 +102,26 @@ public class GameControllerImpl implements GameController, Runnable{
         object.setLocation(new Point(1091,34));
         allGameObjects.add(object);
         physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
     }
 
     private void initStaticObjects() throws IOException{
