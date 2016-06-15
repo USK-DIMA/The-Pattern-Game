@@ -45,7 +45,6 @@ public class ArcherLvl1 extends Archer {
         super(windowsInfo, FireBallLvl1::new, SPEED, MAX_HELTH, ATTACK_PAUSE);
         playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "archer/archer_right.png"));
         playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "archer/archer_left.png"));
-
     }
 
 

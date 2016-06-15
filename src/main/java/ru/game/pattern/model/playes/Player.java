@@ -170,6 +170,9 @@ public abstract class Player  extends PhysicalGameObject {
     @Override
     final public void update(GameController gameController) {
         setObjectForAttack(gameController);
+        if(objectForAttack==null && targetLocation == null && infighting){
+            autoattack(gameController);
+        }
         if(objectForAttack !=null){
             drawTargetLocation = false;
             targetLocationList.clear();
@@ -185,6 +188,8 @@ public abstract class Player  extends PhysicalGameObject {
             updateSpecial(gameController);
         }
     }
+
+
 
     /**
      * Логика движения к объекту, который хотим атаковать
@@ -287,14 +292,22 @@ public abstract class Player  extends PhysicalGameObject {
      */
     private void setObjectForAttack(GameController gameController) {
         if(clickAttack!=null){
-            for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
-                if(! (o instanceof Enemy)) { continue; }
+            for(Enemy o : gameController.getEnemy()){
                 if(o.collision(clickAttack.x, clickAttack.y, 2)<=0){
                     objectForAttack = o;
                     break;
                 }
             }
             clickAttack = null;
+        }
+    }
+
+    private void autoattack(GameController gameController) {
+        for(Enemy o : gameController.getEnemy()){
+            if(o.collision(location.x, location.y, getTerritoryRadius()+attackRadius+5)<=0){
+                objectForAttack = o;
+                break;
+            }
         }
     }
 
