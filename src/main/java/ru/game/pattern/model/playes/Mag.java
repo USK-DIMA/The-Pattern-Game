@@ -246,11 +246,7 @@ abstract public class Mag extends Player{
     class MagMouseListener extends PlayerMouseListener{
         @Override
         public void mouseReleasedSpecial(MouseEvent e) {
-            if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано CКМ
-                if(isSeletedByCursor()){
-                   setFreeze(!isFreeze);
-                }
-            }
+
         }
     }
 
@@ -264,7 +260,13 @@ abstract public class Mag extends Player{
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_A){
+            if(e.getKeyCode()==KeyEvent.VK_Q) {
+                if(isSeletedByCursor()){
+                    setFreeze(!isFreeze);
+                }
+            }
+
+            if(e.getKeyCode() == KeyEvent.VK_W){
                 if(isSeletedByCursor()) {
                     tryInvise();
                 }

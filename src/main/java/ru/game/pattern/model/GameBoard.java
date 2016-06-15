@@ -172,10 +172,10 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         g.fillRect(BORDER+(IMAGE_SIZE+BORDER)*3, BORDER, IMAGE_SIZE, dy);
 
         g.setColor(Color.WHITE);
-        g.drawString("q", BORDER, BORDER+9);
-        g.drawString("w", BORDER + (IMAGE_SIZE + BORDER)+2, BORDER+9);
-        g.drawString("e", BORDER+(IMAGE_SIZE+BORDER)*2 + 2, BORDER+9);
-        g.drawString("r", BORDER+(IMAGE_SIZE+BORDER)*3 + 2, BORDER+9);
+        g.drawString("1", BORDER, BORDER+9);
+        g.drawString("2", BORDER + (IMAGE_SIZE + BORDER)+2, BORDER+9);
+        g.drawString("3", BORDER+(IMAGE_SIZE+BORDER)*2 + 2, BORDER+9);
+        g.drawString("4", BORDER+(IMAGE_SIZE+BORDER)*3 + 2, BORDER+9);
 
 
 
@@ -335,16 +335,16 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode()==KeyEvent.VK_Q){
+            if(e.getKeyCode()==KeyEvent.VK_1){
                 setTryBuyPlayerNumber(1);
             }
-            if(e.getKeyCode()==KeyEvent.VK_W){
+            if(e.getKeyCode()==KeyEvent.VK_2){
                 setTryBuyPlayerNumber(2);
             }
-            if(e.getKeyCode()==KeyEvent.VK_E){
+            if(e.getKeyCode()==KeyEvent.VK_3){
                 setTryBuyPlayerNumber(3);
             }
-            if(e.getKeyCode()==KeyEvent.VK_R){
+            if(e.getKeyCode()==KeyEvent.VK_4){
                 setTryBuyPlayerNumber(4);
             }
 

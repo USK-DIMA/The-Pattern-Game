@@ -162,7 +162,7 @@ abstract public class Archer extends Player {
      * Как правило он определяется в дочернем классе и передаётся в класс Archer,
      * т.е. дочерний класс сам выбирыет какими патронами будет стрелять
      */
-    protected interface BulletCreater{
+    protected interface BulletCreater {
         /**
          * создаёт патрон
          * @param location местополежения патрона, от куда он выпущен
