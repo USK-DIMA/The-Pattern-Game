@@ -317,21 +317,16 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
         @Override
         public void keyPressed(KeyEvent e) {
-            System.out.println(e.getKeyCode());
             if(e.getKeyCode()==KeyEvent.VK_Q){
-                System.out.println(1);
                 setTryBuyPlayerNumber(1);
             }
             if(e.getKeyCode()==KeyEvent.VK_W){
-                System.out.println(2);
                 setTryBuyPlayerNumber(2);
             }
             if(e.getKeyCode()==KeyEvent.VK_E){
-                System.out.println(3);
                 setTryBuyPlayerNumber(3);
             }
             if(e.getKeyCode()==KeyEvent.VK_R){
-                System.out.println(4);
                 setTryBuyPlayerNumber(4);
             }
 

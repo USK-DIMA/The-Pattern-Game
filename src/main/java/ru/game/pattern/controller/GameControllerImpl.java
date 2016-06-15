@@ -90,9 +90,17 @@ public class GameControllerImpl implements GameController, Runnable{
         gameBoard = new GameBoard(windowInfo);
 
         initStaticObjects();
+        initEnemy();
         allGameObjects.add(cursor);
 
         Player.setStaticObjects(getStaticPhysicalGameObjects());
+    }
+
+    private void initEnemy() throws IOException {
+        Enemy object = new Enemy(400, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
     }
 
     private void initStaticObjects() throws IOException{

@@ -143,7 +143,6 @@ abstract public class Archer extends Player {
      */
     private void armBullet(Point point) {
         atackPoints.add(point);
-        System.out.println("Added bullet: "+ atackPoints.size());
     }
 
     class ArcherMouseListener extends PlayerMouseListener{
