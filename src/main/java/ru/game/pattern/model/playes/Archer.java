@@ -63,6 +63,7 @@ abstract public class Archer extends Player {
         this.attackPause = attackPause;
         playerImageForDraw = getImageForMoveToRight();
         mouseListener = new ArcherMouseListener();
+        infighting = false;
     }
 
     @Override
@@ -76,7 +77,7 @@ abstract public class Archer extends Player {
     }
 
     @Override
-    protected int getActivBulletCount() {
+    protected int getBulletCount() {
         return atackPoints.size();
     }
 
@@ -86,7 +87,7 @@ abstract public class Archer extends Player {
     }
 
     @Override
-    public void update(GameController gameController) {
+    public void updateSpecial(GameController gameController) {
         if(fireTimer <= 0) {
             if (atackPoints.size() > 0) {
                 try {
@@ -118,11 +119,6 @@ abstract public class Archer extends Player {
         }
 
         move(gameController);
-    }
-
-    @Override
-    protected boolean isDrawTargetLocation() {
-        return true;
     }
 
     @Override

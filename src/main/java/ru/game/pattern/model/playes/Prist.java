@@ -72,17 +72,12 @@ abstract public class Prist extends Player{
 
 
     @Override
-    protected boolean isDrawTargetLocation() {
-        return true;
-    }
-
-    @Override
     public int getSpeed() {
         return (int)(speed * getOneMultiSpeed());
     }
 
     @Override
-    protected int getActivBulletCount() {
+    protected int getBulletCount() {
         return 0;
     }
 
@@ -95,6 +90,7 @@ abstract public class Prist extends Player{
     protected void resetAction() {
         hill = false;
         targetLocation = null;
+        objectForAttack = null;
         targetLocationList.clear();
     }
 
@@ -109,7 +105,7 @@ abstract public class Prist extends Player{
     }
 
     @Override
-    public void update(GameController gameController) {
+    public void updateSpecial(GameController gameController) {
         recalculateMana();
         recalculateHill();
         hillObjects(gameController);

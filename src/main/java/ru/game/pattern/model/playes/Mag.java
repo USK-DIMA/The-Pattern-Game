@@ -94,17 +94,12 @@ abstract public class Mag extends Player{
     }
 
     @Override
-    protected boolean isDrawTargetLocation() {
-        return true;
-    }
-
-    @Override
     public int getSpeed() {
         return speed;
     }
 
     @Override
-    protected int getActivBulletCount() {
+    protected int getBulletCount() {
         return inviseTimer;
     }
 
@@ -117,6 +112,7 @@ abstract public class Mag extends Player{
     protected void resetAction() {
         isFreeze = false;
         targetLocation = null;
+        objectForAttack = null;
         targetLocationList.clear();
     }
 
@@ -131,7 +127,7 @@ abstract public class Mag extends Player{
     }
 
     @Override
-    public void update(GameController gameController) {
+    public void updateSpecial(GameController gameController) {
         recalculateMana();
         recalculateFreeze();
         invise(gameController);

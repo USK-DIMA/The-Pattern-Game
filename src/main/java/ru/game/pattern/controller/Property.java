@@ -17,6 +17,10 @@ public class Property {
     public static int BUY_PLAYER_PAUSE = 50;
     public static int PLAYER_TERRITORY_RADIUS = 8;
 
+    public static int DEFAULT_ATTACK_PAUSE = 8;
+    public static int DEFAULT_ATTACK_RADIUS = 8;
+    public static int DEFAULT_DAMAGE = 8;
+
     public static int PLYAER_FABRIC_LVL1_NEXT_UPDATE = 300;
     public static int PLYAER_FABRIC_LVL2_NEXT_UPDATE = 900;
     public static int PLYAER_FABRIC_LVL3_NEXT_UPDATE = -1;

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-import static ru.game.pattern.controller.Property.PLAYER_TERRITORY_RADIUS;
+import static ru.game.pattern.controller.Property.*;
 
 /**
  * Created by Uskov Dmitry on 08.06.2016.
@@ -52,6 +52,15 @@ public abstract class Player  extends PhysicalGameObject {
      * Радиус, показывающий размер объекта
      */
     protected int TERITORY_RADIUS = PLAYER_TERRITORY_RADIUS;
+
+    protected int attackPause = DEFAULT_ATTACK_PAUSE;
+
+    protected int attackRadius = DEFAULT_ATTACK_RADIUS;
+
+    /**
+     * Наносимый урон
+     */
+    protected int damage = DEFAULT_DAMAGE;
 
 
     /**
@@ -97,11 +106,32 @@ public abstract class Player  extends PhysicalGameObject {
     protected BufferedImage selectiongIndicatorImage;
 
     /**
+     * Место, куда кликнули для атаки. Если на врага не попали, то ничего не произойдёт
+     */
+    private Point clickAttack;
+
+    /**
+     * Объект, который атакуем
+     */
+    volatile protected PhysicalGameObject objectForAttack;
+
+    /**
+     * отрисовывать ли конечную цель.
+     * Прикол в том, что при попытке атаковать врага, targetLocation для война, это местоположение его врага.
+     * Но при попытке атаковать врага не нужно отрисовывать флаг перемещения, хоть и targetLocation != null.
+     */
+    protected boolean drawTargetLocation;
+
+    /**
      * Дополнительный сдвиг индикатора выделения вверх.
      * Если надо отрисовать ещё что-то под индикатором (например полоску маны).
      * Переопределяется в дочернем классе
      */
     protected int additionalSelectingIndicatorShift = 0;
+
+    protected boolean infighting = true;
+
+    private static BufferedImage aimImage;
 
     private static List<StaticPhysicalGameObject> staticObjects = null;
 
@@ -111,7 +141,9 @@ public abstract class Player  extends PhysicalGameObject {
 
         this.location = new Point(windowsInfo.getWidth()/2, windowsInfo.getHeight()/2);
         this.targetLocationList = new LinkedList<>();
-
+        if(aimImage==null) {
+            aimImage = ImageIO.read(new File(Property.RESOURSES_PATH + "aim2.png"));
+        }
         selectiongIndicatorImage = ImageIO.read(new File(Property.RESOURSES_PATH + "selecting_player.png"));
         targetPointImage = ImageIO.read(new File(Property.RESOURSES_PATH + "flag.png"));
         selectedByCursor=false;
@@ -129,9 +161,73 @@ public abstract class Player  extends PhysicalGameObject {
         this.location.y=y;
     }
 
+
+
     public static void setStaticObjects(List<StaticPhysicalGameObject> staticObjectsIn) {
         staticObjects = staticObjectsIn;
     }
+
+    @Override
+    final public void update(GameController gameController) {
+        setObjectForAttack(gameController);
+        if(objectForAttack !=null){
+            drawTargetLocation = false;
+            targetLocationList.clear();
+            targetLocation = objectForAttack.getLocation();
+            if(!objectForAttack.isDestroy()) {
+                moveToObjectAndAttack(objectForAttack, gameController);
+            } else{
+                objectForAttack = null;
+                targetLocation = null;
+            }
+        } else {
+            drawTargetLocation = true;
+            updateSpecial(gameController);
+        }
+    }
+
+    /**
+     * Логика движения к объекту, который хотим атаковать
+     * @param object объект для атаки
+     * @param gameController контроллер, предоствляющий всякую нужную нам информацию.
+     *                       (он нужен тк. мы будем исопльзовать метод move, а он требует себе на вход данный объект)
+     */
+    private void moveToObjectAndAttack(PhysicalGameObject object, GameController gameController) {
+        Point oldLocation = new Point(location);
+        if(object.distanceBetweenEdge(this)> attackRadius) {
+            move(gameController);
+        }
+        double distance = object.distanceBetweenEdge(this);
+        if(distance< attackRadius){//если уже можно достать для аттаки, то будем аатаковать
+            if(distance<0){  //но если объекты наложидись друг на друга, то чуть сдвинем данный объект
+                int dx = location.x - oldLocation.x;
+                int dy = location.y - oldLocation.y;
+                double dl = Math.sqrt(dx*dx + dy*dy);
+                double p = (dl + distance)/dl;
+                dx*=p;
+                dy*=p;
+                location.setLocation(oldLocation.getX()+dx, oldLocation.getY()+dy);
+            }
+            attack(object);
+        }
+    }
+
+    /**
+     * Непосредсвтенно сама атака
+     * @param object объект для атаки
+     */
+    private void attack(PhysicalGameObject object) {
+        if(fireTimer <= 0) {
+            object.addHelth(-damage);
+            fireTimer = attackPause;
+        }
+        else {
+            fireTimer--;
+        }
+    }
+
+
+    protected abstract void updateSpecial(GameController gameController);
 
     @Override
     public Type getType() {
@@ -164,9 +260,9 @@ public abstract class Player  extends PhysicalGameObject {
         g.fillRect(x-PLAYER_IMAGE_SHIFT_X-5+1, y-PLAYER_IMAGE_SHIFT_Y-11, (int)((PLAYER_IMAGE_SHIFT_X*2+4)*(double)helth/maxHelth), 8);
 
         //Отрисовка цифры, кол-ва патрон в очереди
-        if(getActivBulletCount()>0) {
+        if(getBulletCount()>0) {
             g.setColor(Color.WHITE);
-            g.drawString(Integer.toString(getActivBulletCount()), x-PLAYER_IMAGE_SHIFT_X-4, y-PLAYER_IMAGE_SHIFT_Y-14);
+            g.drawString(Integer.toString(getBulletCount()), x-PLAYER_IMAGE_SHIFT_X-4, y-PLAYER_IMAGE_SHIFT_Y-14);
         }
 
         if(isDrawTargetLocation()) {
@@ -184,6 +280,24 @@ public abstract class Player  extends PhysicalGameObject {
         drawSpecial(g);
     }
 
+
+    /**
+     * Попытка выбрать объект для атаки. Смотрим, кликнули ли мы на объект или в пустое место.
+     * @param gameController дёргаем из этиого параметра все объекты на поле и смотрим их координаты
+     */
+    private void setObjectForAttack(GameController gameController) {
+        if(clickAttack!=null){
+            for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
+                if(! (o instanceof Enemy)) { continue; }
+                if(o.collision(clickAttack.x, clickAttack.y, 2)<=0){
+                    objectForAttack = o;
+                    break;
+                }
+            }
+            clickAttack = null;
+        }
+    }
+
     /**
      * Если надо отрисовать что-то ещё особенное поверх всего
      */
@@ -191,7 +305,16 @@ public abstract class Player  extends PhysicalGameObject {
 
     }
 
-    protected abstract boolean isDrawTargetLocation();
+    @Override
+    public void drawSpecialAfterAll(Graphics2D g){
+        if(objectForAttack!=null && !objectForAttack.isDestroy()){
+            g.drawImage(aimImage, objectForAttack.getLocation().x - 14, objectForAttack.getLocation().y - 14, null);
+        }
+    }
+
+    protected final boolean isDrawTargetLocation(){
+        return drawTargetLocation;
+    }
 
     @Override
     public boolean isSeletedByCursor() {
@@ -344,7 +467,7 @@ public abstract class Player  extends PhysicalGameObject {
      * у героя есть пауза между атаками. Поэтому все остальные атаки становяться в очередь.
      * @return количество ударов(выстрелов) в очереди
      */
-    protected abstract int getActivBulletCount();
+    protected abstract int getBulletCount();
 
     /**
      * В методе ОТРИСОВКИ изображения героя в классе Player идёт автоматическое определение
@@ -373,8 +496,19 @@ public abstract class Player  extends PhysicalGameObject {
         @Override
         public void mouseReleased(MouseEvent e) {
 
+            if(e.getButton()==MouseEvent.BUTTON2 && infighting) { //Клик по экрано CКМ
+                if(isSeletedByCursor()){
+                    clickAttack = new Point(e.getX(), e.getY());
+                }
+            }
+
+
             if(e.getButton()==MouseEvent.BUTTON3) { //Клик по экрано ПКМ
                 if(isSeletedByCursor()){
+                    if(objectForAttack!=null) { //если есть объект для аттаки, то целевая локация для Война -- это координаты этого объекта
+                        objectForAttack = null;
+                        targetLocation = null; //поэтому сброисм их
+                    }
                     trySetTargetLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
                 }
             }
