@@ -98,7 +98,7 @@ public class GameControllerImpl implements GameController, Runnable{
     }
 
     private void initEnemy() throws IOException {
-        Enemy object = new Enemy(400, windowInfo);
+        Enemy object = new Enemy(100, windowInfo);
         object.setLocation(new Point(1091,34));
         allGameObjects.add(object);
         physicalGameObjects.add(object);
@@ -304,6 +304,11 @@ public class GameControllerImpl implements GameController, Runnable{
                 .map(o -> (Enemy) o)
                 .collect(Collectors.toList());
         return enemies;
+    }
+
+    @Override
+    public void endGame() {
+        background.endGame();
     }
 
     @Override

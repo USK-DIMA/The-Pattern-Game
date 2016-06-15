@@ -54,6 +54,8 @@ public interface GameController {
 
     List<Enemy> getEnemy();
 
+    void endGame();
+
     public static interface ObjectNotifer{
         void addListeners(GameObject object);
     }

@@ -75,6 +75,8 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private int buyTimer = BUY_PAUSE;
 
+    private int minCost = 0;
+
     Color impossibleByColor = new Color(100, 100, 100);
 
     private boolean isLvlUp = false;
@@ -109,6 +111,18 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         pristCost = playerFabrica.getPristInfo().getCost();
         magCost = playerFabrica.getMagInfo().getCost();
         nextUpdate = playerFabrica.nexUpdate();
+
+        minCost = archerCost;
+
+        if(minCost>warriorCost){
+            minCost = warriorCost;
+        }
+        if(minCost>pristCost){
+            minCost = pristCost;
+        }
+        if(minCost>magCost){
+            minCost = magCost;
+        }
     }
 
     @Override
@@ -213,6 +227,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     @Override
     public void update(GameController gameController) {
+        if(playerCount== 0 && money<minCost){
+            gameController.endGame();
+        }
         if(isLvlUp){
             isLvlUp = false;
             lvlUp();

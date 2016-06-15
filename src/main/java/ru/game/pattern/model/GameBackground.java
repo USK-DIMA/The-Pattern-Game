@@ -33,6 +33,10 @@ public class GameBackground extends GameObject {
 
     private int black = 0;
 
+    private boolean endGame = false;
+
+    private int endGameTransparency = 0;
+
 
     public GameBackground(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
@@ -54,6 +58,16 @@ public class GameBackground extends GameObject {
             g.setColor(new Color(0, 0, 0, black));
             g.fillRect(0,0, 1280, 720);
             black-=5;
+        }
+        if(endGame){
+            endGameTransparency+=4;
+            if(endGameTransparency>255){
+                endGameTransparency = 255;
+            }
+            g.setColor(new Color(0, 0, 0, endGameTransparency ));
+            g.fillRect(0,0, 1280, 720);
+            g.setColor(new Color(255, 255, 255, endGameTransparency));
+            g.drawString("Game Over", 620, 360);
         }
     }
 
@@ -84,5 +98,9 @@ public class GameBackground extends GameObject {
 
     public void setBlack(int i) {
         black = i;
+    }
+
+    public void endGame() {
+        endGame = true;
     }
 }

@@ -10,7 +10,7 @@ public class Property {
 
     public static String RESOURSES_PATH = "src/main/resources/";
 
-    public static boolean DEBUG_MODE = true;
+    public static boolean DEBUG_MODE = false;
 
     public static int START_MONEY = 300;
     public static int MAX_PLAYER_COUNT = 5;
