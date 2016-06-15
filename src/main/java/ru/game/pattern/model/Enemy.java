@@ -213,7 +213,7 @@ public class Enemy extends PhysicalGameObject {
 
     private void attackPlayer(Player player) {
         if(damageTimer>=DAMAGE_PAUSE) {
-            if (!player.isDestroy() && player.collision(location.x, location.y, TERITORY_RADIUS+ATTACK_RADIUS) <= 0) {
+            if (player.collision(location.x, location.y, TERITORY_RADIUS+ATTACK_RADIUS) <= 0) {
                 damageTimer=0;
                 player.addHelth(-DAMAGE);
                 addHelth(DAMAGE);
@@ -224,6 +224,10 @@ public class Enemy extends PhysicalGameObject {
             }
         } else {
             damageTimer++;
+        }
+
+        if(objectForAttack != null && objectForAttack.isDestroy()){
+            objectForAttack = null;
         }
     }
 
