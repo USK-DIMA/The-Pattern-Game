@@ -35,6 +35,8 @@ public class MagLvl2 extends Mag {
 
     private static int MANA_ADDING = MAG_LVL2_MANA_ADDING;
 
+    private static int INVISE_PAUSE = MAG_LVL2_INVISE_PAUSE;
+
     /**
      * Изображение игрового объекта при движении вправо
      */
@@ -46,7 +48,7 @@ public class MagLvl2 extends Mag {
     private static BufferedImage playerLeftImage;
 
     public MagLvl2(WindowInfo windowsInfo) throws IOException {
-        super(MAX_HELTH, windowsInfo, SPEED, FREEZE, MAX_MANA, FREEZE_RADIUS, MANA_LOSSES, MANA_ADDING);
+        super(MAX_HELTH, windowsInfo, SPEED, FREEZE, MAX_MANA, FREEZE_RADIUS, MANA_LOSSES, MANA_ADDING, INVISE_PAUSE);
         playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "mag/mag_right2.png"));
         playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "mag/mag_left2.png"));
     }

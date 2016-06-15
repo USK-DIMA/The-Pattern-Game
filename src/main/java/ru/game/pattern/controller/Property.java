@@ -73,7 +73,8 @@ public class Property {
     public static int MAG_LVL1_MANA_LOSSES = 1;
     public static int MAG_LVL1_MANA_ADDING = 1;
     public static int MAG_LVL1_SPEED = 6;
-    public static int MAG_LVL1_FREEZE_RADIUS = 90;
+    public static int MAG_LVL1_FREEZE_RADIUS = 200;
+    public static int MAG_LVL1_INVISE_PAUSE = 900;
     public static double MAG_LVL1_FREEZE = 0.5;
 
     public static int MAG_LVL2_COST = 100;
@@ -83,6 +84,7 @@ public class Property {
     public static int MAG_LVL2_MANA_ADDING = 1;
     public static int MAG_LVL2_SPEED = 6;
     public static int MAG_LVL2_FREEZE_RADIUS = 120;
+    public static int MAG_LVL2_INVISE_PAUSE = 180;
     public static double MAG_LVL2_FREEZE = 0.4;
 
     public static int MAG_LVL3_COST = 100;
@@ -92,6 +94,7 @@ public class Property {
     public static int MAG_LVL3_MANA_ADDING = 1;
     public static int MAG_LVL3_SPEED = 6;
     public static int MAG_LVL3_FREEZE_RADIUS = 90;
+    public static int MAG_LVL3_INVISE_PAUSE = 180;
     public static double MAG_LVL3_FREEZE = 0.0;
 
     public static int PRIST_LVL1_COST = 100;

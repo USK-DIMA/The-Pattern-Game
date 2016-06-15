@@ -108,6 +108,11 @@ public class Enemy extends PhysicalGameObject {
         fireTimer = 0;
     }
 
+    public void reset(){
+        objectForAttack = null;
+        nextCurrentFreePont();
+    }
+
     public void setLocation(Point location){
         this.location=location;
     }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -294,6 +295,15 @@ public class GameControllerImpl implements GameController, Runnable{
         allGameObjects.add(player);
         physicalGameObjects.add(player);
         objectNotifer.addListeners(player);
+    }
+
+    @Override
+    public List<Enemy> getEnemy() {
+        List<Enemy> enemies = allGameObjects.stream()
+                .filter(o -> o instanceof Enemy)
+                .map(o -> (Enemy) o)
+                .collect(Collectors.toList());
+        return enemies;
     }
 
     @Override

@@ -31,6 +31,8 @@ public class GameBackground extends GameObject {
 
     private String BACKGROUND_IMAGE_PATH_THREE = Property.RESOURSES_PATH + "plane_lite_81.png";
 
+    private int black = 0;
+
 
     public GameBackground(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
@@ -46,6 +48,12 @@ public class GameBackground extends GameObject {
             g.drawRect(windowInfo.getBorderLeft(), windowInfo.getBorderTop(),
                          windowInfo.getWidth() - windowInfo.getBorderLeft() - windowInfo.getBorderRight(),
                         windowInfo.getHeight() - windowInfo.getBorderTop() - windowInfo.getBorderBottom());
+        }
+
+        if(black>0) {
+            g.setColor(new Color(0, 0, 0, black));
+            g.fillRect(0,0, 1280, 720);
+            black-=5;
         }
     }
 
@@ -74,4 +82,7 @@ public class GameBackground extends GameObject {
         return Type.other;
     }
 
+    public void setBlack(int i) {
+        black = i;
+    }
 }

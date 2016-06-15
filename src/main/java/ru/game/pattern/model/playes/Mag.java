@@ -5,6 +5,7 @@ import ru.game.pattern.model.Enemy;
 import ru.game.pattern.model.WindowInfo;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -55,6 +56,8 @@ abstract public class Mag extends Player{
 
     private MouseListener mouseListener;
 
+    private KeyListener keyListener = new MagKeyListener();
+
     /**
      * Запас маны
      */
@@ -65,9 +68,17 @@ abstract public class Mag extends Player{
      */
     volatile private boolean isFreeze;
 
+    private boolean invise = false;
+
+    private int invisePause;
+
+    private int inviseTimer = 0;
+
     private Color manaColor = Color.BLUE;
 
-    public Mag(int MaxHelth, WindowInfo windowsInfo, int speed, double freeze, int maxMana, int freezeRadius, int manaLosses, int manaAdding) throws IOException {
+    private int inviseTransparency = 0;
+
+    public Mag(int MaxHelth, WindowInfo windowsInfo, int speed, double freeze, int maxMana, int freezeRadius, int manaLosses, int manaAdding, int invisePause) throws IOException {
         super(MaxHelth, windowsInfo);
         this.speed = speed;
         this.freeze = freeze;
@@ -75,9 +86,10 @@ abstract public class Mag extends Player{
         this.freezeRadius = freezeRadius;
         this.manaLosses = manaLosses;
         this.manaAdding = manaAdding;
-        additionalSelectingIndicatorShift = 15;
+        this.invisePause = invisePause;
+        additionalSelectingIndicatorShift = 19;
         mana = this.maxMana;
-        mouseListener = new PristMouseListener();
+        mouseListener = new MagMouseListener();
         isFreeze = false;
     }
 
@@ -93,7 +105,7 @@ abstract public class Mag extends Player{
 
     @Override
     protected int getActivBulletCount() {
-        return 0;
+        return inviseTimer;
     }
 
     @Override
@@ -110,7 +122,7 @@ abstract public class Mag extends Player{
 
     @Override
     public KeyListener getKeyListener() {
-        return null;
+        return keyListener;
     }
 
     @Override
@@ -122,8 +134,22 @@ abstract public class Mag extends Player{
     public void update(GameController gameController) {
         recalculateMana();
         recalculateFreeze();
+        invise(gameController);
         freezeObjects(gameController);
         move(gameController);
+    }
+
+    private void invise(GameController gameController) {
+        if(inviseTimer<=0){
+            if(invise){
+                invise = false;
+                inviseTimer = invisePause;
+                gameController.getBackgound().setBlack(240);
+                gameController.getEnemy().stream().forEach(o->o.reset());
+            }
+        } else {
+            inviseTimer--;
+        }
     }
 
     /**
@@ -197,9 +223,9 @@ abstract public class Mag extends Player{
     protected void drawSpecial(Graphics2D g) {
         //отрисовка полоски маны
         g.setColor(Color.black);
-        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2+5, 10);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-35, PLAYER_IMAGE_SHIFT_X*2+5, 10);
         g.setColor(manaColor);
-        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-11-additionalSelectingIndicatorShift, (int)((PLAYER_IMAGE_SHIFT_X*2+4)*(double)mana/ maxMana), 8);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-34, (int)((PLAYER_IMAGE_SHIFT_X*2+4)*(double)mana/ maxMana), 8);
 
     }
 
@@ -207,7 +233,17 @@ abstract public class Mag extends Player{
         return manaAdding;
     }
 
-    class PristMouseListener extends PlayerMouseListener{
+    private void setFreeze(boolean isFreeze) {
+        this.isFreeze = isFreeze;
+    }
+
+    private void tryInvise() {
+        if(inviseTimer<=0){
+            invise = true;
+        }
+    }
+
+    class MagMouseListener extends PlayerMouseListener{
         @Override
         public void mouseReleasedSpecial(MouseEvent e) {
             if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано CКМ
@@ -218,7 +254,27 @@ abstract public class Mag extends Player{
         }
     }
 
-    private void setFreeze(boolean isFreeze) {
-        this.isFreeze = isFreeze;
+
+    class MagKeyListener implements KeyListener{
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if(e.getKeyCode() == KeyEvent.VK_A){
+                if(isSeletedByCursor()) {
+                    tryInvise();
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
     }
+
 }
