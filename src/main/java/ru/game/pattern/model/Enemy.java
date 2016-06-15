@@ -42,6 +42,8 @@ public class Enemy extends PhysicalGameObject {
 
     private static final int DAMAGE = ENEMY_DAMAGE;
 
+    private static final int ATTACK_RADIUS = ENEMY_ATTACK_RADIUS;
+
     private int DAMAGE_PAUSE = ENEMY_DAMAGE_PAUSE;
 
     private int damageTimer = DAMAGE_PAUSE;
@@ -207,9 +209,11 @@ public class Enemy extends PhysicalGameObject {
         }
     }
 
+
+
     private void attackPlayer(Player player) {
         if(damageTimer>=DAMAGE_PAUSE) {
-            if (!player.isDestroy() && collision(player) <= 0) {
+            if (!player.isDestroy() && player.collision(location.x, location.y, TERITORY_RADIUS+ATTACK_RADIUS) <= 0) {
                 damageTimer=0;
                 player.addHelth(-DAMAGE);
                 addHelth(DAMAGE);
@@ -264,6 +268,11 @@ public class Enemy extends PhysicalGameObject {
     }
 
     private boolean moveToTargetLocation() {
+        if(objectForAttack!=null){
+            if(objectForAttack.collision(location.x, location.y, TERITORY_RADIUS + ATTACK_RADIUS)<=0){
+                return true;
+            }
+        }
         if(targetLocation!=null) { //пока только движение. Если двигаться объекту некуда, то ничего не делаем
             int x = location.x;
             int y = location.y;

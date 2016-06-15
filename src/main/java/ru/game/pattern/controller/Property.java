@@ -14,27 +14,34 @@ public class Property {
 
     public static int START_MONEY = 300;
     public static int MAX_PLAYER_COUNT = 5;
-    public static int BUY_PLAYER_PAUSE = 30;
+    public static int BUY_PLAYER_PAUSE = 50;
+    public static int PLAYER_TERRITORY_RADIUS = 8;
+
+    public static int DEFAULT_ATTACK_PAUSE = 8;
+    public static int DEFAULT_ATTACK_RADIUS = 8;
+    public static int DEFAULT_DAMAGE = 8;
 
     public static int PLYAER_FABRIC_LVL1_NEXT_UPDATE = 300;
     public static int PLYAER_FABRIC_LVL2_NEXT_UPDATE = 900;
     public static int PLYAER_FABRIC_LVL3_NEXT_UPDATE = -1;
 
-    public static int FIREBALL_LVL1_SPEED = 20;
-    public static int FIREBALL_LVL1_TERRITORY_RADIUS = 3;
-    public static int FIREBALL_LVL1_MAX_DISTANSE = 300;
+    public static int FIREBALL_LVL1_SPEED = 30;
+    public static int FIREBALL_LVL1_TERRITORY_RADIUS = 4;
+    public static int FIREBALL_LVL1_MAX_DISTANSE = 400;
     public static int FIREBALL_LVL1_DAMAGE = 40;
 
+
+    public static int ENEMY_ATTACK_RADIUS = 7;
     public static int ENEMY_OVERVIEW_RADIUS = 200;
-    public static int ENEMY_SPEED = 5;
+    public static int ENEMY_SPEED = 4;
     public static int ENEMY_DAMAGE = 1;
     public static int ENEMY_DAMAGE_PAUSE = 2;
-    public static int ENEMY_TERITORY_RADIUS = 6;
+    public static int ENEMY_TERITORY_RADIUS = 8;
 
     public static int ARCHER_LVL1_COST = 90;
     public static int ARCHER_LVL1_MAX_HELTH = 100;
-    public static int ARCHER_LVL1_ATTACK_PAUSE = 30;
-    public static int ARCHER_LVL1_SPEED = 4;
+    public static int ARCHER_LVL1_ATTACK_PAUSE = 5;
+    public static int ARCHER_LVL1_SPEED = 5;
 
     public static int ARCHER_LVL2_COST = 90;
     public static int ARCHER_LVL2_MAX_HELTH = 100;

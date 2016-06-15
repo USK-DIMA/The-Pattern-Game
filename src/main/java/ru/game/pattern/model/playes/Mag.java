@@ -94,17 +94,12 @@ abstract public class Mag extends Player{
     }
 
     @Override
-    protected boolean isDrawTargetLocation() {
-        return true;
-    }
-
-    @Override
     public int getSpeed() {
         return speed;
     }
 
     @Override
-    protected int getActivBulletCount() {
+    protected int getBulletCount() {
         return inviseTimer;
     }
 
@@ -117,6 +112,7 @@ abstract public class Mag extends Player{
     protected void resetAction() {
         isFreeze = false;
         targetLocation = null;
+        objectForAttack = null;
         targetLocationList.clear();
     }
 
@@ -131,7 +127,7 @@ abstract public class Mag extends Player{
     }
 
     @Override
-    public void update(GameController gameController) {
+    public void updateSpecial(GameController gameController) {
         recalculateMana();
         recalculateFreeze();
         invise(gameController);
@@ -246,11 +242,7 @@ abstract public class Mag extends Player{
     class MagMouseListener extends PlayerMouseListener{
         @Override
         public void mouseReleasedSpecial(MouseEvent e) {
-            if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано CКМ
-                if(isSeletedByCursor()){
-                   setFreeze(!isFreeze);
-                }
-            }
+
         }
     }
 
@@ -264,7 +256,13 @@ abstract public class Mag extends Player{
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_A){
+            if(e.getKeyCode()==KeyEvent.VK_Q) {
+                if(isSeletedByCursor()){
+                    setFreeze(!isFreeze);
+                }
+            }
+
+            if(e.getKeyCode() == KeyEvent.VK_W){
                 if(isSeletedByCursor()) {
                     tryInvise();
                 }
