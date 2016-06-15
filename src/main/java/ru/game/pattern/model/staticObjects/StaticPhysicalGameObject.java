@@ -1,6 +1,7 @@
 package ru.game.pattern.model.staticObjects;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.PhysicalGameObject;
 
 import javax.imageio.ImageIO;
@@ -24,7 +25,7 @@ public class StaticPhysicalGameObject extends PhysicalGameObject {
 
     private Point imageSize;
 
-    protected boolean printTerritoryRadius = false;
+    protected boolean printTerritoryRadius = Property.DEBUG_MODE;
 
     protected int additionalIamgeShift = 0;
 

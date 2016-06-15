@@ -197,6 +197,7 @@ public class GameControllerImpl implements GameController, Runnable{
         staticPhysicalGameObjects.add(object);
     }
 
+    @Override
     public List<StaticPhysicalGameObject> getStaticPhysicalGameObjects() {
         return staticPhysicalGameObjects;
     }

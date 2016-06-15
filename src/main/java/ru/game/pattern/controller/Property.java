@@ -1,6 +1,5 @@
 package ru.game.pattern.controller;
 
-import ru.game.pattern.model.Enemy;
 import ru.game.pattern.model.Enemy.FreeTargetPoint;
 
 /**
@@ -12,6 +11,8 @@ public class Property {
     public static int GAME_SPEED = 1;
 
     public static String RESOURSES_PATH = "src/main/resources/";
+
+    public static boolean DEBUG_MODE = true;
 
     public static FreeTargetPoint initFreeTargetPointForEnemy() {
         FreeTargetPoint p1 = new FreeTargetPoint();
