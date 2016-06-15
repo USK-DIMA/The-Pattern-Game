@@ -2,6 +2,7 @@ package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.model.Enemy;
 import ru.game.pattern.model.FireBall;
 import ru.game.pattern.model.GameObject;
 import ru.game.pattern.model.WindowInfo;
@@ -55,6 +56,8 @@ abstract public class Archer extends Player {
      */
     private final int attackPause;
 
+    private final int autoAttackRadius = Property.FIREBALL_LVL1_MAX_DISTANSE;
+
     public Archer(WindowInfo windowsInfo, BulletCreater bulletCreater, int speed, int maxHelth, int attackPause) throws IOException {
         super(maxHelth, windowsInfo);
         this.atackPoints = new LinkedList<>();
@@ -88,6 +91,7 @@ abstract public class Archer extends Player {
 
     @Override
     public void updateSpecial(GameController gameController) {
+        autoattack(gameController);
         if(fireTimer <= 0) {
             if (atackPoints.size() > 0) {
                 try {
@@ -119,6 +123,16 @@ abstract public class Archer extends Player {
         }
 
         move(gameController);
+    }
+
+    private void autoattack(GameController gameController) {
+        if(targetLocation==null && atackPoints.size()==0) {
+            for (Enemy o : gameController.getEnemy()) {
+                if (o.collision(location.x, location.y, getTerritoryRadius() + autoAttackRadius + 5) <= 0) {
+                    atackPoints.add(o.getLocation());
+                }
+            }
+        }
     }
 
     @Override
