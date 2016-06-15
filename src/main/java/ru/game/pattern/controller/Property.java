@@ -8,11 +8,121 @@ import ru.game.pattern.model.Enemy.FreeTargetPoint;
 public class Property {
     public static int UPDATE_PAUSE = 33;
 
-    public static int GAME_SPEED = 1;
-
     public static String RESOURSES_PATH = "src/main/resources/";
 
     public static boolean DEBUG_MODE = true;
+
+    public static int START_MONEY = 300;
+    public static int MAX_PLAYER_COUNT = 5;
+    public static int BUY_PLAYER_PAUSE = 30;
+
+    public static int PLYAER_FABRIC_LVL1_NEXT_UPDATE = 300;
+    public static int PLYAER_FABRIC_LVL2_NEXT_UPDATE = 900;
+    public static int PLYAER_FABRIC_LVL3_NEXT_UPDATE = -1;
+
+    public static int FIREBALL_LVL1_SPEED = 20;
+    public static int FIREBALL_LVL1_TERRITORY_RADIUS = 3;
+    public static int FIREBALL_LVL1_MAX_DISTANSE = 300;
+    public static int FIREBALL_LVL1_DAMAGE = 40;
+
+    public static int ENEMY_OVERVIEW_RADIUS = 200;
+    public static int ENEMY_SPEED = 5;
+    public static int ENEMY_DAMAGE = 1;
+    public static int ENEMY_DAMAGE_PAUSE = 2;
+    public static int ENEMY_TERITORY_RADIUS = 6;
+
+    public static int ARCHER_LVL1_COST = 90;
+    public static int ARCHER_LVL1_MAX_HELTH = 100;
+    public static int ARCHER_LVL1_ATTACK_PAUSE = 30;
+    public static int ARCHER_LVL1_SPEED = 4;
+
+    public static int ARCHER_LVL2_COST = 90;
+    public static int ARCHER_LVL2_MAX_HELTH = 100;
+    public static int ARCHER_LVL2_ATTACK_PAUSE = 30;
+    public static int ARCHER_LVL2_SPEED = 4;
+
+    public static int ARCHER_LVL3_COST = 90;
+    public static int ARCHER_LVL3_MAX_HELTH = 100;
+    public static int ARCHER_LVL3_ATTACK_PAUSE = 30;
+    public static int ARCHER_LVL3_SPEED = 4;
+
+    public static int WARRIOR_LVL1_COST = 100;
+    public static int WARRIOR_LVL1_MAX_HELTH = 100;
+    public static int WARRIOR_LVL1_MAX_DAMAGE = 15;
+    public static int WARRIOR_LVL1_ATTACK_PAUSE = 30;
+    public static int WARRIOR_LVL1_SPEED = 4;
+    public static int WARRIOR_LVL1_ATTACK_RADIUS = 4;
+
+    public static int WARRIOR_LVL2_COST = 100;
+    public static int WARRIOR_LVL2_MAX_HELTH = 100;
+    public static int WARRIOR_LVL2_MAX_DAMAGE = 15;
+    public static int WARRIOR_LVL2_ATTACK_PAUSE = 30;
+    public static int WARRIOR_LVL2_SPEED = 4;
+    public static int WARRIOR_LVL2_ATTACK_RADIUS = 4;
+
+    public static int WARRIOR_LVL3_COST = 100;
+    public static int WARRIOR_LVL3_MAX_HELTH = 100;
+    public static int WARRIOR_LVL3_MAX_DAMAGE = 15;
+    public static int WARRIOR_LVL3_ATTACK_PAUSE = 30;
+    public static int WARRIOR_LVL3_SPEED = 4;
+    public static int WARRIOR_LVL3_ATTACK_RADIUS = 4;
+
+    public static int MAG_LVL1_COST = 100;
+    public static int MAG_LVL1_MAX_HELTH = 100;
+    public static int MAG_LVL1_MAX_MANA = 150;
+    public static int MAG_LVL1_MANA_LOSSES = 1;
+    public static int MAG_LVL1_MANA_ADDING = 1;
+    public static int MAG_LVL1_SPEED = 6;
+    public static int MAG_LVL1_FREEZE_RADIUS = 90;
+    public static double MAG_LVL1_FREEZE = 0.5;
+
+    public static int MAG_LVL2_COST = 100;
+    public static int MAG_LVL2_MAX_HELTH = 100;
+    public static int MAG_LVL2_MAX_MANA = 150;
+    public static int MAG_LVL2_MANA_LOSSES = 1;
+    public static int MAG_LVL2_MANA_ADDING = 1;
+    public static int MAG_LVL2_SPEED = 6;
+    public static int MAG_LVL2_FREEZE_RADIUS = 120;
+    public static double MAG_LVL2_FREEZE = 0.4;
+
+    public static int MAG_LVL3_COST = 100;
+    public static int MAG_LVL3_MAX_HELTH = 100;
+    public static int MAG_LVL3_MAX_MANA = 150;
+    public static int MAG_LVL3_MANA_LOSSES = 1;
+    public static int MAG_LVL3_MANA_ADDING = 1;
+    public static int MAG_LVL3_SPEED = 6;
+    public static int MAG_LVL3_FREEZE_RADIUS = 90;
+    public static double MAG_LVL3_FREEZE = 0.0;
+
+    public static int PRIST_LVL1_COST = 100;
+    public static int PRIST_LVL1_MAX_HELTH = 100;
+    public static int PRIST_LVL1_MAX_MANA = 150;
+    public static int PRIST_LVL1_MANA_LOSSES = 1;
+    public static int PRIST_LVL1_MANA_ADDING = 1;
+    public static int PRIST_LVL1_SPEED = 6;
+    public static int PRIST_LVL1_HILL_RADIUS = 90;
+    public static int PRIST_LVL1_HELTH_HILL = 5;
+    public static int PRIST_LVL1_HILL_PAUSE = 15;
+
+    public static int PRIST_LVL2_COST = 100;
+    public static int PRIST_LVL2_MAX_HELTH = 100;
+    public static int PRIST_LVL2_MAX_MANA = 150;
+    public static int PRIST_LVL2_MANA_LOSSES = 1;
+    public static int PRIST_LVL2_MANA_ADDING = 1;
+    public static int PRIST_LVL2_SPEED = 6;
+    public static int PRIST_LVL2_HILL_RADIUS = 90;
+    public static int PRIST_LVL2_HELTH_HILL = 5;
+    public static int PRIST_LVL2_HILL_PAUSE = 15;
+
+    public static int PRIST_LVL3_COST = 100;
+    public static int PRIST_LVL3_MAX_HELTH = 100;
+    public static int PRIST_LVL3_MAX_MANA = 150;
+    public static int PRIST_LVL3_MANA_LOSSES = 1;
+    public static int PRIST_LVL3_MANA_ADDING = 1;
+    public static int PRIST_LVL3_SPEED = 6;
+    public static int PRIST_LVL3_HILL_RADIUS = 90;
+    public static int PRIST_LVL3_HELTH_HILL = 5;
+    public static int PRIST_LVL3_HILL_PAUSE = 15;
 
     public static FreeTargetPoint initFreeTargetPointForEnemy() {
         FreeTargetPoint p1 = new FreeTargetPoint();

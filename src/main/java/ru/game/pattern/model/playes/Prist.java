@@ -144,11 +144,9 @@ abstract public class Prist extends Player{
         if(hill){
             if(fireTimer <= 0) {
                 fireTimer = hillPause;
-                for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
-                    if(o.distanceBetweenCenter(this)<= hillRadius){
-                        o.addHelth(helthHill);
-                    }
-                }
+                gameController.getPhysicalGameObject().stream()
+                        .filter(o -> o instanceof Player && o.distanceBetweenCenter(this) <= hillRadius)
+                        .forEach(o ->o.addHelth(helthHill));
             }
             else {
                 fireTimer--;

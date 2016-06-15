@@ -1,6 +1,7 @@
 package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.model.Enemy;
 import ru.game.pattern.model.WindowInfo;
 
 import java.awt.*;
@@ -171,7 +172,7 @@ abstract public class Mag extends Player{
     private void freezeObjects(GameController gameController) {
         if(isFreeze){
             gameController.getPhysicalGameObject().stream()
-                    .filter(o -> o.distanceBetweenCenter(this) <= freezeRadius)
+                    .filter(o -> o instanceof Enemy && o.distanceBetweenCenter(this) <= freezeRadius)
                     .forEach(o -> o.setOneMultiSpeed(freeze)
             );
         }

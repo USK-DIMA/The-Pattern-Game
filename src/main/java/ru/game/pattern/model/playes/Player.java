@@ -2,6 +2,7 @@ package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.model.Enemy;
 import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
 import ru.game.pattern.model.staticObjects.StaticPhysicalGameObject;
@@ -246,7 +247,7 @@ public abstract class Player  extends PhysicalGameObject {
                 }
 
                 for(PhysicalGameObject o :  gameController.getPhysicalGameObject()){
-                    if (o == this){ continue;}//сам с собой не проверяем
+                    if (o == this || o instanceof Enemy){ continue;}//сам с собой  и с врагом не проверяем
                     int length = o.collision(x+dx, y+dy, TERITORY_RADIUS);
                     if(length<0) {
                         if (dx != 0) {

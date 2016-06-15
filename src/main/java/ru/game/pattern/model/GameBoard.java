@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static ru.game.pattern.controller.Property.*;
 import static ru.game.pattern.model.GameObject.Type.board;
 
 /**
@@ -60,17 +61,17 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private int nextUpdate;
 
-    private int money = 5000;
+    private int money = START_MONEY;
 
     private int playerCount = 0;
 
-    private int maxPlayerCount = 30;
+    private int maxPlayerCount = MAX_PLAYER_COUNT;
 
     private int tryBuyPlayerNumber = -1;
 
     private KeyListener keyListener;
 
-    private int BUY_PAUSE = 5;
+    private int BUY_PAUSE = BUY_PLAYER_PAUSE;
 
     private int buyTimer = BUY_PAUSE;
 

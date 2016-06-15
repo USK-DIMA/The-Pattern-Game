@@ -7,6 +7,8 @@ import ru.game.pattern.model.playes.*;
 import java.awt.*;
 import java.io.IOException;
 
+import static ru.game.pattern.controller.Property.PLYAER_FABRIC_LVL3_NEXT_UPDATE;
+
 /**
  * Created by Uskov Dmitry on 09.06.2016.
  */
@@ -29,7 +31,7 @@ public class PlayerFabricaLvl3 implements  PlayerFabrica{
 
     @Override
     public int nexUpdate() {
-        return -1;
+        return PLYAER_FABRIC_LVL3_NEXT_UPDATE;
     }
 
     @Override
@@ -42,7 +44,6 @@ public class PlayerFabricaLvl3 implements  PlayerFabrica{
         Archer archer = new ArcherLvl3(windowInfo);
         archer.setLocation(location);
         archer.setTargetLocation(targetLocation);
-        //// TODO: 09.06.2016 выкл флажёк при выходе
         return archer;
     }
 
@@ -51,7 +52,6 @@ public class PlayerFabricaLvl3 implements  PlayerFabrica{
         Warrior warrior = new WarriorLvl3(windowInfo);
         warrior.setLocation(location);
         warrior.setTargetLocation(targetLocation);
-        //// TODO: 09.06.2016 выкл флажёк при выходе
         return warrior;
     }
 
@@ -60,7 +60,6 @@ public class PlayerFabricaLvl3 implements  PlayerFabrica{
         Prist prist = new PristLvl3(windowInfo);
         prist.setLocation(location);
         prist.setTargetLocation(targetLocation);
-        //// TODO: 09.06.2016 выкл флажёк при выходе
         return prist;
     }
 
@@ -69,7 +68,6 @@ public class PlayerFabricaLvl3 implements  PlayerFabrica{
         Mag mag = new MagLvl3(windowInfo);
         mag.setLocation(location);
         mag.setTargetLocation(targetLocation);
-        //// TODO: 09.06.2016 выкл флажёк при выходе
         return mag;
     }
 

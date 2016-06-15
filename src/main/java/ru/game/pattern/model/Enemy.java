@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import static ru.game.pattern.controller.Property.*;
+
 /**
  * Created by Uskov Dmitry on 08.06.2016.
  */
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 
 public class Enemy extends PhysicalGameObject {
 
-    public static final int OVERVIEW_RADIUS = 220;
+    public static final int OVERVIEW_RADIUS = ENEMY_OVERVIEW_RADIUS;
 
     /**
      * Сдвиг изображения объекта по оси X относительно центральной координаты объекта координаты объекта
@@ -36,22 +38,18 @@ public class Enemy extends PhysicalGameObject {
      */
     protected final static int PLAYER_IMAGE_SHIFT_Y =  19;
 
-    /**
-     * Сдвиг изображения индикатора выделения курсором по оси X относительно центральной координаты объекта координаты объекта
-     */
-    protected final static int SELECTING_INDICATOR_IMAGE_SHIFT_X =  10;
+    private static final int SPEED = ENEMY_SPEED;
 
-    /**
-     * Сдвиг изображения индикатора выделения курсором по оси Y относительно центральной координаты объекта координаты объекта
-     */
-    protected final static int SELECTING_INDICATOR_IMAGE_SHIFT_Y =  PLAYER_IMAGE_SHIFT_Y + 49;
+    private static final int DAMAGE = ENEMY_DAMAGE;
 
-    private static final int SPEED = 6;
+    private int DAMAGE_PAUSE = ENEMY_DAMAGE_PAUSE;
+
+    private int damageTimer = DAMAGE_PAUSE;
 
     /**
      * Радиус, показывающий размер объекта
      */
-    private int TERITORY_RADIUS = 6;
+    private int TERITORY_RADIUS = ENEMY_TERITORY_RADIUS;
 
     /**
      * точка, куда объекту следует двигаться
@@ -92,6 +90,8 @@ public class Enemy extends PhysicalGameObject {
     private FreeTargetPoint currentFreePoint;
 
     private List<Point> playerLocationsForDebag;
+
+    private Player objectForAttack = null;
 
     public Enemy(int maxHelth, WindowInfo windowsInfo) throws IOException {
         super(maxHelth);
@@ -182,25 +182,50 @@ public class Enemy extends PhysicalGameObject {
 
     @Override
     public void update(GameController gameController) {
+
         if(Property.DEBUG_MODE){
             playerLocationsForDebag = new ArrayList<>();
-            for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
-                if(o instanceof Player){
-                    playerLocationsForDebag.add(new Point(o.getLocation()));
-                }
-            }
+            playerLocationsForDebag.addAll(gameController
+                    .getPhysicalGameObject().stream()
+                    .filter(o -> o instanceof Player)
+                    .map(o -> new Point(o.getLocation())).collect(Collectors.toList()));
         }
 
-        move(gameController);
-        findPlayers(gameController);
+        if(objectForAttack==null) {
+            if(moveToTargetLocation()){
+                nextCurrentFreePont();
+            }
+            findPlayerForAttack(gameController);
+        } else{
+            moveToTargetLocation();
+            attackPlayer(objectForAttack);
+        }
     }
 
-    private void findPlayers(GameController gameController) {
-        List<PhysicalGameObject> visiblePlayes = gameController.getPhysicalGameObject().stream() //объекты, находящиеся в радиусе виденья
+    private void attackPlayer(Player player) {
+        if(damageTimer>=DAMAGE_PAUSE) {
+            if (!player.isDestroy() && collision(player) <= 0) {
+                damageTimer=0;
+                player.addHelth(-DAMAGE);
+                addHelth(DAMAGE);
+                if(player.isDestroy()){
+                    objectForAttack = null;
+                    nextCurrentFreePont();
+                }
+            }
+        } else {
+            damageTimer++;
+        }
+    }
+
+    private void findPlayerForAttack(GameController gameController) {
+        List<Player> visiblePalyers = new ArrayList<>();
+
+        List<PhysicalGameObject> playesInRadius = gameController.getPhysicalGameObject().stream() //объекты, находящиеся в радиусе виденья
                 .filter(p1-> p1 instanceof Player && p1.collision(location.x, location.y, OVERVIEW_RADIUS)<=0 )
                 .collect(Collectors.toList());
 
-        for(PhysicalGameObject playerObject : visiblePlayes){
+        for(PhysicalGameObject playerObject : playesInRadius){
             int xp = playerObject.getLocation().x;
             int yp = playerObject.getLocation().y;
             int xe = location.x;
@@ -223,12 +248,17 @@ public class Enemy extends PhysicalGameObject {
             }
 
             if(!hide) {
-                System.out.println("Найден игрок: " + playerObject.getClass());
+                visiblePalyers.add((Player)playerObject);
             }
+        }
+
+        if(visiblePalyers.size()>0) {
+            objectForAttack = visiblePalyers.get(new Random().nextInt(visiblePalyers.size()));
+            targetLocation = objectForAttack.getLocation();
         }
     }
 
-    private void move(GameController gameController) {
+    private boolean moveToTargetLocation() {
         if(targetLocation!=null) { //пока только движение. Если двигаться объекту некуда, то ничего не делаем
             int x = location.x;
             int y = location.y;
@@ -258,38 +288,24 @@ public class Enemy extends PhysicalGameObject {
                     } else {
                         dy = Math.abs(targetY - y);
                         dy *= Math.signum(targetLocation.getY() - y);
-                        nextCurrentFreePont();
+                        return true;
+                        //nextCurrentFreePont();
                     }
                     if(targetLocation!=null) {
                         dy *= Math.signum(targetLocation.getY() - y);
                     }
                 }
 
-                //// TODO: 15.06.2016 пока проверки на столкновения не будет типа врад призрак и ему на всё пофиг
-
-                /*
-                for(PhysicalGameObject o :  gameController.getPhysicalGameObject()){
-                    if (o == this){ continue;}//сам с собой не проверяем
-                    int length = o.collision(x+dx, y+dy, TERITORY_RADIUS);
-                    if(length<0) {
-                        if (dx != 0) {
-                            dx *= -((double) length / dx);
-                        }
-                        if (dy != 0) {
-                            dy *= -((double) length / dy);
-                        }
-                    }
-                }
-                */
-
                 location.x += dx;
                 location.y += dy;
                 if(location.equals(targetLocation)){
-                    nextCurrentFreePont();
+                    return true;
+                    //nextCurrentFreePont();
                     //targetLocation=null;
                 }
             }
         }
+        return false;
     }
 
     private void nextCurrentFreePont() {

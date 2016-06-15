@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static ru.game.pattern.controller.Property.*;
+
 /**
  * Created by Uskov Dmitry on 08.06.2016.
  */
@@ -24,23 +26,23 @@ public class WarriorLvl1 extends Warrior {
 
     public static final String ICON_PATH = Property.RESOURSES_PATH + "warrior/warrior_icon1.jpg";
 
-    public static final int COST = 100;
+    public static final int COST = WARRIOR_LVL1_COST;
 
-    private final static int ATTACK_PAUSE = 30;
+    private final static int ATTACK_PAUSE = WARRIOR_LVL1_ATTACK_PAUSE;
 
-    private final static int ATTACK_RADIUS = 8;
+    private final static int ATTACK_RADIUS = WARRIOR_LVL1_ATTACK_RADIUS;
 
     /**
      * Скорость движения объекта Воин
      */
-    public final static int SPEED = 8;
+    public final static int SPEED = WARRIOR_LVL1_SPEED;
 
-    public final static int DAMAGE = 15;
+    public final static int DAMAGE = WARRIOR_LVL1_MAX_DAMAGE;
 
     /**
      * Максимальное кол-во здоровья объекта Воин
      */
-    private static int MAX_HELTH = 100;
+    private static int MAX_HELTH = WARRIOR_LVL1_MAX_HELTH;
 
     /**
      * Изображение игрового объекта при движении вправо
