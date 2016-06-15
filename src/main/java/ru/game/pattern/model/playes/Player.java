@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
+import static ru.game.pattern.controller.Property.PLAYER_TERRITORY_RADIUS;
+
 /**
  * Created by Uskov Dmitry on 08.06.2016.
  */
@@ -49,7 +51,7 @@ public abstract class Player  extends PhysicalGameObject {
     /**
      * Радиус, показывающий размер объекта
      */
-    protected int TERITORY_RADIUS = 6;
+    protected int TERITORY_RADIUS = PLAYER_TERRITORY_RADIUS;
 
 
     /**
@@ -247,7 +249,7 @@ public abstract class Player  extends PhysicalGameObject {
                 }
 
                 for(PhysicalGameObject o :  gameController.getPhysicalGameObject()){
-                    if (o == this || o instanceof Enemy){ continue;}//сам с собой  и с врагом не проверяем
+                    if (o == this || o instanceof Enemy){ continue;}//сам с собой  и с врагомне проверяем
                     int length = o.collision(x+dx, y+dy, TERITORY_RADIUS);
                     if(length<0) {
                         if (dx != 0) {
