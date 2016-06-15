@@ -256,13 +256,13 @@ abstract public class Mag extends Player{
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode()==KeyEvent.VK_Q) {
+            if(e.getKeyCode()==KeyEvent.VK_W) {
                 if(isSeletedByCursor()){
                     setFreeze(!isFreeze);
                 }
             }
 
-            if(e.getKeyCode() == KeyEvent.VK_W){
+            if(e.getKeyCode() == KeyEvent.VK_E){
                 if(isSeletedByCursor()) {
                     tryInvise();
                 }
