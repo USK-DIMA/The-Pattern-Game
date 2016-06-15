@@ -5,17 +5,26 @@ import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.security.Key;
 
 /**
  * Created by Uskov Dmitry on 09.06.2016.
  */
 
+/**
+ * Класс: Player-объект. Игровой объект Жрец
+ * Очень многое аналогично объекту-магу.
+ * @see Mag
+ * @see ru.game.pattern.model.PhysicalGameObject
+ * @see ru.game.pattern.model.GameObject
+ * @see Player
+ */
 abstract public class Prist extends Player{
-
 
     /**
      * Скорость движения объекта
@@ -36,6 +45,8 @@ abstract public class Prist extends Player{
 
     private MouseListener mouseListener;
 
+    private KeyListener keyListener;
+
     private int mana;
 
     volatile private boolean hill;
@@ -55,14 +66,10 @@ abstract public class Prist extends Player{
         mana = maxMana;
         additionalSelectingIndicatorShift = 15;
         mouseListener = new PristMouseListener();
+        keyListener = new PristKeyListener();
         hill = false;
     }
 
-
-    @Override
-    protected boolean isDrawTargetLocation() {
-        return true;
-    }
 
     @Override
     public int getSpeed() {
@@ -70,7 +77,7 @@ abstract public class Prist extends Player{
     }
 
     @Override
-    protected int getActivBulletCount() {
+    protected int getBulletCount() {
         return 0;
     }
 
@@ -83,12 +90,13 @@ abstract public class Prist extends Player{
     protected void resetAction() {
         hill = false;
         targetLocation = null;
+        objectForAttack = null;
         targetLocationList.clear();
     }
 
     @Override
     public KeyListener getKeyListener() {
-        return null;
+        return keyListener;
     }
 
     @Override
@@ -97,7 +105,7 @@ abstract public class Prist extends Player{
     }
 
     @Override
-    public void update(GameController gameController) {
+    public void updateSpecial(GameController gameController) {
         recalculateMana();
         recalculateHill();
         hillObjects(gameController);
@@ -137,11 +145,9 @@ abstract public class Prist extends Player{
         if(hill){
             if(fireTimer <= 0) {
                 fireTimer = hillPause;
-                for(PhysicalGameObject o : gameController.getPhysicalGameObject()){
-                    if(o.distanceBetweenCenter(this)<= hillRadius){
-                        o.addHelth(helthHill);
-                    }
-                }
+                gameController.getPhysicalGameObject().stream()
+                        .filter(o -> o instanceof Player && o.distanceBetweenCenter(this) <= hillRadius)
+                        .forEach(o ->o.addHelth(helthHill));
             }
             else {
                 fireTimer--;
@@ -168,9 +174,9 @@ abstract public class Prist extends Player{
     protected void drawSpecial(Graphics2D g) {
         //отрисовка полоски маны
         g.setColor(Color.black);
-        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2, 10);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2+5, 10);
         g.setColor(manaColor);
-        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-11-additionalSelectingIndicatorShift, (int)((PLAYER_IMAGE_SHIFT_X*2-2)*(double)mana/ maxMana), 8);
+        g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-4, location.y-PLAYER_IMAGE_SHIFT_Y-11-additionalSelectingIndicatorShift, (int)((PLAYER_IMAGE_SHIFT_X*2+3)*(double)mana/ maxMana), 8);
 
     }
 
@@ -181,15 +187,33 @@ abstract public class Prist extends Player{
     class PristMouseListener extends PlayerMouseListener{
         @Override
         public void mouseReleasedSpecial(MouseEvent e) {
-            if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано CКМ
-                if(isSeletedByCursor()){
-                   trySetHill(!hill);
-                }
-            }
+
         }
     }
 
-    private void trySetHill(boolean hill ) {
+    class PristKeyListener implements KeyListener{
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if(e.getKeyCode()==KeyEvent.VK_Q) { //Клик по экрано CКМ
+                if(isSeletedByCursor()){
+                    trySetHill(!hill);
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
+    }
+
+        private void trySetHill(boolean hill ) {
         this.hill = hill;
     }
 }

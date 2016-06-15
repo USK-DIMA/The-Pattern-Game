@@ -2,6 +2,7 @@ package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.model.Enemy;
 import ru.game.pattern.model.FireBall;
 import ru.game.pattern.model.GameObject;
 import ru.game.pattern.model.WindowInfo;
@@ -31,13 +32,31 @@ abstract public class Archer extends Player {
 
     private MouseListener mouseListener;
 
+    /**
+     * Список точек, куда наносить последующие удары.
+     * обнуляется при вызове метода resetAction() (т.е. стрельба прекращается)
+     */
     private List<Point> atackPoints;
 
+    /**
+     * Объект класса BulletCreater, отвечающий за создание патрон.
+     * Как правило он передаётся из дочернего класса,
+     * т.е. дочерний класс сам выбирыет какими патронами будет стрелять
+     * @see BulletCreater
+     */
     private BulletCreater bulletCreater;
 
+    /**
+     * Скорость объекта
+     */
     private final int speed;
 
+    /**
+     * Пауза между атаками
+     */
     private final int attackPause;
+
+    private final int autoAttackRadius = Property.FIREBALL_LVL1_MAX_DISTANSE;
 
     public Archer(WindowInfo windowsInfo, BulletCreater bulletCreater, int speed, int maxHelth, int attackPause) throws IOException {
         super(maxHelth, windowsInfo);
@@ -47,6 +66,7 @@ abstract public class Archer extends Player {
         this.attackPause = attackPause;
         playerImageForDraw = getImageForMoveToRight();
         mouseListener = new ArcherMouseListener();
+        infighting = false;
     }
 
     @Override
@@ -60,7 +80,7 @@ abstract public class Archer extends Player {
     }
 
     @Override
-    protected int getActivBulletCount() {
+    protected int getBulletCount() {
         return atackPoints.size();
     }
 
@@ -70,7 +90,8 @@ abstract public class Archer extends Player {
     }
 
     @Override
-    public void update(GameController gameController) {
+    public void updateSpecial(GameController gameController) {
+        autoattack(gameController);
         if(fireTimer <= 0) {
             if (atackPoints.size() > 0) {
                 try {
@@ -104,9 +125,14 @@ abstract public class Archer extends Player {
         move(gameController);
     }
 
-    @Override
-    protected boolean isDrawTargetLocation() {
-        return true;
+    private void autoattack(GameController gameController) {
+        if(targetLocation==null && atackPoints.size()==0) {
+            for (Enemy o : gameController.getEnemy()) {
+                if (o.collision(location.x, location.y, getTerritoryRadius() + autoAttackRadius + 5) <= 0) {
+                    atackPoints.add(o.getLocation());
+                }
+            }
+        }
     }
 
     @Override
@@ -121,9 +147,12 @@ abstract public class Archer extends Player {
         atackPoints.clear();
     }
 
+    /**
+     * Добавить новую точку в массив для атаки
+     * @param point координаты точки для атаки
+     */
     private void armBullet(Point point) {
         atackPoints.add(point);
-        System.out.println("Added bullet: "+ atackPoints.size());
     }
 
     class ArcherMouseListener extends PlayerMouseListener{
@@ -138,7 +167,22 @@ abstract public class Archer extends Player {
         }
     }
 
-    protected interface BulletCreater{
+    /**
+     * Класс, отвечающий за создание патрон.
+     * Как правило он определяется в дочернем классе и передаётся в класс Archer,
+     * т.е. дочерний класс сам выбирыет какими патронами будет стрелять
+     */
+    protected interface BulletCreater {
+        /**
+         * создаёт патрон
+         * @param location местополежения патрона, от куда он выпущен
+         * @param targetLocation куда летит патрон
+         * @param objectTerritoryRadius размер объекта-родителя (т.е. которые стреляет).
+         *                              Типа патрон появляется не в центре объкта-родителя, а рябом с ним
+         * @param parant ссылка на объкт-родителя, сделавшего выстрел (чтобы не стрелять по себе)
+         * @return объект-патрон
+         * @throws IOException если ресурсы не удалось подгрузить
+         */
         FireBall create(Point location, Point targetLocation, int objectTerritoryRadius, GameObject parant) throws IOException;
     }
 

@@ -1,18 +1,15 @@
 package ru.game.pattern.model.playes;
 
-import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import static ru.game.pattern.controller.Property.*;
 
 /**
  * Created by Uskov Dmitry on 08.06.2016.
@@ -27,25 +24,25 @@ import java.io.IOException;
  */
 public class WarriorLvl1 extends Warrior {
 
-    public static final String ICON_PATH = Property.RESOURSES_PATH + "warrior_icon1.jpg";
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "warrior/warrior_icon1.jpg";
 
-    public static final int COST = 100;
+    public static final int COST = WARRIOR_LVL1_COST;
 
-    private final static int ATTACK_PAUSE = 30;
+    private final static int ATTACK_PAUSE = WARRIOR_LVL1_ATTACK_PAUSE;
 
-    private final static int ATTACK_RADIUS = 8;
+    private final static int ATTACK_RADIUS = WARRIOR_LVL1_ATTACK_RADIUS;
 
     /**
      * Скорость движения объекта Воин
      */
-    public final static int SPEED = 9;
+    public final static int SPEED = WARRIOR_LVL1_SPEED;
 
-    public final static int DAMAGE = 15;
+    public final static int DAMAGE = WARRIOR_LVL1_MAX_DAMAGE;
 
     /**
      * Максимальное кол-во здоровья объекта Воин
      */
-    private static int MAX_HELTH = 100;
+    private static int MAX_HELTH = WARRIOR_LVL1_MAX_HELTH;
 
     /**
      * Изображение игрового объекта при движении вправо
@@ -60,8 +57,8 @@ public class WarriorLvl1 extends Warrior {
 
     public WarriorLvl1(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo, ATTACK_PAUSE, ATTACK_RADIUS, SPEED, DAMAGE );
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_left.png"));
+        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior/warrior_right.png"));
+        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior/warrior_left.png"));
 
     }
 

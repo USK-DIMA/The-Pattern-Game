@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static ru.game.pattern.controller.Property.*;
+
 /**
  * Created by Uskov Dmitry on 03.06.2016.
  */
@@ -19,13 +21,13 @@ import java.io.IOException;
  */
 public class FireBallLvl1 extends FireBall {
 
-    private static final int SPEED = 20;
+    private static final int SPEED = FIREBALL_LVL1_SPEED;
 
-    private static final int TERRITORY_RADIUS = 2;
+    private static final int TERRITORY_RADIUS = FIREBALL_LVL1_TERRITORY_RADIUS;
 
-    private static final int MAX_DISTANSE = 300;
+    private static final int MAX_DISTANSE = FIREBALL_LVL1_MAX_DISTANSE;
 
-    private static final int DAMAGE = 25;
+    private static final int DAMAGE = FIREBALL_LVL1_DAMAGE;
 
     private static BufferedImage image;
 

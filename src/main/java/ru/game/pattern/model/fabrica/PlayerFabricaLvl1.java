@@ -1,12 +1,13 @@
 package ru.game.pattern.model.fabrica;
 
-import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.*;
 import ru.game.pattern.model.playes.*;
 
 
 import java.awt.*;
 import java.io.IOException;
+
+import static ru.game.pattern.controller.Property.PLYAER_FABRIC_LVL1_NEXT_UPDATE;
 
 /**
  * Created by Uskov Dmitry on 09.06.2016.
@@ -30,7 +31,7 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
 
     @Override
     public int nexUpdate() {
-        return 300;
+        return PLYAER_FABRIC_LVL1_NEXT_UPDATE;
     }
 
     @Override
@@ -42,8 +43,7 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
     public Archer createArhcer(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Archer archer = new ArcherLvl1(windowInfo);
         archer.setLocation(location);
-        archer.setTargetLocation(targetLocation, false);
-        //// TODO: 09.06.2016 выкл флажёк при выходе
+        archer.setTargetLocation(targetLocation);
         return archer;
     }
 
@@ -51,8 +51,7 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
     public Warrior createWarrior(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Warrior warrior = new WarriorLvl1(windowInfo);
         warrior.setLocation(location);
-        warrior.setTargetLocation(targetLocation, false);
-        //// TODO: 09.06.2016 выкл флажёк при выходе
+        warrior.setTargetLocation(targetLocation);
         return warrior;
     }
 
@@ -60,8 +59,7 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
     public Prist createPrist(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Prist prist = new PristLvl1(windowInfo);
         prist.setLocation(location);
-        prist.setTargetLocation(targetLocation, false);
-        //// TODO: 09.06.2016 выкл флажёк при выходе
+        prist.setTargetLocation(targetLocation);
         return prist;
     }
 
@@ -69,8 +67,7 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
     public Mag createMag(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
         Mag mag = new MagLvl1(windowInfo);
         mag.setLocation(location);
-        mag.setTargetLocation(targetLocation, false);
-        //// TODO: 09.06.2016 выкл флажёк при выходе
+        mag.setTargetLocation(targetLocation);
         return mag;
     }
 

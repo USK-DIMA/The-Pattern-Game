@@ -150,10 +150,14 @@ public class Cursor extends GameObject {
     /**
      * Обработчик действий мышью для курсора
      */
+
+    public static int i=0;
     class CursorMouseListener implements MouseListener{
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            i++;
+            System.out.println(i+") "+ "X: "+ e.getX()+"   Y:"+e.getY());
         }
 
         @Override

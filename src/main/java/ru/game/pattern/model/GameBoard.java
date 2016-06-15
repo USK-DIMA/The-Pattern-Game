@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static ru.game.pattern.controller.Property.*;
 import static ru.game.pattern.model.GameObject.Type.board;
 
 /**
@@ -60,19 +61,21 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private int nextUpdate;
 
-    private int money = 400;
+    private int money = START_MONEY;
 
     private int playerCount = 0;
 
-    private int maxPlayerCount = 6;
+    private int maxPlayerCount = MAX_PLAYER_COUNT;
 
     private int tryBuyPlayerNumber = -1;
 
     private KeyListener keyListener;
 
-    private int BUY_PAUSE = 200;
+    private int BUY_PAUSE = BUY_PLAYER_PAUSE;
 
     private int buyTimer = BUY_PAUSE;
+
+    private int minCost = 0;
 
     Color impossibleByColor = new Color(100, 100, 100);
 
@@ -108,6 +111,18 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         pristCost = playerFabrica.getPristInfo().getCost();
         magCost = playerFabrica.getMagInfo().getCost();
         nextUpdate = playerFabrica.nexUpdate();
+
+        minCost = archerCost;
+
+        if(minCost>warriorCost){
+            minCost = warriorCost;
+        }
+        if(minCost>pristCost){
+            minCost = pristCost;
+        }
+        if(minCost>magCost){
+            minCost = magCost;
+        }
     }
 
     @Override
@@ -157,10 +172,10 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         g.fillRect(BORDER+(IMAGE_SIZE+BORDER)*3, BORDER, IMAGE_SIZE, dy);
 
         g.setColor(Color.WHITE);
-        g.drawString("q", BORDER, BORDER+9);
-        g.drawString("w", BORDER + (IMAGE_SIZE + BORDER)+2, BORDER+9);
-        g.drawString("e", BORDER+(IMAGE_SIZE+BORDER)*2 + 2, BORDER+9);
-        g.drawString("r", BORDER+(IMAGE_SIZE+BORDER)*3 + 2, BORDER+9);
+        g.drawString("1", BORDER, BORDER+9);
+        g.drawString("2", BORDER + (IMAGE_SIZE + BORDER)+2, BORDER+9);
+        g.drawString("3", BORDER+(IMAGE_SIZE+BORDER)*2 + 2, BORDER+9);
+        g.drawString("4", BORDER+(IMAGE_SIZE+BORDER)*3 + 2, BORDER+9);
 
 
 
@@ -198,9 +213,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     /**
      * Если не хвататет денег, то цвет меняем на более тёмный, если хвататет, оставляем белым
-     * @param g
-     * @param cost
-     * @param money
+     * @param g там, где установим нужный цвет
+     * @param cost стоимость
+     * @param money кол-во денег
      */
     private void setColor(Graphics2D g, int cost, int money) {
         if(money>=cost){
@@ -212,6 +227,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     @Override
     public void update(GameController gameController) {
+        if(playerCount== 0 && money<minCost){
+            gameController.endGame();
+        }
         if(isLvlUp){
             isLvlUp = false;
             lvlUp();
@@ -223,6 +241,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         }
     }
 
+    /**
+     * Увеличение уровня базы, если хватает денег
+     */
     private void lvlUp() {
         if(money>=nextUpdate){
             money-=nextUpdate;
@@ -246,6 +267,11 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         }
     }
 
+    /**
+     * Попытка купить игрока. Проверяются таймер покупки, и вообще была ли нажата клавиша покупки
+     * @param gameController
+     * @throws IOException если не удалюсь подрузить ресурсы объекта-игрока, который мы хотим купить
+     */
     private void tryBuyPlayer(GameController gameController) throws IOException {
 
         PlayerCreator creator = null;
@@ -280,7 +306,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
             if (cost <= money) {
                 money -= cost;
-                Player player = creator.create(new Point(0, windowInfo.getHeight() - 100), new Point(100, windowInfo.getHeight() - 100), windowInfo);
+                Player player = creator.create(new Point(115, windowInfo.getHeight() + 100), new Point(115, windowInfo.getHeight() - 100), windowInfo);
                 playerCount++;
                 buyTimer=0;
                 player.setPlayerDestroyNotifer(this);
@@ -309,21 +335,16 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
         @Override
         public void keyPressed(KeyEvent e) {
-            System.out.println(e.getKeyCode());
-            if(e.getKeyCode()==KeyEvent.VK_Q){
-                System.out.println(1);
+            if(e.getKeyCode()==KeyEvent.VK_1){
                 setTryBuyPlayerNumber(1);
             }
-            if(e.getKeyCode()==KeyEvent.VK_W){
-                System.out.println(2);
+            if(e.getKeyCode()==KeyEvent.VK_2){
                 setTryBuyPlayerNumber(2);
             }
-            if(e.getKeyCode()==KeyEvent.VK_E){
-                System.out.println(3);
+            if(e.getKeyCode()==KeyEvent.VK_3){
                 setTryBuyPlayerNumber(3);
             }
-            if(e.getKeyCode()==KeyEvent.VK_R){
-                System.out.println(4);
+            if(e.getKeyCode()==KeyEvent.VK_4){
                 setTryBuyPlayerNumber(4);
             }
 
@@ -338,6 +359,10 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         }
     }
 
+    /**
+     * Попытка установить флаг увеличения уровня базы в true (если хвататет денег).
+     * Если флаг стоит в true, то на следующей итерации метода update(...) база увеличит уровень.
+     */
     private void tryLvlUp() {
         if(money>=nextUpdate){
             isLvlUp = true;

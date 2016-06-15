@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static ru.game.pattern.controller.Property.*;
+
 /**
  * Created by Uskov Dmitry on 08.06.2016.
  */
@@ -22,25 +24,25 @@ import java.io.IOException;
  */
 public class WarriorLvl3 extends Warrior {
 
-    public static final String ICON_PATH = Property.RESOURSES_PATH + "warrior_icon1.jpg";
+    public static final String ICON_PATH = Property.RESOURSES_PATH + "warrior/warrior_icon3.jpg";
 
-    public static final int COST = 100;
+    public static final int COST = WARRIOR_LVL3_COST;
 
-    private final static int ATTACK_PAUSE = 30;
+    private final static int ATTACK_PAUSE = WARRIOR_LVL3_ATTACK_PAUSE;
 
-    private final static int ATTACK_RADIUS = 8;
+    private final static int ATTACK_RADIUS = WARRIOR_LVL3_ATTACK_RADIUS;
 
     /**
      * Скорость движения объекта Воин
      */
-    public final static int SPEED = 9;
+    public final static int SPEED = WARRIOR_LVL3_SPEED;
 
-    public final static int DAMAGE = 15;
+    public final static int DAMAGE = WARRIOR_LVL3_MAX_DAMAGE;
 
     /**
      * Максимальное кол-во здоровья объекта Воин
      */
-    private static int MAX_HELTH = 100;
+    private static int MAX_HELTH = WARRIOR_LVL3_MAX_HELTH;
 
     /**
      * Изображение игрового объекта при движении вправо
@@ -55,8 +57,8 @@ public class WarriorLvl3 extends Warrior {
 
     public WarriorLvl3(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo, ATTACK_PAUSE, ATTACK_RADIUS, SPEED, DAMAGE );
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior_left.png"));
+        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior/warrior_right3.png"));
+        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "warrior/warrior_left3.png"));
 
     }
 

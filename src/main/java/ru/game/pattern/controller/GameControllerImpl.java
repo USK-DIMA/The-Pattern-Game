@@ -1,14 +1,18 @@
 package ru.game.pattern.controller;
 
 import ru.game.pattern.model.*;
+import ru.game.pattern.model.Cursor;
 import ru.game.pattern.model.playes.*;
+import ru.game.pattern.model.staticObjects.*;
 import ru.game.pattern.view.GameView;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -58,6 +62,8 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     volatile private ArrayList<PhysicalGameObject> physicalGameObjects;
 
+    private List<StaticPhysicalGameObject> staticPhysicalGameObjects;
+
     /**
      * Объект, куда будут передоваться только что созданные игровые объекты для регистрации листенера
      */
@@ -79,43 +85,142 @@ public class GameControllerImpl implements GameController, Runnable{
         allGameObjects = new ArrayList<>();
         allGameObjects = Collections.synchronizedList(allGameObjects);
         physicalGameObjects = new ArrayList<>();
+        staticPhysicalGameObjects = new ArrayList<>();
         background = new GameBackground(windowInfo);
         cursor = new Cursor(windowInfo, physicalGameObjects);
         gameBoard = new GameBoard(windowInfo);
 
-        /*
-        Archer archer1 = new Archer(windowInfo);
-        archer1.setLocation(100, 100);
-        Archer archer2 = new Archer(windowInfo);
-        archer2.setLocation(200, 200);
-        Archer archer3 = new Archer(windowInfo);
-        archer3.setLocation(300, 300);
-        Warrior warrior = new Warrior(windowInfo);
-        warrior.setLocation(400, 400);
-        Prist prist = new Prist(windowInfo);
-        prist.setLocation(500, 500);
-        Mag mag = new Mag(windowInfo);
-        mag.setLocation(600, 600);
-        */
-
-        /**Порядок добваленных элементов аналогичен порядку отрисовке на экране */
-        /*
-        allGameObjects.add(archer1);
-        allGameObjects.add(archer2);
-        allGameObjects.add(archer3);
-        allGameObjects.add(warrior);
-        allGameObjects.add(prist);
-        allGameObjects.add(mag);
-
-        physicalGameObjects.add(archer1);
-        physicalGameObjects.add(archer2);
-        physicalGameObjects.add(archer3);
-        physicalGameObjects.add(warrior);
-        physicalGameObjects.add(prist);
-        physicalGameObjects.add(mag);
-        */
-
+        initStaticObjects();
+        initEnemy();
         allGameObjects.add(cursor);
+
+        Player.setStaticObjects(getStaticPhysicalGameObjects());
+    }
+
+    private void initEnemy() throws IOException {
+        Enemy object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+    }
+
+    private void initStaticObjects() throws IOException{
+        initInvisibleStaticObject();
+
+        addStaticObject(new Stone(new Point(323, 542)));
+        addStaticObject(new Stone(new Point(70, 198)));
+        addStaticObject(new Stone(new Point(600, 103)));
+        addStaticObject(new Stone(new Point(798, 353)));
+        addStaticObject(new Stone(new Point(1022, 348)));
+        addStaticObject(new Stone(new Point(1022, 348)));
+
+
+        addStaticObject(new SmallTree(new Point(585, 590)));
+        addStaticObject(new MediumTree(new Point(528, 615)));
+        addStaticObject(new BigTree(new Point(566, 629)));
+
+        addStaticObject(new MediumTree(new Point(407, 406)));
+        addStaticObject(new MediumTree(new Point(658, 220)));
+
+        addStaticObject(new SmallTree(new Point(277, 182)));
+        addStaticObject(new MediumTree(new Point(257, 192)));
+
+        addStaticObject(new MediumTree(new Point(219, 642)));
+        addStaticObject(new MediumTree(new Point(901, 648)));
+
+        addStaticObject(new BigTree(new Point(985, 281)));
+
+        addStaticObject(new BigTree(new Point(855, 501)));
+        addStaticObject(new SmallTree(new Point(800, 499)));
+    }
+
+    private void initInvisibleStaticObject() throws IOException {
+        addStaticObject(new InvisibleStaticObject(new Point(85, 70), 13));
+        addStaticObject(new InvisibleStaticObject(new Point(1100, 650), 20));
+        addStaticObject(new InvisibleStaticObject(new Point(1125, 625), 20));
+        addStaticObject(new InvisibleStaticObject(new Point(1150, 600), 20));
+        addStaticObject(new InvisibleStaticObject(new Point(757, 80), 18));
+        addStaticObject(new InvisibleStaticObject(new Point(757, 55), 18));
+        addStaticObject(new InvisibleStaticObject(new Point(329, 81), 15));
+
+        addStaticObject(new InvisibleStaticObject(new Point(49, 358), 14));
+        addStaticObject(new InvisibleStaticObject(new Point(1137, 433), 13));
+
+        addStaticObject(new InvisibleStaticObject(new Point(11, 443), 18));
+
+        addStaticObject(new InvisibleStaticObject(new Point(20, 313), 18));
+
+        addStaticObject(new InvisibleStaticObject(new Point(1175, 540), 60));
+
+        addStaticObject(new InvisibleStaticObject(new Point(1225, 490), 60));
+
+        addStaticObject(new InvisibleStaticObject(new Point(910, 75), 60));
+
+        addStaticObject(new InvisibleStaticObject(new Point(25, 655), 20));
+
+        addStaticObject(new InvisibleStaticObject(new Point(952, 706), 35));
+        addStaticObject(new InvisibleStaticObject(new Point(1007, 695), 35));
+        addStaticObject(new InvisibleStaticObject(new Point(1064, 710), 30));
+        addStaticObject(new InvisibleStaticObject(new Point(1221, 674), 65));
+
+
+        addStaticObject(new InvisibleStaticObject(new Point(8, 115), 35));
+
+        addStaticObject(new InvisibleStaticObject(new Point(1171, 261), 20));
+        addStaticObject(new InvisibleStaticObject(new Point(1199, 229), 20));
+        addStaticObject(new InvisibleStaticObject(new Point(1255, 164), 45));
+        addStaticObject(new InvisibleStaticObject(new Point(1262, 278), 45));
+
+        addStaticObject(new InvisibleStaticObject(new Point(1254, 422), 40));
+
+        addStaticObject(new InvisibleStaticObject(new Point(1345, 0), 200));
+
+        addStaticObject(new InvisibleStaticObject(new Point(986, 83), 30));
+        addStaticObject(new InvisibleStaticObject(new Point(989, 15), 45));
+
+        addStaticObject(new InvisibleStaticObject(new Point(145, 690), 10));
+        addStaticObject(new InvisibleStaticObject(new Point(85, 690), 10));
+
+        addStaticObject(new InvisibleStaticObject(new Point(140, 675), 10));
+        addStaticObject(new InvisibleStaticObject(new Point(90, 675), 10));
+
+
+        addStaticObject(new InvisibleStaticObject(new Point(172, 693), 20));
+
+        addStaticObject(new InvisibleStaticObject(new Point(61, 698), 18));
+
+        addStaticObject(new InvisibleStaticObject(new Point(694, -5), 50));
+    }
+
+    private void addStaticObject(StaticPhysicalGameObject object) {
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+        staticPhysicalGameObjects.add(object);
+    }
+
+    @Override
+    public List<StaticPhysicalGameObject> getStaticPhysicalGameObjects() {
+        return staticPhysicalGameObjects;
     }
 
     @Override
@@ -210,6 +315,20 @@ public class GameControllerImpl implements GameController, Runnable{
         allGameObjects.add(player);
         physicalGameObjects.add(player);
         objectNotifer.addListeners(player);
+    }
+
+    @Override
+    public List<Enemy> getEnemy() {
+        List<Enemy> enemies = allGameObjects.stream()
+                .filter(o -> o instanceof Enemy)
+                .map(o -> (Enemy) o)
+                .collect(Collectors.toList());
+        return enemies;
+    }
+
+    @Override
+    public void endGame() {
+        background.endGame();
     }
 
     @Override

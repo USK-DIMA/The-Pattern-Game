@@ -25,12 +25,50 @@ public class GameBackground extends GameObject {
 
     private BufferedImage image = null;
 
-    private String BACKGROUND_IMAGE_PATH = Property.RESOURSES_PATH + "plane_lite_80.jpg";
+    private BufferedImage imageTree = null;
+
+    private String BACKGROUND_IMAGE_PATH = Property.RESOURSES_PATH + "plane_lite_80.png";
+
+    private String BACKGROUND_IMAGE_PATH_THREE = Property.RESOURSES_PATH + "plane_lite_81.png";
+
+    private int black = 0;
+
+    private boolean endGame = false;
+
+    private int endGameTransparency = 0;
 
 
     public GameBackground(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
         image = ImageIO.read(new File(BACKGROUND_IMAGE_PATH));
+        imageTree = ImageIO.read(new File(BACKGROUND_IMAGE_PATH_THREE));
+    }
+
+    @Override
+    public void drawSpecialAfterAll(Graphics2D g) {
+        g.drawImage(imageTree, 0, 0, null);
+        g.setColor(Color.WHITE);
+        if (Property.DEBUG_MODE) {
+            g.drawRect(windowInfo.getBorderLeft(), windowInfo.getBorderTop(),
+                         windowInfo.getWidth() - windowInfo.getBorderLeft() - windowInfo.getBorderRight(),
+                        windowInfo.getHeight() - windowInfo.getBorderTop() - windowInfo.getBorderBottom());
+        }
+
+        if(black>0) {
+            g.setColor(new Color(0, 0, 0, black));
+            g.fillRect(0,0, 1280, 720);
+            black-=5;
+        }
+        if(endGame){
+            endGameTransparency+=4;
+            if(endGameTransparency>255){
+                endGameTransparency = 255;
+            }
+            g.setColor(new Color(0, 0, 0, endGameTransparency ));
+            g.fillRect(0,0, 1280, 720);
+            g.setColor(new Color(255, 255, 255, endGameTransparency));
+            g.drawString("Game Over", 620, 360);
+        }
     }
 
     @Override
@@ -58,4 +96,11 @@ public class GameBackground extends GameObject {
         return Type.other;
     }
 
+    public void setBlack(int i) {
+        black = i;
+    }
+
+    public void endGame() {
+        endGame = true;
+    }
 }

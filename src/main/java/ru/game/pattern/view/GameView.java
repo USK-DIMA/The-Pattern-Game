@@ -138,6 +138,7 @@ public class GameView implements  Runnable{
                 o.drawSpecialAfterAll(g); //Отрисовка объектов из контроллера
             }
             gameController.getGameBoard().draw(g);
+            gameController.getBackgound().drawSpecialAfterAll(g);
             gameDraw();
         }
     }
