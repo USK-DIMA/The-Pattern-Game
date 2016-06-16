@@ -150,14 +150,11 @@ public class Cursor extends GameObject {
     /**
      * Обработчик действий мышью для курсора
      */
-
-    public static int i=0;
     class CursorMouseListener implements MouseListener{
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            i++;
-            System.out.println(i+") "+ "X: "+ e.getX()+"   Y:"+e.getY());
+
         }
 
         @Override
@@ -189,15 +186,6 @@ public class Cursor extends GameObject {
                 }
             }
 
-            /*
-            if(e.getButton()==MouseEvent.BUTTON3) { //Клик по экрано ПКМ
-                for(PhysicalGameObject o: selectingGameObjects){
-                    if(o.isSeletedByCursor()){
-                        o.setClickCursorLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
-                    }
-                }
-            }
-            */
         }
 
         @Override
@@ -222,17 +210,15 @@ public class Cursor extends GameObject {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode() == 0){//буква ё
+            if(e.getKeyCode() == 0 || e.getKeyCode() == 192 ){//буква ё
                 for (PhysicalGameObject o : selectingGameObjects) {
                     o.setSelectedByCursor(true);
                 }
             }
             if(e.getKeyCode() == KeyEvent.VK_S){ //буква s
-                for (PhysicalGameObject o : selectingGameObjects) {
-                    if(o.isSeletedByCursor()) {
-                        o.resetAction();
-                    }
-                }
+                selectingGameObjects.stream()
+                        .filter(o -> o.isSeletedByCursor())
+                        .forEach(PhysicalGameObject::resetAction);
             }
         }
 

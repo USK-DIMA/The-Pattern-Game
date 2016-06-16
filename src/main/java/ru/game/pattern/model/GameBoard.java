@@ -322,7 +322,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     @Override
     public void objectIsDistroy(GameObject player) {
-        playerCount--;
+        if(player instanceof Player) {
+            playerCount--;
+        }
     }
 
 

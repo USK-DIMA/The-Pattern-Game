@@ -329,7 +329,6 @@ public class Enemy extends PhysicalGameObject {
         double targetX = targLocation.getX();
         double targetY = targLocation.getY();
         if(targetX != x) {
-
             double tan = Math.abs((targetY - y) / (targetX - x));
             dx = getSpeed() / Math.sqrt(1 + tan * tan);
             if(dx > Math.abs(targetX - x)){

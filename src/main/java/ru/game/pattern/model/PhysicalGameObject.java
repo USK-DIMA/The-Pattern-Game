@@ -43,7 +43,7 @@ public abstract class PhysicalGameObject extends GameObject {
      */
     public boolean isSeletedByCursor(){
         return false;
-    };
+    }
 
     /**
      * Передает информацию объекту, выбран ли он курсором.
@@ -56,14 +56,6 @@ public abstract class PhysicalGameObject extends GameObject {
 
     }
 
-    /**
-     * в данный метод передаются координаты, куда клинкнули курсором на экране (как приавло, нажатие ПКМ)
-     * P.S. Как правило, этот метод вызывается, только у тех объектов, у котороых isSeletedByCursor() = true.
-     * Но некоторым объектам иногда неоходимо получать информацию всегда обо всех кликах (как правило ПКМ) на экране.
-     * @param point координаты, куда кликнули курсором.
-     * @param isShiftDown дыла ли нажата клавиша Shift в момент клика
-     */
-    /*abstract public void setClickCursorLocation(Point point, boolean isShiftDown);*/
 
     /**
      * Возвращает местоположение объекта на карте без учёта его размера (грубо говоря, возвращает координаты центра объекта)
@@ -127,7 +119,9 @@ public abstract class PhysicalGameObject extends GameObject {
             helth = maxHelth;
         }
         if(helth<=0){
-            destroy();
+            if(!isDestroy()) {
+                destroy();
+            }
         }
     }
 
@@ -177,45 +171,4 @@ public abstract class PhysicalGameObject extends GameObject {
         return  ans;
     }
 
-
-    /**
-     * Возвращает Point, где Point.x соответсвует dx, Point.y соответсвует dy,
-     * на основании местонахождения объекта, точку куда надо придыть и скорости объекта
-     * @param location
-     * @param targetLocation
-     * @param speed
-     * @return
-     */
-    /*public static Point getDeltaBySpeed(Point location, Point targetLocation, int speed){
-        int x = location.x;
-        int y = location.y;
-        double dx;
-        double dy;
-        double targetX = targetLocation.getX();
-        double targetY = targetLocation.getY();
-        if(targetX - x!=0) {
-            double tan = Math.abs((targetY - y) / (targetX - x));
-            dx = speed / Math.sqrt(1 + tan * tan);
-            if(dx > Math.abs(targetX - x)){
-                dx = Math.abs(targetX - x);
-            }
-            dx*= Math.signum(targetX - x);
-
-            dy = Math.abs(dx * tan);
-            if(dy > Math.abs(targetY - y)){
-                dy = Math.abs(targetY - y);
-            }
-            dy *= Math.signum(targetY - y);
-        }
-        else {
-            dx=0;
-            if(speed <Math.abs(targetY - y)) {
-                dy = speed;
-            } else {
-                dy = Math.abs(targetY - y);
-            }
-            dy*=Math.signum(targetLocation.getY() - y);
-        }
-        return new Point((int)dx, (int)dy);
-    }*/
 }
