@@ -201,7 +201,7 @@ abstract public class Mag extends Player{
     }
 
     @Override
-    public void drawSpecialBeforeAll(Graphics2D g) {
+    public void drawBeforeAll(Graphics2D g) {
         if(isFreeze){
 
             g.setStroke(new BasicStroke(3));

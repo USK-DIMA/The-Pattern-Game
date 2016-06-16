@@ -45,7 +45,7 @@ public class GameBackground extends GameObject {
     }
 
     @Override
-    public void drawSpecialAfterAll(Graphics2D g) {
+    public void drawAfterAll(Graphics2D g) {
         g.drawImage(imageTree, 0, 0, null);
         g.setColor(Color.WHITE);
         if (Property.DEBUG_MODE) {

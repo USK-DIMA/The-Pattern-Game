@@ -312,7 +312,7 @@ public abstract class Player  extends PhysicalGameObject {
 
 
     @Override
-    public void drawSpecialAfterAll(Graphics2D g){
+    public void drawAfterAll(Graphics2D g){
         if(objectForAttack!=null && !objectForAttack.isDestroy()){
             g.drawImage(aimImage, objectForAttack.getLocation().x - 14, objectForAttack.getLocation().y - 14, null);
         }

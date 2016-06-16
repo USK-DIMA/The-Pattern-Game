@@ -27,14 +27,14 @@ abstract public class GameObject {
     /**
      * Если надо отрисовать что-то ещё особенное под всеми объеками кроме поля
      */
-    public void drawSpecialBeforeAll(Graphics2D g){
+    public void drawBeforeAll(Graphics2D g){
 
     }
 
     /**
      * Если надо отрисовать что-то ещё особенное под всеми объеками кроме поля
      */
-    public void drawSpecialAfterAll(Graphics2D g){
+    public void drawAfterAll(Graphics2D g){
 
     }
 

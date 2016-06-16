@@ -156,7 +156,7 @@ abstract public class Prist extends Player{
     }
 
     @Override
-    public void drawSpecialBeforeAll(Graphics2D g) {
+    public void drawBeforeAll(Graphics2D g) {
 
         if(hill){
             g.setStroke(new BasicStroke(3));

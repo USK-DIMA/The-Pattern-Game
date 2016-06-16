@@ -32,7 +32,7 @@ public class BigTree extends StaticPhysicalGameObject {
 
 
     @Override
-    public void drawSpecialAfterAll(Graphics2D g) {
+    public void drawAfterAll(Graphics2D g) {
         g.drawImage(leavesImage, location.x - IMAGE_SIZE.x / 2, location.y - IMAGE_SIZE.y / 2 + additionalIamgeShift, null);
     }
 }
