@@ -218,7 +218,7 @@ public class Enemy extends PhysicalGameObject {
                         }
                         break;
                     case attack:
-                        if (objectForAttack != null) {
+                         if(objectForAttack != null) {
                             moveToLocation(objectForAttack.getLocation());
                             attackPlayer(objectForAttack);
                         } else {
@@ -231,13 +231,6 @@ public class Enemy extends PhysicalGameObject {
                         break;
                 }
 
-        if(objectForAttack==null) {
-            //патрулирование
-
-        } else {
-            //атака игрока (ближний бой)
-
-        }
     }
 
 
@@ -248,16 +241,13 @@ public class Enemy extends PhysicalGameObject {
                 damageTimer=0;
                 player.addHelth(-DAMAGE);
                 addHelth(DAMAGE);
-                if(player.isDestroy()){
-                    objectForAttack = null;
-                    nextCurrentFreePont();
-                }
             }
         } else {
             damageTimer++;
         }
 
-        if(objectForAttack != null && objectForAttack.isDestroy()){
+        if(objectForAttack == null || objectForAttack.isDestroy()){
+            state = patrul;
             objectForAttack = null;
         }
     }
