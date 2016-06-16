@@ -171,8 +171,8 @@ abstract public class Prist extends Player{
     }
 
     @Override
-    protected void drawSpecial(Graphics2D g) {
-        //отрисовка полоски маны
+    public void draw(Graphics2D g) {
+        super.draw(g);
         g.setColor(Color.black);
         g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2+5, 10);
         g.setColor(manaColor);
@@ -185,10 +185,7 @@ abstract public class Prist extends Player{
     }
 
     class PristMouseListener extends PlayerMouseListener{
-        @Override
-        public void mouseReleasedSpecial(MouseEvent e) {
 
-        }
     }
 
     class PristKeyListener implements KeyListener{

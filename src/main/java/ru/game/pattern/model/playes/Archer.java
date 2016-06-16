@@ -153,9 +153,10 @@ abstract public class Archer extends Player {
     }
 
     class ArcherMouseListener extends PlayerMouseListener{
-
+        
         @Override
-        public void mouseReleasedSpecial(MouseEvent e) {
+        public void mouseReleased(MouseEvent e) {
+            super.mouseReleased(e);
             if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано СКМ
                 if(isSeletedByCursor()){
                     armBullet(new Point(e.getX(), e.getY()));

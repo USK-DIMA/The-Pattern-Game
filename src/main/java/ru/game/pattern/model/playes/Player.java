@@ -282,7 +282,6 @@ public abstract class Player  extends PhysicalGameObject {
                 }
             }
         }
-        drawSpecial(g);
     }
 
 
@@ -311,12 +310,6 @@ public abstract class Player  extends PhysicalGameObject {
         }
     }
 
-    /**
-     * Если надо отрисовать что-то ещё особенное поверх всего
-     */
-    protected void drawSpecial(Graphics2D g){
-
-    }
 
     @Override
     public void drawSpecialAfterAll(Graphics2D g){
@@ -525,11 +518,6 @@ public abstract class Player  extends PhysicalGameObject {
                     trySetTargetLocation(new Point(e.getX(), e.getY()), e.isShiftDown());
                 }
             }
-
-            mouseReleasedSpecial(e);
-        }
-
-        public void mouseReleasedSpecial(MouseEvent e){
 
         }
 
