@@ -105,10 +105,15 @@ abstract public class Prist extends Player{
     }
 
     @Override
-    public void updateSpecial(GameController gameController) {
+    public void update(GameController gameController) {
         recalculateMana();
         recalculateHill();
         hillObjects(gameController);
+        super.update(gameController);
+    }
+
+    @Override
+    public void updateSpecial(GameController gameController) {
         move(gameController);
     }
 

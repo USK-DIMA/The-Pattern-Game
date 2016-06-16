@@ -168,7 +168,7 @@ public abstract class Player  extends PhysicalGameObject {
     }
 
     @Override
-    final public void update(GameController gameController) {
+    public void update(GameController gameController) {
         setObjectForAttack(gameController);
         if(objectForAttack==null && targetLocation == null && infighting){
             autoattack(gameController);

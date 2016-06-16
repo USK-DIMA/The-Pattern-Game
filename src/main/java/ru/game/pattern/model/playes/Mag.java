@@ -127,11 +127,16 @@ abstract public class Mag extends Player{
     }
 
     @Override
-    public void updateSpecial(GameController gameController) {
+    public void update(GameController gameController) {
         recalculateMana();
         recalculateFreeze();
         invise(gameController);
         freezeObjects(gameController);
+        super.update(gameController);
+    }
+
+    @Override
+    public void updateSpecial(GameController gameController) {
         move(gameController);
     }
 
