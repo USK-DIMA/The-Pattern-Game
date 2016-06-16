@@ -218,10 +218,12 @@ public class Enemy extends PhysicalGameObject {
                         }
                         break;
                     case attack:
-
-                        moveToLocation(objectForAttack.getLocation());
-                        attackPlayer(objectForAttack);
-
+                        if (objectForAttack != null) {
+                            moveToLocation(objectForAttack.getLocation());
+                            attackPlayer(objectForAttack);
+                        } else {
+                            state = patrul;
+                        }
                         break;
                     case attackDistant:
                         break;
