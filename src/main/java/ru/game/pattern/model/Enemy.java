@@ -219,7 +219,7 @@ public class Enemy extends PhysicalGameObject {
                         break;
                     case attack:
                          if(objectForAttack != null) {
-                            moveToLocation(objectForAttack.getLocation());
+                            moveToLocation(objectForAttack.getLocation(), objectForAttack.getTerritoryRadius()+ATTACK_RADIUS);
                             attackPlayer(objectForAttack);
                         } else {
                             state = patrul;
@@ -293,8 +293,23 @@ public class Enemy extends PhysicalGameObject {
         }
     }
 
+
     /**
-     *
+     * @param targLocation
+     * @return true, если достигли цели или цели нет
+     */
+    private boolean moveToLocation(Point  targLocation, int r) {
+        int dx = targLocation.x - location.x;
+        int dy = targLocation.y - location.y;
+        double l = Math.sqrt(dx*dx + dy*dy);
+        if(l<=r) {
+            return true;
+        }
+        return moveToLocation(targLocation);
+    }
+
+
+    /**
      * @param targLocation
      * @return true, если достигли цели или цели нет
      */
