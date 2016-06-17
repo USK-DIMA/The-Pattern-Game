@@ -317,18 +317,35 @@ public abstract class Player  extends PhysicalGameObject {
 
 
     @Override
-    public void drawAfterAll(Graphics2D g){
-        if(objectForAttack!=null && !objectForAttack.isDestroy()){
+    public void drawAfterAll(Graphics2D g) {
+        if (objectForAttack != null && !objectForAttack.isDestroy()) {
             g.drawImage(aimImage, objectForAttack.getLocation().x - 14, objectForAttack.getLocation().y - 14, null);
         }
 
         //Отрисовка цифы урон/восстановление
-        mEditHealthNumbers.removeIf(item -> item.amountShow > 30); // убираем много раз показанные
-        mEditHealthNumbers.forEach(e -> {
+        List<EditHealthNumber> healthNumbers = editGetHealthManager(null, EditHealthNumber.CLONE);//создаём копию, т.к. LinkedList не потокобезопасен
+        healthNumbers.removeIf(item -> item.amountShow > 30); // убираем много раз показанные
+        healthNumbers.forEach(e -> {
                     g.setColor(e.color);
-                    g.drawString(e.value, location.x-5, location.y - e.amountShow++);
+                    g.drawString(e.value, location.x - e.shiftX, location.y - 2*e.amountShow++);
                 }
         );
+    }
+
+    /**
+     * Потокобезопасное обращение к mEditHealthNumbers
+     * @param health кол-во HP, если ходит доабвить новый элемен в mEditHealthNumbers
+     * @param operation операция, которую необходимо выполнить
+     * @return возвращает копию mEditHealthNumbers, если operation = EditHealthNumber.CLONE, иначе возвращает NULL.
+     */
+    synchronized private List<EditHealthNumber> editGetHealthManager(Integer health, int operation) {
+        switch (operation) {
+            case EditHealthNumber.ADD: mEditHealthNumbers.add(new EditHealthNumber(health));
+                break;
+            case EditHealthNumber.CLONE:
+                return new LinkedList<>(mEditHealthNumbers);
+        }
+        return  null;
     }
 
     protected final boolean isDrawTargetLocation(){
@@ -552,22 +569,30 @@ public abstract class Player  extends PhysicalGameObject {
      * @color Color цвет при выводе (зелёный/красный)
      */
     class EditHealthNumber{
+
+        public static final int ADD = 1;
+
+        public static final int CLONE = 2;
+
         int amountShow;
         String value;
         Color color;
+        int shiftX;
 
         EditHealthNumber(int value){
             this.value = String.format("%+d", value);
             this.amountShow = 0;
             this.color = (value > 0) ? Color.GREEN : Color.RED;
+            this.shiftX = (value > 0) ? 25 : 15;
         }
+
     }
 
     @Override
     public void addHelth(int h) {
         super.addHelth(h);
         if(helth < maxHelth){
-            mEditHealthNumbers.add(new EditHealthNumber(h));
+            editGetHealthManager(h, EditHealthNumber.ADD);
         }
     }
 }
