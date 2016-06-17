@@ -135,6 +135,9 @@ public abstract class Player  extends PhysicalGameObject {
 
     private static List<StaticPhysicalGameObject> staticObjects = null;
 
+    private List<EditHealthNumber> mEditHealthNumbers;
+
+
     public Player(int maxHelth, WindowInfo windowsInfo) throws IOException {
         super(maxHelth);
         this.windowsInfo=windowsInfo;
@@ -150,6 +153,8 @@ public abstract class Player  extends PhysicalGameObject {
 
         targetLocation=null;
         fireTimer = 0;
+
+        mEditHealthNumbers = new LinkedList<>();
     }
 
     public void setLocation(Point location){
@@ -316,6 +321,14 @@ public abstract class Player  extends PhysicalGameObject {
         if(objectForAttack!=null && !objectForAttack.isDestroy()){
             g.drawImage(aimImage, objectForAttack.getLocation().x - 14, objectForAttack.getLocation().y - 14, null);
         }
+
+        //Отрисовка цифы урон/восстановление
+        mEditHealthNumbers.removeIf(item -> item.amountShow > 30); // убираем много раз показанные
+        mEditHealthNumbers.forEach(e -> {
+                    g.setColor(e.color);
+                    g.drawString(e.value, location.x-5, location.y - e.amountShow++);
+                }
+        );
     }
 
     protected final boolean isDrawTargetLocation(){
@@ -532,4 +545,29 @@ public abstract class Player  extends PhysicalGameObject {
         }
     }
 
+    /**
+     * Класс, отвечающий за текстовое поле изменения здоровья
+     * @amountShow int счётчик показов (для удаления из списка)
+     * @value String значение изменения
+     * @color Color цвет при выводе (зелёный/красный)
+     */
+    class EditHealthNumber{
+        int amountShow;
+        String value;
+        Color color;
+
+        EditHealthNumber(int value){
+            this.value = String.format("%+d", value);
+            this.amountShow = 0;
+            this.color = (value > 0) ? Color.GREEN : Color.RED;
+        }
+    }
+
+    @Override
+    public void addHelth(int h) {
+        super.addHelth(h);
+        if(helth < maxHelth){
+            mEditHealthNumbers.add(new EditHealthNumber(h));
+        }
+    }
 }

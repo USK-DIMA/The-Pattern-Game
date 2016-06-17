@@ -43,7 +43,7 @@ public abstract class PhysicalGameObject extends GameObject {
      */
     public boolean isSeletedByCursor(){
         return false;
-    }
+    };
 
     /**
      * Передает информацию объекту, выбран ли он курсором.
