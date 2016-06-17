@@ -1,16 +1,13 @@
 package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
-import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.security.Key;
 
 /**
  * Created by Uskov Dmitry on 09.06.2016.
@@ -24,7 +21,7 @@ import java.security.Key;
  * @see ru.game.pattern.model.GameObject
  * @see Player
  */
-abstract public class Prist extends Player{
+abstract public class Priest extends Player{
 
     /**
      * Скорость движения объекта
@@ -39,9 +36,9 @@ abstract public class Prist extends Player{
 
     private final int hillRadius;
 
-    private final int manaLosses ;
+    private final int manaLosses;
 
-    private final int manaAdding ;
+    private final int manaAdding;
 
     private MouseListener mouseListener;
 
@@ -53,8 +50,10 @@ abstract public class Prist extends Player{
 
     private Color manaColor = Color.BLUE;
 
+    private int hillTimer = 0;
 
-    public Prist(int maxHelth, WindowInfo windowsInfo, int speed, int helthHill, int maxMana, int hillPause, int hillRadius, int manaLosses, int manaAdding) throws IOException {
+
+    public Priest(int maxHelth, WindowInfo windowsInfo, int speed, int helthHill, int maxMana, int hillPause, int hillRadius, int manaLosses, int manaAdding) throws IOException {
         super(maxHelth, windowsInfo);
         this.speed = speed;
         this.helthHill = helthHill;
@@ -148,14 +147,14 @@ abstract public class Prist extends Player{
 
     private void hillObjects(GameController gameController) {
         if(hill){
-            if(fireTimer <= 0) {
-                fireTimer = hillPause;
+            if(hillTimer <= 0) {
+                hillTimer = hillPause;
                 gameController.getPhysicalGameObject().stream()
                         .filter(o -> o instanceof Player && o.distanceBetweenCenter(this) <= hillRadius)
-                        .forEach(o ->o.addHelth(helthHill));
+                        .forEach(o ->o.addHealth(helthHill));
             }
             else {
-                fireTimer--;
+                hillTimer--;
             }
         }
     }

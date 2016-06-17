@@ -1,14 +1,11 @@
 package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
-import ru.game.pattern.controller.Property;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -121,7 +118,7 @@ public abstract class FireBall extends PhysicalGameObject {
                 continue;//если патрон выпустил этот объект
             }
             if(o.collision(this)<=0){
-                o.addHelth(-damage);
+                o.addHealth(-damage);
                 destroy();
                 break;
             }

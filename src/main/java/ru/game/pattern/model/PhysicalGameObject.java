@@ -113,7 +113,10 @@ public abstract class PhysicalGameObject extends GameObject {
      * Если жизней меньше или равно 0, объект сачитаетсы уничтоженным, т.е. destroy = true;
      * @param h на сколько надо увеличить жизни
      */
-    public void addHelth(int h){
+    public void addHealth(int h){
+        if(this instanceof Enemy){
+            System.out.println(h);
+        }
         helth+=h;
         if(helth>maxHelth){
             helth = maxHelth;

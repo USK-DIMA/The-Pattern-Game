@@ -25,7 +25,7 @@ public class PlayerFabricaLvl3 implements  PlayerFabrica{
     public PlayerFabricaLvl3() throws IOException {
         archerInfo = new PlayerInfo(ArcherLvl3.ICON_PATH, ArcherLvl3.COST, "archer");
         warriorInfo = new PlayerInfo(WarriorLvl3.ICON_PATH, WarriorLvl3.COST, "warrior");
-        pristInfo = new PlayerInfo(PristLvl3.ICON_PATH, PristLvl3.COST, "prist");
+        pristInfo = new PlayerInfo(PriestLvl3.ICON_PATH, PriestLvl3.COST, "prist");
         magInfo =  new PlayerInfo(MagLvl3.ICON_PATH, MagLvl3.COST, "mag");
     }
 
@@ -56,11 +56,11 @@ public class PlayerFabricaLvl3 implements  PlayerFabrica{
     }
 
     @Override
-    public Prist createPrist(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
-        Prist prist = new PristLvl3(windowInfo);
-        prist.setLocation(location);
-        prist.setTargetLocation(targetLocation);
-        return prist;
+    public Priest createPrist(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException {
+        Priest priest = new PriestLvl3(windowInfo);
+        priest.setLocation(location);
+        priest.setTargetLocation(targetLocation);
+        return priest;
     }
 
     @Override

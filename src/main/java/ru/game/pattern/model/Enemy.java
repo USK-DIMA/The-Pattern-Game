@@ -239,8 +239,8 @@ public class Enemy extends PhysicalGameObject {
         if(damageTimer>=DAMAGE_PAUSE) {
             if (player.collision(location.x, location.y, TERITORY_RADIUS+ATTACK_RADIUS) <= 0) {
                 damageTimer=0;
-                player.addHelth(-DAMAGE);
-                addHelth(DAMAGE);
+                player.addHealth(-DAMAGE);
+                addHealth(DAMAGE);
             }
         } else {
             damageTimer++;

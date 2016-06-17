@@ -228,7 +228,7 @@ public abstract class Player  extends PhysicalGameObject {
      */
     private void attack(PhysicalGameObject object) {
         if(fireTimer <= 0) {
-            object.addHelth(-damage);
+            object.addHealth(-damage);
             fireTimer = attackPause;
         }
         else {
@@ -589,8 +589,8 @@ public abstract class Player  extends PhysicalGameObject {
     }
 
     @Override
-    public void addHelth(int h) {
-        super.addHelth(h);
+    public void addHealth(int h) {
+        super.addHealth(h);
         if(helth < maxHelth){
             editGetHealthManager(h, EditHealthNumber.ADD);
         }

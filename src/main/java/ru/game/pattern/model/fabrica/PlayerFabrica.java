@@ -3,11 +3,10 @@ package ru.game.pattern.model.fabrica;
 import ru.game.pattern.model.*;
 import ru.game.pattern.model.playes.Archer;
 import ru.game.pattern.model.playes.Mag;
-import ru.game.pattern.model.playes.Prist;
+import ru.game.pattern.model.playes.Priest;
 import ru.game.pattern.model.playes.Warrior;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -55,7 +54,7 @@ public interface PlayerFabrica {
      * @return объект-игрок лучник
      * @throws IOException если не удалось подгрузить ресурсы
      */
-    Prist createPrist(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException;
+    Priest createPrist(Point location, Point targetLocation, WindowInfo windowInfo) throws IOException;
 
     /**
      * Создает объект-игрока мага.
