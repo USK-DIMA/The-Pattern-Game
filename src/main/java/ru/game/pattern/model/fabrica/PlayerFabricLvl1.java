@@ -12,7 +12,7 @@ import static ru.game.pattern.controller.Property.PLYAER_FABRIC_LVL1_NEXT_UPDATE
 /**
  * Created by Uskov Dmitry on 09.06.2016.
  */
-public class PlayerFabricaLvl1 implements  PlayerFabrica{
+public class PlayerFabricLvl1 implements PlayerFabric {
 
     private PlayerInfo archerInfo;
 
@@ -22,7 +22,7 @@ public class PlayerFabricaLvl1 implements  PlayerFabrica{
 
     private PlayerInfo magInfo;
 
-    public PlayerFabricaLvl1() throws IOException {
+    public PlayerFabricLvl1() throws IOException {
         archerInfo = new PlayerInfo(ArcherLvl1.ICON_PATH, ArcherLvl1.COST, "archer");
         warriorInfo = new PlayerInfo(WarriorLvl1.ICON_PATH, WarriorLvl1.COST, "warrior");
         pristInfo = new PlayerInfo(PriestLvl1.ICON_PATH, PriestLvl1.COST, "prist");

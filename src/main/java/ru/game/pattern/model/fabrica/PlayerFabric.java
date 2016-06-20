@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Created by Uskov Dmitry on 09.06.2016.
  */
-public interface PlayerFabrica {
+public interface PlayerFabric {
 
     /**
      * Возвращает цену обновления до след уровня.

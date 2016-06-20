@@ -69,6 +69,8 @@ public class GameControllerImpl implements GameController, Runnable{
     private List<StaticPhysicalGameObject> staticPhysicalGameObjects;
 
     private Castle castle;
+
+    public static GameController instance;
     /**
      * Объект, куда будут передоваться только что созданные игровые объекты для регистрации листенера
      */
@@ -85,7 +87,7 @@ public class GameControllerImpl implements GameController, Runnable{
     /**
      * @param windowInfo информация об окне
      */
-    public GameControllerImpl(WindowInfo windowInfo) throws IOException {
+    private GameControllerImpl(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
         allGameObjects = new ArrayList<>();
         allGameObjects = Collections.synchronizedList(allGameObjects);
@@ -103,19 +105,47 @@ public class GameControllerImpl implements GameController, Runnable{
         Player.setStaticObjects(getStaticPhysicalGameObjects());
     }
 
-    private void initEnemy() throws IOException {
-        addEnemies(ENEMY_COUNT);
+    public static GameController getInstance(WindowInfo windowInfo) throws IOException {
+        GameController localInstance = instance;
+        if (localInstance == null) {
+            synchronized (GameController.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new GameControllerImpl(windowInfo);
+                }
+            }
+        }
+        return localInstance;
     }
 
-    @Override
-    public void addEnemies(int enemyCount) throws IOException {
-        Enemy object;
-        for(int i=0 ;i<enemyCount; i++){
-            object = new Enemy(100, windowInfo);
-            allGameObjects.add(object);
-            physicalGameObjects.add(object);
-            object.setPlayerDestroyNotifer(getGameBoard());
-        }
+    private void initEnemy() throws IOException {
+        Enemy object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        object.setPlayerDestroyNotifer(gameBoard);
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+/*
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+
+        object = new Enemy(100, windowInfo);
+        object.setLocation(new Point(1091,34));
+        allGameObjects.add(object);
+        physicalGameObjects.add(object);
+        */
+        addEnemies(ENEMY_COUNT);
     }
 
     private void initStaticObjects() throws IOException{
@@ -210,6 +240,17 @@ public class GameControllerImpl implements GameController, Runnable{
         allGameObjects.add(object);
         physicalGameObjects.add(object);
         staticPhysicalGameObjects.add(object);
+    }
+
+    @Override
+    public void addEnemies(int enemyCount) throws IOException {
+        Enemy object;
+        for (int i = 0; i < enemyCount; i++) {
+            object = new Enemy(100, windowInfo);
+            allGameObjects.add(object);
+            physicalGameObjects.add(object);
+            object.setPlayerDestroyNotifer(getGameBoard());
+        }
     }
 
     @Override

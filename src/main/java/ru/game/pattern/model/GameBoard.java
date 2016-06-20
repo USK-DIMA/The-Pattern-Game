@@ -2,10 +2,10 @@ package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
-import ru.game.pattern.model.fabrica.PlayerFabrica;
-import ru.game.pattern.model.fabrica.PlayerFabricaLvl1;
-import ru.game.pattern.model.fabrica.PlayerFabricaLvl2;
-import ru.game.pattern.model.fabrica.PlayerFabricaLvl3;
+import ru.game.pattern.model.fabrica.PlayerFabric;
+import ru.game.pattern.model.fabrica.PlayerFabricLvl1;
+import ru.game.pattern.model.fabrica.PlayerFabricLvl2;
+import ru.game.pattern.model.fabrica.PlayerFabricLvl3;
 import ru.game.pattern.model.playes.Player;
 
 import javax.imageio.ImageIO;
@@ -35,7 +35,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private WindowInfo windowInfo;
 
-    private PlayerFabrica playerFabrica;
+    private PlayerFabric playerFabrica;
 
     private BufferedImage archerImage;
 
@@ -94,11 +94,11 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private void initFabricaByLvl(int i) throws IOException {
         switch (i){
-            case 1: playerFabrica = new PlayerFabricaLvl1();
+            case 1: playerFabrica = new PlayerFabricLvl1();
                 break;
-            case 2: playerFabrica = new PlayerFabricaLvl2();
+            case 2: playerFabrica = new PlayerFabricLvl2();
                 break;
-            case 3: playerFabrica = new PlayerFabricaLvl3();
+            case 3: playerFabrica = new PlayerFabricLvl3();
                 break;
             default: return;
         }
