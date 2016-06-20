@@ -245,7 +245,7 @@ public class GameControllerImpl implements GameController, Runnable{
     @Override
     public void startUpdate(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
-
+        allGameObjects.add(gameStatus);
         if(updateThread==null){
             synchronized (GameControllerImpl.class){ //один объект класса GameControllerImpl должен порождать только один поток для обновления
                 if(updateThread==null) {
@@ -261,25 +261,27 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     @Override
     public void updateAll() {
-        while (gameStatus.isRun()){
-            try {
-                Thread.sleep(Property.UPDATE_PAUSE); //просто пауза
-            } catch (InterruptedException e) {
-                System.err.println("Error of Thread.sleep in GameController.updateAll");
-            }
-
-            getBackgound().update(this);
-            for(int i=0; i<allGameObjects.size(); i++){
-                GameObject o = allGameObjects.get(i);
-                if(o.isDestroy()){
-                    allGameObjects.remove(o);
-                    physicalGameObjects.remove(o);
-                    i--;
-                    continue;
+        while (gameStatus.isRun()) {
+            if (!gameStatus.isPause()) {
+                try {
+                    Thread.sleep(Property.UPDATE_PAUSE); //просто пауза
+                } catch (InterruptedException e) {
+                    System.err.println("Error of Thread.sleep in GameController.updateAll");
                 }
-                o.update(this);
+
+                getBackgound().update(this);
+                for (int i = 0; i < allGameObjects.size(); i++) {
+                    GameObject o = allGameObjects.get(i);
+                    if (o.isDestroy()) {
+                        allGameObjects.remove(o);
+                        physicalGameObjects.remove(o);
+                        i--;
+                        continue;
+                    }
+                    o.update(this);
+                }
+                getGameBoard().update(this);
             }
-            getGameBoard().update(this);
         }
     }
 
