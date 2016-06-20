@@ -16,23 +16,31 @@ import static ru.game.pattern.controller.Property.*;
  */
 public class Castle extends StaticPhysicalGameObject {
     private static final String IMAGE_PATH = Property.RESOURSES_PATH + "static/castle.png";
+    private static final String IMAGE2_PATH = Property.RESOURSES_PATH + "static/castle2.png";
     private static final int TERRITORY_RADIUS = 60;
     private static final Point IMAGE_SIZE = new Point(138, 264);
     private int mHealthAddCounter = 1;
     private BufferedImage image;
+    private BufferedImage image2;
 
     public Castle(Point location) throws IOException {
         super(location, TERRITORY_RADIUS, IMAGE_PATH, IMAGE_SIZE);
         helth = CASTLE_MAX_HELTH;
-        additionalIamgeShift = -80;
-        if(IMAGE_PATH!=null) {
+        additionalIamgeShift = -120;
+        if (IMAGE_PATH != null) {
             this.image = ImageIO.read(new File(IMAGE_PATH));
+        }
+        if (IMAGE2_PATH != null) {
+            image2 = ImageIO.read(new File(IMAGE2_PATH));
         }
     }
 
     @Override
     public void drawAfterAll(Graphics2D g) {
-        super.draw(g);
+
+        if(image2!=null) {
+            g.drawImage(image2, location.x - IMAGE_SIZE.x / 2, location.y - IMAGE_SIZE.y / 2 + additionalIamgeShift, null);
+        }
         //отрисовка HP
         g.setColor(Color.black);
         g.fillRect(location.x - IMAGE_SIZE.x/2 - 5, location.y - IMAGE_SIZE.y/2 - 90, IMAGE_SIZE.x+10, 10);

@@ -14,6 +14,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ru.game.pattern.controller.Property.CASTLE_LOCATION_X;
+import static ru.game.pattern.controller.Property.CASTLE_LOCATION_Y;
+
 /**
  * Created by Uskov Dmitry on 27.05.2016.
  */
@@ -94,9 +97,8 @@ public class GameControllerImpl implements GameController, Runnable{
         initStaticObjects();
         initEnemy();
         allGameObjects.add(cursor);
-        castle = new Castle(new Point(1000, 300));
+        castle = new Castle(new Point(CASTLE_LOCATION_X, CASTLE_LOCATION_Y));
         addStaticObject(castle);
-        //allGameObjects.add(castle);
         Player.setStaticObjects(getStaticPhysicalGameObjects());
     }
 

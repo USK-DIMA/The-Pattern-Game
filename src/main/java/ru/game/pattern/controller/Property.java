@@ -10,13 +10,16 @@ public class Property {
 
     public static String RESOURSES_PATH = "src/main/resources/";
 
-    public static boolean DEBUG_MODE = false;
+    public static boolean DEBUG_MODE = true;
 
     public static int START_MONEY = 300;
     public static int MONEY_PER_KILL = 25;
     public static int MAX_PLAYER_COUNT = 5;
     public static int BUY_PLAYER_PAUSE = 50;
     public static int PLAYER_TERRITORY_RADIUS = 8;
+
+    public static int CASTLE_LOCATION_X = 570;
+    public static int CASTLE_LOCATION_Y = 340;
 
     public static int DEFAULT_ATTACK_PAUSE = 8;
     public static int DEFAULT_ATTACK_RADIUS = 8;
