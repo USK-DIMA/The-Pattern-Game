@@ -352,4 +352,8 @@ public class GameControllerImpl implements GameController, Runnable{
         }
     }
 
+    @Override
+    public void winGame() {
+        background.winGame();
+    }
 }

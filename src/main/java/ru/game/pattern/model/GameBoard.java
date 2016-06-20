@@ -227,7 +227,10 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     @Override
     public void update(GameController gameController) {
-        if((playerCount== 0 && money<minCost) || gameController.getCastle().helth < 1){
+        if(gameController.getCastle().helth < 1){
+            gameController.winGame();
+        }
+        if(playerCount== 0 && money<minCost){
             gameController.endGame();
         }
         if(isLvlUp){

@@ -1,5 +1,6 @@
 package ru.game.pattern.model;
 
+import ru.game.pattern.Main;
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
 
@@ -35,6 +36,8 @@ public class GameBackground extends GameObject {
 
     private boolean endGame = false;
 
+    private boolean winGame = false;
+
     private int endGameTransparency = 0;
 
 
@@ -69,6 +72,19 @@ public class GameBackground extends GameObject {
             g.setColor(new Color(255, 255, 255, endGameTransparency));
             g.drawString("Game Over", 620, 360);
         }
+
+        if(winGame){
+            endGameTransparency+=4;
+            if(endGameTransparency>255){
+                endGameTransparency = 255;
+            }
+            g.setColor(new Color(0, 0, 0, endGameTransparency ));
+            g.fillRect(0,0, 1280, 720);
+            g.setColor(new Color(10, 255, 10, endGameTransparency));
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 48));
+            g.drawString("Congratulation! You win!", 350, 360);
+            g.setFont(new Font("default", Font.BOLD, 10));
+        }
     }
 
     @Override
@@ -102,5 +118,9 @@ public class GameBackground extends GameObject {
 
     public void endGame() {
         endGame = true;
+    }
+
+    public void winGame() {
+        winGame = true;
     }
 }

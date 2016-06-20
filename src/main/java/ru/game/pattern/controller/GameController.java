@@ -59,6 +59,8 @@ public interface GameController {
 
     void endGame();
 
+    void winGame();
+
     public static interface ObjectNotifer{
         void addListeners(GameObject object);
     }
