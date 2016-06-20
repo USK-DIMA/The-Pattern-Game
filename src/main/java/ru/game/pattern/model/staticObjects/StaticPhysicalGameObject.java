@@ -68,6 +68,7 @@ public class StaticPhysicalGameObject extends PhysicalGameObject {
     @Override
     public void draw(Graphics2D g) {
         if(image!=null && imageSize !=null) {
+            g.setColor(Color.WHITE);
             g.drawImage(image, location.x - imageSize.x / 2, location.y - imageSize.y / 2 + additionalIamgeShift, null);
         }
         if(printTerritoryRadius){

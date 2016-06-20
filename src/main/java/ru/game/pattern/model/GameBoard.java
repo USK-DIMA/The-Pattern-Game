@@ -227,7 +227,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     @Override
     public void update(GameController gameController) {
-        if(playerCount== 0 && money<minCost){
+        if((playerCount== 0 && money<minCost) || gameController.getCastle().helth < 1){
             gameController.endGame();
         }
         if(isLvlUp){
@@ -324,6 +324,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
     public void objectIsDistroy(GameObject player) {
         if(player instanceof Player) {
             playerCount--;
+        }
+        if(player instanceof Enemy) {
+            money += MONEY_PER_KILL;
         }
     }
 

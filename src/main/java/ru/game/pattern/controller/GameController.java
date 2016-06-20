@@ -2,6 +2,7 @@ package ru.game.pattern.controller;
 
 import ru.game.pattern.model.*;
 import ru.game.pattern.model.playes.Player;
+import ru.game.pattern.model.staticObjects.Castle;
 import ru.game.pattern.model.staticObjects.StaticPhysicalGameObject;
 
 import java.util.ArrayList;
@@ -53,6 +54,8 @@ public interface GameController {
     void addPlayer(Player player);
 
     List<Enemy> getEnemy();
+
+    Castle getCastle();
 
     void endGame();
 

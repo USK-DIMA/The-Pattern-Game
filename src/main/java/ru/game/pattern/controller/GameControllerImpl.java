@@ -64,6 +64,7 @@ public class GameControllerImpl implements GameController, Runnable{
 
     private List<StaticPhysicalGameObject> staticPhysicalGameObjects;
 
+    private Castle castle;
     /**
      * Объект, куда будут передоваться только что созданные игровые объекты для регистрации листенера
      */
@@ -93,13 +94,16 @@ public class GameControllerImpl implements GameController, Runnable{
         initStaticObjects();
         initEnemy();
         allGameObjects.add(cursor);
-
+        castle = new Castle(new Point(1000, 300));
+        addStaticObject(castle);
+        //allGameObjects.add(castle);
         Player.setStaticObjects(getStaticPhysicalGameObjects());
     }
 
     private void initEnemy() throws IOException {
         Enemy object = new Enemy(100, windowInfo);
         object.setLocation(new Point(1091,34));
+        object.setPlayerDestroyNotifer(gameBoard);
         allGameObjects.add(object);
         physicalGameObjects.add(object);
 /*
@@ -325,6 +329,11 @@ public class GameControllerImpl implements GameController, Runnable{
                 .map(o -> (Enemy) o)
                 .collect(Collectors.toList());
         return enemies;
+    }
+
+    @Override
+    public Castle getCastle() {
+        return castle;
     }
 
     @Override

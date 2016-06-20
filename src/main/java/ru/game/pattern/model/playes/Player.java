@@ -302,6 +302,9 @@ public abstract class Player  extends PhysicalGameObject {
                     break;
                 }
             }
+            if (gameController.getCastle().collision(clickAttack.x, clickAttack.y, 2) <= 0) {
+                objectForAttack = gameController.getCastle();
+            }
             clickAttack = null;
         }
     }

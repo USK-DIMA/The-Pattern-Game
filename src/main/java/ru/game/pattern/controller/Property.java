@@ -10,9 +10,10 @@ public class Property {
 
     public static String RESOURSES_PATH = "src/main/resources/";
 
-    public static boolean DEBUG_MODE = false;
+    public static boolean DEBUG_MODE = true;
 
     public static int START_MONEY = 300;
+    public static int MONEY_PER_KILL = 25;
     public static int MAX_PLAYER_COUNT = 5;
     public static int BUY_PLAYER_PAUSE = 50;
     public static int PLAYER_TERRITORY_RADIUS = 8;
@@ -20,6 +21,9 @@ public class Property {
     public static int DEFAULT_ATTACK_PAUSE = 8;
     public static int DEFAULT_ATTACK_RADIUS = 8;
     public static int DEFAULT_DAMAGE = 8;
+
+    public static int CASTLE_MAX_HELTH = 1000;
+    public static int CASTLE_UPDATE_HELTH_COUNTER = 20; //раз в сколько update будут восстанавливаться hp
 
     public static int PLYAER_FABRIC_LVL1_NEXT_UPDATE = 300;
     public static int PLYAER_FABRIC_LVL2_NEXT_UPDATE = 900;
