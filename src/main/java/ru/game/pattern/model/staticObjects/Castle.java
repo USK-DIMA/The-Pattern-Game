@@ -36,6 +36,17 @@ public class Castle extends StaticPhysicalGameObject {
     }
 
     @Override
+    public void drawBeforeAll(Graphics2D g) {
+        super.draw(g);
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+
+    }
+
+
+    @Override
     public void drawAfterAll(Graphics2D g) {
 
         if(image2!=null) {

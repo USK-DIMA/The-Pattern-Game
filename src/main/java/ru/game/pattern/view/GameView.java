@@ -131,8 +131,8 @@ public class GameView implements  Runnable{
             for(GameObject o : gameObjectList){
                 o.drawBeforeAll(g); //Отрисовка объектов из контроллера
             }
-            for(GameObject o : gameObjectList){
-                o.draw(g); //Отрисовка объектов из контроллера
+            for(GameObject o : gameObjectList) {
+                    o.draw(g); //Отрисовка объектов из контроллера
             }
             for(GameObject o : gameObjectList){
                 o.drawAfterAll(g); //Отрисовка объектов из контроллера

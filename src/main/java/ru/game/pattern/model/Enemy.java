@@ -106,9 +106,13 @@ public class Enemy extends PhysicalGameObject {
         this.windowsInfo=windowsInfo;
         this.imageForMoveToRight = ImageIO.read(new File(Property.RESOURSES_PATH+"enemy_right.png"));
         this.imageForMoveToLeft = ImageIO.read(new File(Property.RESOURSES_PATH+"enemy_left.png"));
-        this.location = new Point(windowsInfo.getWidth()/2, windowsInfo.getHeight()/2);
-
-        currentFreePoint = freeTargetPoints;
+        if(new Random().nextBoolean()) {
+            this.location = new Point(1091,34);
+            currentFreePoint = freeTargetPoints;
+        } else {
+            this.location = new Point(CASTLE_LOCATION_X + 50, CASTLE_LOCATION_Y + 50);
+            currentFreePoint = FreeTargetPoint.getP9();
+        }
 
         targetPointImage = ImageIO.read(new File(Property.RESOURSES_PATH + "flag.png"));
 
@@ -164,8 +168,11 @@ public class Enemy extends PhysicalGameObject {
         if(Property.DEBUG_MODE) {
             g.setColor(Color.WHITE);
             g.drawOval(location.x - OVERVIEW_RADIUS, location.y - OVERVIEW_RADIUS, 2 * OVERVIEW_RADIUS, 2 * OVERVIEW_RADIUS);
-            for(Point p : playerLocationsForDebag){
-                g.drawLine(location.x, location.y, p.x, p.y);
+
+            if(playerLocationsForDebag!=null) {
+                for (Point p : playerLocationsForDebag) {
+                    g.drawLine(location.x, location.y, p.x, p.y);
+                }
             }
         }
 
@@ -430,6 +437,8 @@ public class Enemy extends PhysicalGameObject {
 
         private Point point;
 
+        private static FreeTargetPoint p9 = null;
+
         private List<FreeTargetPoint> nextPoints = new ArrayList<>();
 
         public Point getPoint() {
@@ -469,10 +478,19 @@ public class Enemy extends PhysicalGameObject {
             return next;
         }
 
+        public static FreeTargetPoint getP9(){
+            return p9;
+        }
+
+        public static void setP9(FreeTargetPoint p9Input) {
+            p9 = p9Input;
+        }
+
         public void setBeforePoint(FreeTargetPoint beforePoint) {
             this.beforePoint = beforePoint;
         }
     }
+
 
     enum EnemyState{
         patrul, attack, attackDistant, escape

@@ -18,6 +18,8 @@ public class Property {
     public static int BUY_PLAYER_PAUSE = 50;
     public static int PLAYER_TERRITORY_RADIUS = 8;
 
+    public static int ENEMY_COUNT = 8;
+
     public static int CASTLE_LOCATION_X = 570;
     public static int CASTLE_LOCATION_Y = 340;
 
@@ -246,6 +248,7 @@ public class Property {
         p17.addNextPint(p16);
         p17.addNextPint(p2);
 
+        FreeTargetPoint.setP9(p9);
         return p1;
     }
 }

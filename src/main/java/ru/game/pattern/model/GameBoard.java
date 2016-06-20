@@ -77,6 +77,8 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private int minCost = 0;
 
+    private int enemyCount = ENEMY_COUNT;
+
     Color impossibleByColor = new Color(100, 100, 100);
 
     private boolean isLvlUp = false;
@@ -242,6 +244,13 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            gameController.addEnemies(ENEMY_COUNT - enemyCount);
+            enemyCount = ENEMY_COUNT;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -330,6 +339,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         }
         if(player instanceof Enemy) {
             money += MONEY_PER_KILL;
+            enemyCount--;
         }
     }
 

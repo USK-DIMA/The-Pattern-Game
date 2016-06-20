@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static ru.game.pattern.controller.Property.CASTLE_LOCATION_X;
 import static ru.game.pattern.controller.Property.CASTLE_LOCATION_Y;
+import static ru.game.pattern.controller.Property.ENEMY_COUNT;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -103,32 +104,18 @@ public class GameControllerImpl implements GameController, Runnable{
     }
 
     private void initEnemy() throws IOException {
-        Enemy object = new Enemy(100, windowInfo);
-        object.setLocation(new Point(1091,34));
-        object.setPlayerDestroyNotifer(gameBoard);
-        allGameObjects.add(object);
-        physicalGameObjects.add(object);
-/*
-        object = new Enemy(100, windowInfo);
-        object.setLocation(new Point(1091,34));
-        allGameObjects.add(object);
-        physicalGameObjects.add(object);
+        addEnemies(ENEMY_COUNT);
+    }
 
-        object = new Enemy(100, windowInfo);
-        object.setLocation(new Point(1091,34));
-        allGameObjects.add(object);
-        physicalGameObjects.add(object);
-
-        object = new Enemy(100, windowInfo);
-        object.setLocation(new Point(1091,34));
-        allGameObjects.add(object);
-        physicalGameObjects.add(object);
-
-        object = new Enemy(100, windowInfo);
-        object.setLocation(new Point(1091,34));
-        allGameObjects.add(object);
-        physicalGameObjects.add(object);
-        */
+    @Override
+    public void addEnemies(int enemyCount) throws IOException {
+        Enemy object;
+        for(int i=0 ;i<enemyCount; i++){
+            object = new Enemy(100, windowInfo);
+            allGameObjects.add(object);
+            physicalGameObjects.add(object);
+            object.setPlayerDestroyNotifer(getGameBoard());
+        }
     }
 
     private void initStaticObjects() throws IOException{
