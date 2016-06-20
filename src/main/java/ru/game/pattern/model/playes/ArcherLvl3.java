@@ -21,7 +21,7 @@ public class ArcherLvl3 extends Archer {
 
     private final static int ATTACK_PAUSE = ARCHER_LVL3_ATTACK_PAUSE;
 
-    public static final String ICON_PATH = Property.RESOURSES_PATH + "archer/archer_icon3.jpg";
+    public static final String ICON_PATH = Property.RESOURCES_PATH + "archer/archer_icon3.jpg";
 
     /**
      * Скорость движения объекта
@@ -43,8 +43,8 @@ public class ArcherLvl3 extends Archer {
 
     public ArcherLvl3(WindowInfo windowsInfo) throws IOException {
         super(windowsInfo, FireBallLvl1::new, SPEED, MAX_HELTH, ATTACK_PAUSE);
-        playerRightImage = ImageIO.read(new File(Property.RESOURSES_PATH + "archer/archer_right3.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURSES_PATH + "archer/archer_right3.png"));
+        playerRightImage = ImageIO.read(new File(Property.RESOURCES_PATH + "archer/archer_right3.png"));
+        playerLeftImage = ImageIO.read(new File(Property.RESOURCES_PATH + "archer/archer_right3.png"));
 
     }
 

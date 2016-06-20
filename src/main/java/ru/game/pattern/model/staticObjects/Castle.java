@@ -15,8 +15,8 @@ import static ru.game.pattern.controller.Property.*;
  * Created by Anton on 20.06.2016.
  */
 public class Castle extends StaticPhysicalGameObject {
-    private static final String IMAGE_PATH = Property.RESOURSES_PATH + "static/castle.png";
-    private static final String IMAGE2_PATH = Property.RESOURSES_PATH + "static/castle2.png";
+    private static final String IMAGE_PATH = Property.RESOURCES_PATH + "static/castle.png";
+    private static final String IMAGE2_PATH = Property.RESOURCES_PATH + "static/castle2.png";
     private static final int TERRITORY_RADIUS = 60;
     private static final Point IMAGE_SIZE = new Point(138, 264);
     private int mHealthAddCounter = 1;

@@ -8,11 +8,11 @@ import ru.game.pattern.model.Enemy.FreeTargetPoint;
 public class Property {
     public static int UPDATE_PAUSE = 33;
 
-    public static String RESOURSES_PATH = "src/main/resources/";
+    public static String RESOURCES_PATH = "src/main/resources/";
 
-    public static boolean DEBUG_MODE = true;
+    public static boolean DEBUG_MODE = false;
 
-    public static int START_MONEY = 300;
+    public static int START_MONEY = 5000;
     public static int MONEY_PER_KILL = 25;
     public static int MAX_PLAYER_COUNT = 5;
     public static int BUY_PLAYER_PAUSE = 50;
@@ -77,9 +77,9 @@ public class Property {
     public static int WARRIOR_LVL2_ATTACK_RADIUS = 4;
 
     public static int WARRIOR_LVL3_COST = 100;
-    public static int WARRIOR_LVL3_MAX_HELTH = 100;
-    public static int WARRIOR_LVL3_MAX_DAMAGE = 15;
-    public static int WARRIOR_LVL3_ATTACK_PAUSE = 30;
+    public static int WARRIOR_LVL3_MAX_HELTH = 1000;
+    public static int WARRIOR_LVL3_MAX_DAMAGE = 150;
+    public static int WARRIOR_LVL3_ATTACK_PAUSE = 3;
     public static int WARRIOR_LVL3_SPEED = 4;
     public static int WARRIOR_LVL3_ATTACK_RADIUS = 4;
 

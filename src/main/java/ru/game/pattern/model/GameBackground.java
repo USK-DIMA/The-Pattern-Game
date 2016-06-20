@@ -1,6 +1,5 @@
 package ru.game.pattern.model;
 
-import ru.game.pattern.Main;
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
 
@@ -28,9 +27,9 @@ public class GameBackground extends GameObject {
 
     private BufferedImage imageTree = null;
 
-    private String BACKGROUND_IMAGE_PATH = Property.RESOURSES_PATH + "plane_lite_80.png";
+    private String BACKGROUND_IMAGE_PATH = Property.RESOURCES_PATH + "plane_lite_80.png";
 
-    private String BACKGROUND_IMAGE_PATH_THREE = Property.RESOURSES_PATH + "plane_lite_81.png";
+    private String BACKGROUND_IMAGE_PATH_THREE = Property.RESOURCES_PATH + "plane_lite_81.png";
 
     private int black = 0;
 

@@ -14,9 +14,9 @@ import java.io.IOException;
 public class SmallTree extends StaticPhysicalGameObject {
 
 
-    private static final String IMAGE_PATH = Property.RESOURSES_PATH + "static/tree_small.png";
+    private static final String IMAGE_PATH = Property.RESOURCES_PATH + "static/tree_small.png";
 
-    private static final String LEAVES_IMAGE_PATH = Property.RESOURSES_PATH + "static/tree_small_leaves.png";
+    private static final String LEAVES_IMAGE_PATH = Property.RESOURCES_PATH + "static/tree_small_leaves.png";
 
     private static final int TERRITORY_RADIUS = 10;
 

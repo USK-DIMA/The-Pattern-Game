@@ -85,7 +85,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     public GameBoard(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
-        moneyImage = ImageIO.read(new File(Property.RESOURSES_PATH+"money.png"));
+        moneyImage = ImageIO.read(new File(Property.RESOURCES_PATH +"money.png"));
         initFabricaByLvl(1);
         keyListener = new GameBoardKeyListener();
         wight = 4 * (IMAGE_SIZE + BORDER) + BORDER + INFO_WIDTH;

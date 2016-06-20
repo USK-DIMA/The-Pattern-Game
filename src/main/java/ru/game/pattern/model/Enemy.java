@@ -104,8 +104,8 @@ public class Enemy extends PhysicalGameObject {
     public Enemy(int maxHelth, WindowInfo windowsInfo) throws IOException {
         super(maxHelth);
         this.windowsInfo=windowsInfo;
-        this.imageForMoveToRight = ImageIO.read(new File(Property.RESOURSES_PATH+"enemy_right.png"));
-        this.imageForMoveToLeft = ImageIO.read(new File(Property.RESOURSES_PATH+"enemy_left.png"));
+        this.imageForMoveToRight = ImageIO.read(new File(Property.RESOURCES_PATH +"enemy_right.png"));
+        this.imageForMoveToLeft = ImageIO.read(new File(Property.RESOURCES_PATH +"enemy_left.png"));
         if(new Random().nextBoolean()) {
             this.location = new Point(1091,34);
             currentFreePoint = freeTargetPoints;
@@ -114,7 +114,7 @@ public class Enemy extends PhysicalGameObject {
             currentFreePoint = FreeTargetPoint.getP9();
         }
 
-        targetPointImage = ImageIO.read(new File(Property.RESOURSES_PATH + "flag.png"));
+        targetPointImage = ImageIO.read(new File(Property.RESOURCES_PATH + "flag.png"));
 
         targetLocation= currentFreePoint.getPoint();
         fireTimer = 0;
