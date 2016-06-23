@@ -2,8 +2,10 @@ package ru.game.pattern.controller;
 
 import ru.game.pattern.model.*;
 import ru.game.pattern.model.playes.Player;
+import ru.game.pattern.model.staticObjects.Castle;
 import ru.game.pattern.model.staticObjects.StaticPhysicalGameObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
  * Created by Uskov Dmitry on 27.05.2016.
  */
 public interface GameController {
+
+    void addEnemies(int enemyCount) throws IOException;
 
     List<StaticPhysicalGameObject> getStaticPhysicalGameObjects();
 
@@ -54,9 +58,13 @@ public interface GameController {
 
     List<Enemy> getEnemy();
 
+    Castle getCastle();
+
     void endGame();
 
-    public static interface ObjectNotifer{
+    void winGame();
+
+    public static interface ObjectNotifer {
         void addListeners(GameObject object);
     }
 }

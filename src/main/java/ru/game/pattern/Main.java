@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         GameView gameView = new GameView();
-        GameController gameController = new GameControllerImpl(gameView.getWindowInfo());
+        GameController gameController = GameControllerImpl.getInstance(gameView.getWindowInfo());
         GameManager gameManager = new GameManager(gameController, gameView);
         System.out.println("Start Game");
         gameManager.startGame();

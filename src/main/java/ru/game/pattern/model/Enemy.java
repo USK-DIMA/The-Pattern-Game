@@ -18,6 +18,8 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import static ru.game.pattern.controller.Property.*;
+import static ru.game.pattern.model.Enemy.EnemyState.attack;
+import static ru.game.pattern.model.Enemy.EnemyState.patrul;
 
 /**
  * Created by Uskov Dmitry on 08.06.2016.
@@ -95,14 +97,22 @@ public class Enemy extends PhysicalGameObject {
 
     private Player objectForAttack = null;
 
+    private EnemyState state = patrul;
+
+    private Point locationForDraw = null;
+
     public Enemy(int maxHelth, WindowInfo windowsInfo) throws IOException {
         super(maxHelth);
         this.windowsInfo=windowsInfo;
         this.imageForMoveToRight = ImageIO.read(new File(Property.RESOURSES_PATH+"enemy_right.png"));
         this.imageForMoveToLeft = ImageIO.read(new File(Property.RESOURSES_PATH+"enemy_left.png"));
-        this.location = new Point(windowsInfo.getWidth()/2, windowsInfo.getHeight()/2);
-
-        currentFreePoint = freeTargetPoints;
+        if(new Random().nextBoolean()) {
+            this.location = new Point(1091,34);
+            currentFreePoint = freeTargetPoints;
+        } else {
+            this.location = new Point(CASTLE_LOCATION_X + 50, CASTLE_LOCATION_Y + 50);
+            currentFreePoint = FreeTargetPoint.getP9();
+        }
 
         targetPointImage = ImageIO.read(new File(Property.RESOURSES_PATH + "flag.png"));
 
@@ -158,13 +168,16 @@ public class Enemy extends PhysicalGameObject {
         if(Property.DEBUG_MODE) {
             g.setColor(Color.WHITE);
             g.drawOval(location.x - OVERVIEW_RADIUS, location.y - OVERVIEW_RADIUS, 2 * OVERVIEW_RADIUS, 2 * OVERVIEW_RADIUS);
-            for(Point p : playerLocationsForDebag){
-                g.drawLine(location.x, location.y, p.x, p.y);
+
+            if(playerLocationsForDebag!=null) {
+                for (Point p : playerLocationsForDebag) {
+                    g.drawLine(location.x, location.y, p.x, p.y);
+                }
             }
         }
 
         //отрисовка тела
-        if (targetLocation != null && targetLocation.x < location.x) {
+        if (locationForDraw != null && locationForDraw.x < location.x) {
             playerImageForDraw = getImageForMoveToLeft();
         } else {
             playerImageForDraw = getImageForMoveToRight();
@@ -198,15 +211,33 @@ public class Enemy extends PhysicalGameObject {
                     .map(o -> new Point(o.getLocation())).collect(Collectors.toList()));
         }
 
-        if(objectForAttack==null) {
-            if(moveToTargetLocation()){
-                nextCurrentFreePont();
-            }
-            findPlayerForAttack(gameController);
-        } else{
-            moveToTargetLocation();
-            attackPlayer(objectForAttack);
-        }
+
+                switch(state){
+                    case patrul:
+
+                        if(moveToLocation(targetLocation)){
+                            nextCurrentFreePont();
+                        }
+                        //попытка найти игрока
+                        objectForAttack = findPlayerForAttack(gameController);
+                        if(objectForAttack!=null){
+                            state = attack;
+                        }
+                        break;
+                    case attack:
+                         if(objectForAttack != null) {
+                            moveToLocation(objectForAttack.getLocation(), objectForAttack.getTerritoryRadius()+ATTACK_RADIUS);
+                            attackPlayer(objectForAttack);
+                        } else {
+                            state = patrul;
+                        }
+                        break;
+                    case attackDistant:
+                        break;
+                    case escape:
+                        break;
+                }
+
     }
 
 
@@ -215,23 +246,20 @@ public class Enemy extends PhysicalGameObject {
         if(damageTimer>=DAMAGE_PAUSE) {
             if (player.collision(location.x, location.y, TERITORY_RADIUS+ATTACK_RADIUS) <= 0) {
                 damageTimer=0;
-                player.addHelth(-DAMAGE);
-                addHelth(DAMAGE);
-                if(player.isDestroy()){
-                    objectForAttack = null;
-                    nextCurrentFreePont();
-                }
+                player.addHealth(-DAMAGE);
+                addHealth(DAMAGE);
             }
         } else {
             damageTimer++;
         }
 
-        if(objectForAttack != null && objectForAttack.isDestroy()){
+        if(objectForAttack == null || objectForAttack.isDestroy()){
+            state = patrul;
             objectForAttack = null;
         }
     }
 
-    private void findPlayerForAttack(GameController gameController) {
+    private Player findPlayerForAttack(GameController gameController) {
         List<Player> visiblePalyers = new ArrayList<>();
 
         List<PhysicalGameObject> playesInRadius = gameController.getPhysicalGameObject().stream() //объекты, находящиеся в радиусе виденья
@@ -266,63 +294,77 @@ public class Enemy extends PhysicalGameObject {
         }
 
         if(visiblePalyers.size()>0) {
-            objectForAttack = visiblePalyers.get(new Random().nextInt(visiblePalyers.size()));
-            targetLocation = objectForAttack.getLocation();
+            return visiblePalyers.get(new Random().nextInt(visiblePalyers.size()));
+        } else {
+            return null;
         }
     }
 
-    private boolean moveToTargetLocation() {
-        if(objectForAttack!=null){
-            if(objectForAttack.collision(location.x, location.y, TERITORY_RADIUS + ATTACK_RADIUS)<=0){
-                return true;
-            }
-        }
-        if(targetLocation!=null) { //пока только движение. Если двигаться объекту некуда, то ничего не делаем
-            int x = location.x;
-            int y = location.y;
-            if (!(targetLocation.x == x && targetLocation.y == y)) {//если не достигли цели
-                double dx;
-                double dy;
-                double targetX = targetLocation.getX();
-                double targetY = targetLocation.getY();
-                if(targetX - x!=0) {
-                    double tan = Math.abs((targetY - y) / (targetX - x));
-                    dx = getSpeed() / Math.sqrt(1 + tan * tan);
-                    if(dx > Math.abs(targetX - x)){
-                        dx = Math.abs(targetX - x);
-                    }
-                    dx*= Math.signum(targetX - x);
 
-                    dy = Math.abs(dx * tan);
-                    if(dy > Math.abs(targetY - y)){
-                        dy = Math.abs(targetY - y);
-                    }
-                    dy *= Math.signum(targetY - y);
-                }
-                else {
-                    dx=0;
-                    if(getSpeed() <Math.abs(targetY - y)) {
-                        dy = getSpeed();
-                    } else {
-                        dy = Math.abs(targetY - y);
-                        dy *= Math.signum(targetLocation.getY() - y);
-                        return true;
-                        //nextCurrentFreePont();
-                    }
-                    if(targetLocation!=null) {
-                        dy *= Math.signum(targetLocation.getY() - y);
-                    }
-                }
-
-                location.x += dx;
-                location.y += dy;
-                if(location.equals(targetLocation)){
-                    return true;
-                    //nextCurrentFreePont();
-                    //targetLocation=null;
-                }
-            }
+    /**
+     * @param targLocation
+     * @return true, если достигли цели или цели нет
+     */
+    private boolean moveToLocation(Point  targLocation, int r) {
+        int dx = targLocation.x - location.x;
+        int dy = targLocation.y - location.y;
+        double l = Math.sqrt(dx*dx + dy*dy);
+        if(l<=r) {
+            return true;
         }
+        return moveToLocation(targLocation);
+    }
+
+
+    /**
+     * @param targLocation
+     * @return true, если достигли цели или цели нет
+     */
+    private boolean moveToLocation(Point  targLocation) {
+        //if(objectForAttack!=null){
+        //    if(objectForAttack.collision(location.x, location.y, TERITORY_RADIUS + ATTACK_RADIUS)<=0){
+        //        return true;
+        //    }
+        //}
+        if(targLocation == null || location.equals(targLocation)) {return true;}
+        locationForDraw = targLocation;
+        int x = location.x;
+        int y = location.y;
+
+        double dx;
+        double dy;
+        double targetX = targLocation.getX();
+        double targetY = targLocation.getY();
+        if(targetX != x) {
+            double tan = Math.abs((targetY - y) / (targetX - x));
+            dx = getSpeed() / Math.sqrt(1 + tan * tan);
+            if(dx > Math.abs(targetX - x)){
+                dx = Math.abs(targetX - x);
+            }
+            dx*= Math.signum(targetX - x);
+
+            dy = Math.abs(dx * tan);
+            if(dy > Math.abs(targetY - y)){
+                dy = Math.abs(targetY - y);
+            }
+            dy *= Math.signum(targetY - y);
+        }
+        else {
+            dx=0;
+            if(getSpeed() <Math.abs(targetY - y)) {
+                dy = getSpeed();
+            } else {
+                dy = Math.abs(targetY - y);
+            }
+            dy *= Math.signum(targLocation.getY() - y);
+        }
+
+        location.x += dx;
+        location.y += dy;
+        if(location.equals(targetLocation)){
+            return true;
+        }
+
         return false;
     }
 
@@ -395,6 +437,8 @@ public class Enemy extends PhysicalGameObject {
 
         private Point point;
 
+        private static FreeTargetPoint p9 = null;
+
         private List<FreeTargetPoint> nextPoints = new ArrayList<>();
 
         public Point getPoint() {
@@ -434,9 +478,22 @@ public class Enemy extends PhysicalGameObject {
             return next;
         }
 
+        public static FreeTargetPoint getP9(){
+            return p9;
+        }
+
+        public static void setP9(FreeTargetPoint p9Input) {
+            p9 = p9Input;
+        }
+
         public void setBeforePoint(FreeTargetPoint beforePoint) {
             this.beforePoint = beforePoint;
         }
+    }
+
+
+    enum EnemyState{
+        patrul, attack, attackDistant, escape
     }
 
 }

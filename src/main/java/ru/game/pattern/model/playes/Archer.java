@@ -7,16 +7,14 @@ import ru.game.pattern.model.FireBall;
 import ru.game.pattern.model.GameObject;
 import ru.game.pattern.model.WindowInfo;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
@@ -127,11 +125,10 @@ abstract public class Archer extends Player {
 
     private void autoattack(GameController gameController) {
         if(targetLocation==null && atackPoints.size()==0) {
-            for (Enemy o : gameController.getEnemy()) {
-                if (o.collision(location.x, location.y, getTerritoryRadius() + autoAttackRadius + 5) <= 0) {
-                    atackPoints.add(o.getLocation());
-                }
-            }
+            atackPoints.addAll(gameController.getEnemy().stream()
+                    .filter(o -> o.collision(location.x, location.y, getTerritoryRadius() + autoAttackRadius + 5) <= 0)
+                    .map(Enemy::getLocation)
+                    .collect(Collectors.toList()));
         }
     }
 
@@ -156,9 +153,10 @@ abstract public class Archer extends Player {
     }
 
     class ArcherMouseListener extends PlayerMouseListener{
-
+        
         @Override
-        public void mouseReleasedSpecial(MouseEvent e) {
+        public void mouseReleased(MouseEvent e) {
+            super.mouseReleased(e);
             if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано СКМ
                 if(isSeletedByCursor()){
                     armBullet(new Point(e.getX(), e.getY()));

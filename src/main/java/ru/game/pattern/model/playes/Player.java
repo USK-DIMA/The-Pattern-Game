@@ -135,6 +135,9 @@ public abstract class Player  extends PhysicalGameObject {
 
     private static List<StaticPhysicalGameObject> staticObjects = null;
 
+    private List<EditHealthNumber> mEditHealthNumbers;
+
+
     public Player(int maxHelth, WindowInfo windowsInfo) throws IOException {
         super(maxHelth);
         this.windowsInfo=windowsInfo;
@@ -150,6 +153,8 @@ public abstract class Player  extends PhysicalGameObject {
 
         targetLocation=null;
         fireTimer = 0;
+
+        mEditHealthNumbers = new LinkedList<>();
     }
 
     public void setLocation(Point location){
@@ -168,7 +173,7 @@ public abstract class Player  extends PhysicalGameObject {
     }
 
     @Override
-    final public void update(GameController gameController) {
+    public void update(GameController gameController) {
         setObjectForAttack(gameController);
         if(objectForAttack==null && targetLocation == null && infighting){
             autoattack(gameController);
@@ -223,7 +228,7 @@ public abstract class Player  extends PhysicalGameObject {
      */
     private void attack(PhysicalGameObject object) {
         if(fireTimer <= 0) {
-            object.addHelth(-damage);
+            object.addHealth(-damage);
             fireTimer = attackPause;
         }
         else {
@@ -282,7 +287,6 @@ public abstract class Player  extends PhysicalGameObject {
                 }
             }
         }
-        drawSpecial(g);
     }
 
 
@@ -298,6 +302,9 @@ public abstract class Player  extends PhysicalGameObject {
                     break;
                 }
             }
+            if (gameController.getCastle().collision(clickAttack.x, clickAttack.y, 2) <= 0) {
+                objectForAttack = gameController.getCastle();
+            }
             clickAttack = null;
         }
     }
@@ -311,18 +318,37 @@ public abstract class Player  extends PhysicalGameObject {
         }
     }
 
-    /**
-     * Если надо отрисовать что-то ещё особенное поверх всего
-     */
-    protected void drawSpecial(Graphics2D g){
-
-    }
 
     @Override
-    public void drawSpecialAfterAll(Graphics2D g){
-        if(objectForAttack!=null && !objectForAttack.isDestroy()){
+    public void drawAfterAll(Graphics2D g) {
+        if (objectForAttack != null && !objectForAttack.isDestroy()) {
             g.drawImage(aimImage, objectForAttack.getLocation().x - 14, objectForAttack.getLocation().y - 14, null);
         }
+
+        //Отрисовка цифы урон/восстановление
+        List<EditHealthNumber> healthNumbers = editGetHealthManager(null, EditHealthNumber.CLONE);//создаём копию, т.к. LinkedList не потокобезопасен
+        healthNumbers.removeIf(item -> item.amountShow > 30); // убираем много раз показанные
+        healthNumbers.forEach(e -> {
+                    g.setColor(e.color);
+                    g.drawString(e.value, location.x - e.shiftX, location.y - 2*e.amountShow++);
+                }
+        );
+    }
+
+    /**
+     * Потокобезопасное обращение к mEditHealthNumbers
+     * @param health кол-во HP, если ходит доабвить новый элемен в mEditHealthNumbers
+     * @param operation операция, которую необходимо выполнить
+     * @return возвращает копию mEditHealthNumbers, если operation = EditHealthNumber.CLONE, иначе возвращает NULL.
+     */
+    synchronized private List<EditHealthNumber> editGetHealthManager(Integer health, int operation) {
+        switch (operation) {
+            case EditHealthNumber.ADD: mEditHealthNumbers.add(new EditHealthNumber(health));
+                break;
+            case EditHealthNumber.CLONE:
+                return new LinkedList<>(mEditHealthNumbers);
+        }
+        return  null;
     }
 
     protected final boolean isDrawTargetLocation(){
@@ -526,11 +552,6 @@ public abstract class Player  extends PhysicalGameObject {
                 }
             }
 
-            mouseReleasedSpecial(e);
-        }
-
-        public void mouseReleasedSpecial(MouseEvent e){
-
         }
 
         @Override
@@ -544,4 +565,37 @@ public abstract class Player  extends PhysicalGameObject {
         }
     }
 
+    /**
+     * Класс, отвечающий за текстовое поле изменения здоровья
+     * @amountShow int счётчик показов (для удаления из списка)
+     * @value String значение изменения
+     * @color Color цвет при выводе (зелёный/красный)
+     */
+    class EditHealthNumber{
+
+        public static final int ADD = 1;
+
+        public static final int CLONE = 2;
+
+        int amountShow;
+        String value;
+        Color color;
+        int shiftX;
+
+        EditHealthNumber(int value){
+            this.value = String.format("%+d", value);
+            this.amountShow = 0;
+            this.color = (value > 0) ? Color.GREEN : Color.RED;
+            this.shiftX = (value > 0) ? 25 : 15;
+        }
+
+    }
+
+    @Override
+    public void addHealth(int h) {
+        super.addHealth(h);
+        if(helth < maxHelth){
+            editGetHealthManager(h, EditHealthNumber.ADD);
+        }
+    }
 }

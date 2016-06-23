@@ -127,11 +127,16 @@ abstract public class Mag extends Player{
     }
 
     @Override
-    public void updateSpecial(GameController gameController) {
+    public void update(GameController gameController) {
         recalculateMana();
         recalculateFreeze();
         invise(gameController);
         freezeObjects(gameController);
+        super.update(gameController);
+    }
+
+    @Override
+    public void updateSpecial(GameController gameController) {
         move(gameController);
     }
 
@@ -201,7 +206,7 @@ abstract public class Mag extends Player{
     }
 
     @Override
-    public void drawSpecialBeforeAll(Graphics2D g) {
+    public void drawBeforeAll(Graphics2D g) {
         if(isFreeze){
 
             g.setStroke(new BasicStroke(3));
@@ -215,9 +220,10 @@ abstract public class Mag extends Player{
         }
     }
 
+
     @Override
-    protected void drawSpecial(Graphics2D g) {
-        //отрисовка полоски маны
+    public void draw(Graphics2D g) {
+        super.draw(g);
         g.setColor(Color.black);
         g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-35, PLAYER_IMAGE_SHIFT_X*2+5, 10);
         g.setColor(manaColor);
@@ -240,10 +246,7 @@ abstract public class Mag extends Player{
     }
 
     class MagMouseListener extends PlayerMouseListener{
-        @Override
-        public void mouseReleasedSpecial(MouseEvent e) {
 
-        }
     }
 
 

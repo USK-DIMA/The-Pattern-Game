@@ -83,9 +83,9 @@ public class GameView implements  Runnable{
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) image.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        gameController.startUpdate(gameStatus);
         gamePanel.addGameObjectListeners(gameController.getAllGameObjects());
         gamePanel.addGameObjectListener(gameController.getGameBoard());
-        gameController.startUpdate(gameStatus);
         this.startDraw();
         mainFrame.setVisible(true);
     }
@@ -129,16 +129,25 @@ public class GameView implements  Runnable{
 
             List<GameObject> gameObjectList = gameController.getAllGameObjectsClone();
             for(GameObject o : gameObjectList){
-                o.drawSpecialBeforeAll(g); //Отрисовка объектов из контроллера
+                o.drawBeforeAll(g); //Отрисовка объектов из контроллера
+            }
+            for(GameObject o : gameObjectList) {
+                    o.draw(g); //Отрисовка объектов из контроллера
             }
             for(GameObject o : gameObjectList){
-                o.draw(g); //Отрисовка объектов из контроллера
-            }
-            for(GameObject o : gameObjectList){
-                o.drawSpecialAfterAll(g); //Отрисовка объектов из контроллера
+                o.drawAfterAll(g); //Отрисовка объектов из контроллера
             }
             gameController.getGameBoard().draw(g);
-            gameController.getBackgound().drawSpecialAfterAll(g);
+            gameController.getBackgound().drawAfterAll(g);
+
+            if(gameStatus.isPause()){
+                g.setColor(new Color(0,0,0, 170));
+                g.fillRect(0,0, windowInfo.getWidth(), windowInfo.getHeight());
+                g.setColor(Color.WHITE);
+                g.drawString("Pause", windowInfo.getWidth()/2 , windowInfo.getHeight()/2);
+            }
+
+
             gameDraw();
         }
     }

@@ -2,10 +2,10 @@ package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.Property;
-import ru.game.pattern.model.fabrica.PlayerFabrica;
-import ru.game.pattern.model.fabrica.PlayerFabricaLvl1;
-import ru.game.pattern.model.fabrica.PlayerFabricaLvl2;
-import ru.game.pattern.model.fabrica.PlayerFabricaLvl3;
+import ru.game.pattern.model.fabrica.PlayerFabric;
+import ru.game.pattern.model.fabrica.PlayerFabricLvl1;
+import ru.game.pattern.model.fabrica.PlayerFabricLvl2;
+import ru.game.pattern.model.fabrica.PlayerFabricLvl3;
 import ru.game.pattern.model.playes.Player;
 
 import javax.imageio.ImageIO;
@@ -35,7 +35,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private WindowInfo windowInfo;
 
-    private PlayerFabrica playerFabrica;
+    private PlayerFabric playerFabrica;
 
     private BufferedImage archerImage;
 
@@ -77,6 +77,8 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private int minCost = 0;
 
+    private int enemyCount = ENEMY_COUNT;
+
     Color impossibleByColor = new Color(100, 100, 100);
 
     private boolean isLvlUp = false;
@@ -92,11 +94,11 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private void initFabricaByLvl(int i) throws IOException {
         switch (i){
-            case 1: playerFabrica = new PlayerFabricaLvl1();
+            case 1: playerFabrica = new PlayerFabricLvl1();
                 break;
-            case 2: playerFabrica = new PlayerFabricaLvl2();
+            case 2: playerFabrica = new PlayerFabricLvl2();
                 break;
-            case 3: playerFabrica = new PlayerFabricaLvl3();
+            case 3: playerFabrica = new PlayerFabricLvl3();
                 break;
             default: return;
         }
@@ -227,6 +229,9 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     @Override
     public void update(GameController gameController) {
+        if(gameController.getCastle().helth < 1){
+            gameController.winGame();
+        }
         if(playerCount== 0 && money<minCost){
             gameController.endGame();
         }
@@ -236,6 +241,13 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
         }
         try {
             tryBuyPlayer(gameController);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            gameController.addEnemies(ENEMY_COUNT - enemyCount);
+            enemyCount = ENEMY_COUNT;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -322,7 +334,13 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     @Override
     public void objectIsDistroy(GameObject player) {
-        playerCount--;
+        if(player instanceof Player) {
+            playerCount--;
+        }
+        if(player instanceof Enemy) {
+            money += MONEY_PER_KILL;
+            enemyCount--;
+        }
     }
 
 

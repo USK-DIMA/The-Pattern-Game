@@ -14,6 +14,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ru.game.pattern.controller.Property.CASTLE_LOCATION_X;
+import static ru.game.pattern.controller.Property.CASTLE_LOCATION_Y;
+import static ru.game.pattern.controller.Property.ENEMY_COUNT;
+
 /**
  * Created by Uskov Dmitry on 27.05.2016.
  */
@@ -64,6 +68,9 @@ public class GameControllerImpl implements GameController, Runnable{
 
     private List<StaticPhysicalGameObject> staticPhysicalGameObjects;
 
+    private Castle castle;
+
+    public static GameController instance;
     /**
      * Объект, куда будут передоваться только что созданные игровые объекты для регистрации листенера
      */
@@ -80,7 +87,7 @@ public class GameControllerImpl implements GameController, Runnable{
     /**
      * @param windowInfo информация об окне
      */
-    public GameControllerImpl(WindowInfo windowInfo) throws IOException {
+    private GameControllerImpl(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
         allGameObjects = new ArrayList<>();
         allGameObjects = Collections.synchronizedList(allGameObjects);
@@ -93,16 +100,31 @@ public class GameControllerImpl implements GameController, Runnable{
         initStaticObjects();
         initEnemy();
         allGameObjects.add(cursor);
-
+        castle = new Castle(new Point(CASTLE_LOCATION_X, CASTLE_LOCATION_Y));
+        addStaticObject(castle);
         Player.setStaticObjects(getStaticPhysicalGameObjects());
+    }
+
+    public static GameController getInstance(WindowInfo windowInfo) throws IOException {
+        GameController localInstance = instance;
+        if (localInstance == null) {
+            synchronized (GameController.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new GameControllerImpl(windowInfo);
+                }
+            }
+        }
+        return localInstance;
     }
 
     private void initEnemy() throws IOException {
         Enemy object = new Enemy(100, windowInfo);
         object.setLocation(new Point(1091,34));
+        object.setPlayerDestroyNotifer(gameBoard);
         allGameObjects.add(object);
         physicalGameObjects.add(object);
-
+/*
         object = new Enemy(100, windowInfo);
         object.setLocation(new Point(1091,34));
         allGameObjects.add(object);
@@ -122,6 +144,8 @@ public class GameControllerImpl implements GameController, Runnable{
         object.setLocation(new Point(1091,34));
         allGameObjects.add(object);
         physicalGameObjects.add(object);
+        */
+        addEnemies(ENEMY_COUNT);
     }
 
     private void initStaticObjects() throws IOException{
@@ -219,6 +243,17 @@ public class GameControllerImpl implements GameController, Runnable{
     }
 
     @Override
+    public void addEnemies(int enemyCount) throws IOException {
+        Enemy object;
+        for (int i = 0; i < enemyCount; i++) {
+            object = new Enemy(100, windowInfo);
+            allGameObjects.add(object);
+            physicalGameObjects.add(object);
+            object.setPlayerDestroyNotifer(getGameBoard());
+        }
+    }
+
+    @Override
     public List<StaticPhysicalGameObject> getStaticPhysicalGameObjects() {
         return staticPhysicalGameObjects;
     }
@@ -240,7 +275,7 @@ public class GameControllerImpl implements GameController, Runnable{
     @Override
     public void startUpdate(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
-
+        allGameObjects.add(gameStatus);
         if(updateThread==null){
             synchronized (GameControllerImpl.class){ //один объект класса GameControllerImpl должен порождать только один поток для обновления
                 if(updateThread==null) {
@@ -256,25 +291,27 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     @Override
     public void updateAll() {
-        while (gameStatus.isRun()){
-            try {
-                Thread.sleep(Property.UPDATE_PAUSE); //просто пауза
-            } catch (InterruptedException e) {
-                System.err.println("Error of Thread.sleep in GameController.updateAll");
-            }
-
-            getBackgound().update(this);
-            for(int i=0; i<allGameObjects.size(); i++){
-                GameObject o = allGameObjects.get(i);
-                if(o.isDestroy()){
-                    allGameObjects.remove(o);
-                    physicalGameObjects.remove(o);
-                    i--;
-                    continue;
+        while (gameStatus.isRun()) {
+            if (!gameStatus.isPause()) {
+                try {
+                    Thread.sleep(Property.UPDATE_PAUSE); //просто пауза
+                } catch (InterruptedException e) {
+                    System.err.println("Error of Thread.sleep in GameController.updateAll");
                 }
-                o.update(this);
+
+                getBackgound().update(this);
+                for (int i = 0; i < allGameObjects.size(); i++) {
+                    GameObject o = allGameObjects.get(i);
+                    if (o.isDestroy()) {
+                        allGameObjects.remove(o);
+                        physicalGameObjects.remove(o);
+                        i--;
+                        continue;
+                    }
+                    o.update(this);
+                }
+                getGameBoard().update(this);
             }
-            getGameBoard().update(this);
         }
     }
 
@@ -327,6 +364,11 @@ public class GameControllerImpl implements GameController, Runnable{
     }
 
     @Override
+    public Castle getCastle() {
+        return castle;
+    }
+
+    @Override
     public void endGame() {
         background.endGame();
     }
@@ -342,4 +384,8 @@ public class GameControllerImpl implements GameController, Runnable{
         }
     }
 
+    @Override
+    public void winGame() {
+        background.winGame();
+    }
 }
