@@ -38,6 +38,8 @@ public class Menu extends GameObject {
 
     private boolean buttonGuideActive = false;
 
+    private boolean showGuid = false;
+
     public Menu(GameStatus gameStatus, WindowInfo windowInfo) throws IOException {
         this.gameStatus = gameStatus;
         this.windowInfo = windowInfo;
@@ -60,6 +62,15 @@ public class Menu extends GameObject {
         g.drawImage(menuBackground, 0,0, windowInfo.getWidth(), windowInfo.getHeight(), null);
         drawButtonStart(g);
         drawButtonGuide(g);
+
+        if(showGuid){
+            g.setColor(new Color(0,0,0, 180));
+            g.fillRect(0,0,windowInfo.getWidth(), windowInfo.getHeight());
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 48));
+            g.drawString(Property.GUIDE, 0, windowInfo.getHeight());
+            g.setFont(new Font("default", Font.BOLD, 10));
+        }
 
     }
 
@@ -86,6 +97,8 @@ public class Menu extends GameObject {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 48));
         g.drawString("Start", windowInfo.getWidth()/2 -60 , buttonY + BUTTON_HEIGHT - 20);
         g.setFont(new Font("default", Font.BOLD, 10));
+
+
     }
 
     private void drawButtonGuide(Graphics2D g) {
@@ -159,6 +172,10 @@ public class Menu extends GameObject {
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            if(showGuid){
+                showGuid = false;
+                return;
+            }
             if(buttonStartActive && inButtonStart(e.getX(), e.getY())){
                 startGame();
             }
@@ -182,7 +199,7 @@ public class Menu extends GameObject {
     }
 
     private void startGuid() {
-
+        showGuid = true;
     }
 
     private void startGame() {
