@@ -2,6 +2,7 @@ package ru.game.pattern.controller;
 
 import ru.game.pattern.model.*;
 import ru.game.pattern.model.Cursor;
+import ru.game.pattern.model.Menu;
 import ru.game.pattern.model.playes.*;
 import ru.game.pattern.model.staticObjects.*;
 import ru.game.pattern.view.GameView;
@@ -56,6 +57,8 @@ public class GameControllerImpl implements GameController, Runnable{
 
     private GameBoard gameBoard;
 
+    private Menu menu;
+
     /**
      * коллекция всех игровых объектов
      */
@@ -94,6 +97,7 @@ public class GameControllerImpl implements GameController, Runnable{
         background = new GameBackground(windowInfo);
         cursor = new Cursor(windowInfo, physicalGameObjects);
         gameBoard = new GameBoard(windowInfo);
+        menu = new Menu(null, windowInfo);
 
         initStaticObjects();
         initEnemy();
@@ -101,6 +105,12 @@ public class GameControllerImpl implements GameController, Runnable{
         castle = new Castle(new Point(CASTLE_LOCATION_X, CASTLE_LOCATION_Y));
         addStaticObject(castle);
         Player.setStaticObjects(getStaticPhysicalGameObjects());
+    }
+
+
+    @Override
+    public Menu getMenu() {
+        return menu;
     }
 
     private void initEnemy() throws IOException {
@@ -234,6 +244,9 @@ public class GameControllerImpl implements GameController, Runnable{
     @Override
     public void startUpdate(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
+        menu.setGameStatus(gameStatus);
+        objectNotifer.addListeners(menu);
+
         allGameObjects.add(gameStatus);
         if(updateThread==null){
             synchronized (GameControllerImpl.class){ //один объект класса GameControllerImpl должен порождать только один поток для обновления
@@ -250,6 +263,9 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     @Override
     public void updateAll() {
+        while (gameStatus.isMenu()){
+            menu.update(this);
+        }
         while (gameStatus.isRun()) {
             if (!gameStatus.isPause()) {
                 try {

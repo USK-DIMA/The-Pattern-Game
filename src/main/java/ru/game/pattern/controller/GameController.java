@@ -64,6 +64,8 @@ public interface GameController {
 
     void winGame();
 
+    Menu getMenu();
+
     public static interface ObjectNotifer{
         void addListeners(GameObject object);
     }

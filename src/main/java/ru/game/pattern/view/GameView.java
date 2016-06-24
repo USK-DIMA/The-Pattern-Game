@@ -118,6 +118,11 @@ public class GameView implements  Runnable{
      * Метод, отрисовывающий все игровые объекты на BufferedImage image с помощью Graphics2D g.
      */
     private void drawAll() {
+        while (gameStatus.isMenu()){
+            gameController.getMenu().draw(g);
+            gameDraw();
+        }
+
         while (gameStatus.isRun()){
             try {
                 Thread.sleep(1000/Property.FPS);
@@ -146,8 +151,6 @@ public class GameView implements  Runnable{
                 g.setColor(Color.WHITE);
                 g.drawString("Pause", windowInfo.getWidth()/2 , windowInfo.getHeight()/2);
             }
-
-
             gameDraw();
         }
     }
@@ -176,4 +179,5 @@ public class GameView implements  Runnable{
     public GamePanel getGamePanel() {
         return gamePanel;
     }
+
 }
