@@ -2,6 +2,7 @@ package ru.game.pattern.controller;
 
 import ru.game.pattern.model.*;
 import ru.game.pattern.model.Cursor;
+import ru.game.pattern.model.Menu;
 import ru.game.pattern.model.playes.*;
 import ru.game.pattern.model.staticObjects.*;
 import ru.game.pattern.view.GameView;
@@ -56,6 +57,8 @@ public class GameControllerImpl implements GameController, Runnable{
 
     private GameBoard gameBoard;
 
+    private Menu menu;
+
     /**
      * коллекция всех игровых объектов
      */
@@ -69,8 +72,6 @@ public class GameControllerImpl implements GameController, Runnable{
     private List<StaticPhysicalGameObject> staticPhysicalGameObjects;
 
     private Castle castle;
-
-    public static GameController instance;
     /**
      * Объект, куда будут передоваться только что созданные игровые объекты для регистрации листенера
      */
@@ -87,7 +88,7 @@ public class GameControllerImpl implements GameController, Runnable{
     /**
      * @param windowInfo информация об окне
      */
-    private GameControllerImpl(WindowInfo windowInfo) throws IOException {
+    public GameControllerImpl(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
         allGameObjects = new ArrayList<>();
         allGameObjects = Collections.synchronizedList(allGameObjects);
@@ -96,6 +97,7 @@ public class GameControllerImpl implements GameController, Runnable{
         background = new GameBackground(windowInfo);
         cursor = new Cursor(windowInfo, physicalGameObjects);
         gameBoard = new GameBoard(windowInfo);
+        menu = new Menu(null, windowInfo);
 
         initStaticObjects();
         initEnemy();
@@ -105,47 +107,25 @@ public class GameControllerImpl implements GameController, Runnable{
         Player.setStaticObjects(getStaticPhysicalGameObjects());
     }
 
-    public static GameController getInstance(WindowInfo windowInfo) throws IOException {
-        GameController localInstance = instance;
-        if (localInstance == null) {
-            synchronized (GameController.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new GameControllerImpl(windowInfo);
-                }
-            }
-        }
-        return localInstance;
+
+    @Override
+    public Menu getMenu() {
+        return menu;
     }
 
     private void initEnemy() throws IOException {
-        Enemy object = new Enemy(100, windowInfo);
-        object.setLocation(new Point(1091,34));
-        object.setPlayerDestroyNotifer(gameBoard);
-        allGameObjects.add(object);
-        physicalGameObjects.add(object);
-/*
-        object = new Enemy(100, windowInfo);
-        object.setLocation(new Point(1091,34));
-        allGameObjects.add(object);
-        physicalGameObjects.add(object);
-
-        object = new Enemy(100, windowInfo);
-        object.setLocation(new Point(1091,34));
-        allGameObjects.add(object);
-        physicalGameObjects.add(object);
-
-        object = new Enemy(100, windowInfo);
-        object.setLocation(new Point(1091,34));
-        allGameObjects.add(object);
-        physicalGameObjects.add(object);
-
-        object = new Enemy(100, windowInfo);
-        object.setLocation(new Point(1091,34));
-        allGameObjects.add(object);
-        physicalGameObjects.add(object);
-        */
         addEnemies(ENEMY_COUNT);
+    }
+
+    @Override
+    public void addEnemies(int enemyCount) throws IOException {
+        Enemy object;
+        for(int i=0 ;i<enemyCount; i++){
+            object = new Enemy(100, windowInfo);
+            allGameObjects.add(object);
+            physicalGameObjects.add(object);
+            object.setPlayerDestroyNotifer(getGameBoard());
+        }
     }
 
     private void initStaticObjects() throws IOException{
@@ -243,17 +223,6 @@ public class GameControllerImpl implements GameController, Runnable{
     }
 
     @Override
-    public void addEnemies(int enemyCount) throws IOException {
-        Enemy object;
-        for (int i = 0; i < enemyCount; i++) {
-            object = new Enemy(100, windowInfo);
-            allGameObjects.add(object);
-            physicalGameObjects.add(object);
-            object.setPlayerDestroyNotifer(getGameBoard());
-        }
-    }
-
-    @Override
     public List<StaticPhysicalGameObject> getStaticPhysicalGameObjects() {
         return staticPhysicalGameObjects;
     }
@@ -275,6 +244,9 @@ public class GameControllerImpl implements GameController, Runnable{
     @Override
     public void startUpdate(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
+        menu.setGameStatus(gameStatus);
+        objectNotifer.addListeners(menu);
+
         allGameObjects.add(gameStatus);
         if(updateThread==null){
             synchronized (GameControllerImpl.class){ //один объект класса GameControllerImpl должен порождать только один поток для обновления
@@ -291,6 +263,9 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     @Override
     public void updateAll() {
+        while (gameStatus.isMenu()){
+            menu.update(this);
+        }
         while (gameStatus.isRun()) {
             if (!gameStatus.isPause()) {
                 try {

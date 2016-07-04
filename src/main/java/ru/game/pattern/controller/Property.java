@@ -142,6 +142,7 @@ public class Property {
     public static int PRIST_LVL3_HILL_RADIUS = 90;
     public static int PRIST_LVL3_HELTH_HILL = 5;
     public static int PRIST_LVL3_HILL_PAUSE = 15;
+    public static String GUIDE = "Guide Guide Guide Guide Guide Guide \nGuide Guide ";
 
     public static FreeTargetPoint initFreeTargetPointForEnemy() {
         FreeTargetPoint p1 = new FreeTargetPoint();

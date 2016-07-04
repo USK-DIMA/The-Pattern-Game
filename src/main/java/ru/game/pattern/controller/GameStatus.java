@@ -23,7 +23,10 @@ public class GameStatus extends GameObject {
 
     volatile private boolean pause;
 
+
     private KeyListener keyListener = new GameStatusKeyListener();
+
+    volatile private boolean menu = true;
 
     public GameStatus() {
         this.run = true;
@@ -68,6 +71,14 @@ public class GameStatus extends GameObject {
 
     public void setPause(boolean pause) {
         this.pause = pause;
+    }
+
+    public boolean isMenu() {
+        return menu;
+    }
+
+    public void setMenu(boolean menu) {
+        this.menu = menu;
     }
 
 
