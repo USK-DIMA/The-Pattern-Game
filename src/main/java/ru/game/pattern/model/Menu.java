@@ -44,7 +44,7 @@ public class Menu extends GameObject {
         this.gameStatus = gameStatus;
         this.windowInfo = windowInfo;
         menuMouseListener = new MenuMouseListener();
-        menuBackground = ImageIO.read(new File(Property.RESOURSES_PATH+"menu.png"));
+        menuBackground = ImageIO.read(new File(Property.RESOURCES_PATH+"menu.png"));
     }
 
     @Override
@@ -64,12 +64,18 @@ public class Menu extends GameObject {
         drawButtonGuide(g);
 
         if(showGuid){
-            g.setColor(new Color(0,0,0, 180));
+            g.setColor(new Color(0,0,0, 220));
             g.fillRect(0,0,windowInfo.getWidth(), windowInfo.getHeight());
-            g.setColor(Color.WHITE);
+           /* g.setColor(Color.WHITE);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 48));
             g.drawString(Property.GUIDE, 0, windowInfo.getHeight());
-            g.setFont(new Font("default", Font.BOLD, 10));
+            g.setFont(new Font("default", Font.BOLD, 10));*/
+            try {
+                g.drawImage(ImageIO.read(new File(Property.RESOURCES_PATH+"guide.png")), 0,0, windowInfo.getWidth(),
+                        windowInfo.getHeight(), null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }

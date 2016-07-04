@@ -88,7 +88,7 @@ public abstract class Player  extends PhysicalGameObject {
      */
     protected BufferedImage targetPointImage;
 
-    protected Color helthColor = Color.RED;
+    protected Color helthColor = Color.GREEN;
 
     /**
      * Таймер, отсчитывающий время перезарядки
