@@ -134,6 +134,11 @@ public class Cursor extends GameObject {
 
     @Override
     public void update(GameController gameController) {
+
+    }
+
+    @Override
+    public void updateDuringPause(GameController gameController) {
         if(drawAndUpdate){
             Point location = MouseInfo.getPointerInfo().getLocation();
            // int x = (int) (location.getX() / Property.SCREEN_SIZE_MULTIPLIER);

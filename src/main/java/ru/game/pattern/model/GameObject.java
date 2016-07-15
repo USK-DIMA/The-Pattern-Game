@@ -69,6 +69,15 @@ abstract public class GameObject {
      */
     abstract public void update(GameController gameController);
 
+
+    /**
+     * В методе должно происходить обновление состояния объекта
+     * Метод выполняеняется и во время паузы
+     */
+    public void updateDuringPause(GameController gameController){
+
+    }
+
     /**
      * Возвращает тип объекта
      * @return тип объекта
@@ -102,5 +111,6 @@ abstract public class GameObject {
     public interface GameObjectDestroyNotifer {
         void objectIsDistroy(GameObject player);
     }
+
 
 }
