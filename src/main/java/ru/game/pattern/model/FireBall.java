@@ -76,6 +76,9 @@ public abstract class FireBall extends PhysicalGameObject {
         int n = (int)((Math.sqrt(dx*dx + dy+ dy)/radius)+1);
         this.location.x+=dx*n;
         this.location.y+=dy*n;
+        if(dx==0 && dy==0){
+            destroy();
+        }
     }
 
     @Override
