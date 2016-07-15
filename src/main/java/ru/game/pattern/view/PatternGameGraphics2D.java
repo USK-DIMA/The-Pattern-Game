@@ -6,6 +6,17 @@ import java.awt.image.BufferedImage;
 /**
  * Created by Uskov Dmitry on 06.07.2016.
  */
+
+/**
+ * Прослойка для Graphics2D.
+ * Введена экстренно для возможности изменения размера игрового окна.
+ * Всё, что делает эта прослойка, уменьшает (увеличивает) размер или координаты объекта,
+ * т.е. домнажает на параметр mult = Property.SCREEN_SIZE_MULTIPLIER,
+ * тем самым делая изображение на экране меньше (больше).
+ * Есть аналогичная прослойка в controller,которая обрабатывает координаты нажатия мышкой на экран аналогичным образом
+ * @see Property
+ * @see ru.game.pattern.controller.PatternGameMouseListener
+ */
 public class PatternGameGraphics2D {
 
     Graphics2D graphics2d;

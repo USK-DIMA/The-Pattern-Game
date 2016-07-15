@@ -13,8 +13,6 @@ import java.awt.event.MouseListener;
 
 /**
  * Объект, содержащий в себе информацию о состоянии игры.
- * Пока это только параметр, показывающий началась ли игра или уже закончилась.
- * Позже возможно добавить состояние "Пауза"
  */
 public class GameStatus extends GameObject {
 
@@ -22,10 +20,9 @@ public class GameStatus extends GameObject {
 
     volatile private boolean pause;
 
+    volatile private boolean menu = true;
 
     private KeyListener keyListener = new GameStatusKeyListener();
-
-    volatile private boolean menu = true;
 
     public GameStatus() {
         this.run = true;
