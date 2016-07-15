@@ -24,7 +24,7 @@ public class Property {
      * WINDOW_WIDTH = DEFAULT_WINDOW_WIDTH * SCREEN_SIZE_MULTIPLIER
      * WINDOW_HEIGHT = DEFAULT_WINDOW_HEIGHT * SCREEN_SIZE_MULTIPLIER
      */
-    public static double SCREEN_SIZE_MULTIPLIER = 0.9;
+    public static double SCREEN_SIZE_MULTIPLIER = 1;
 
     /**
      * При движении курсора невозможно узнать его позицию относительно игрового окна, можно узнать

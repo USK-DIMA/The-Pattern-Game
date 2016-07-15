@@ -12,7 +12,7 @@ public class Property {
 
     public static boolean DEBUG_MODE = false;
 
-    public static int START_MONEY = 5000;
+    public static int START_MONEY = 100;
     public static int MONEY_PER_KILL = 25;
     public static int MAX_PLAYER_COUNT = 5;
     public static int BUY_PLAYER_PAUSE = 50;
