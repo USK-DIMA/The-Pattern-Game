@@ -1,8 +1,10 @@
 package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.PatternGameMouseListener;
 import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.Enemy;
+import ru.game.pattern.view.PatternGameGraphics2D;
 import ru.game.pattern.model.PhysicalGameObject;
 import ru.game.pattern.model.WindowInfo;
 import ru.game.pattern.model.staticObjects.StaticPhysicalGameObject;
@@ -142,7 +144,7 @@ public abstract class Player  extends PhysicalGameObject {
         super(maxHelth);
         this.windowsInfo=windowsInfo;
 
-        this.location = new Point(windowsInfo.getWidth()/2, windowsInfo.getHeight()/2);
+        this.location = new Point(windowsInfo.getDefaultWidth()/2, windowsInfo.getDefaultHeight()/2);
         this.targetLocationList = new LinkedList<>();
         if(aimImage==null) {
             aimImage = ImageIO.read(new File(Property.RESOURCES_PATH + "aim2.png"));
@@ -250,7 +252,7 @@ public abstract class Player  extends PhysicalGameObject {
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(PatternGameGraphics2D g) {
         if(isDestroy()){ return; }
         int x = location.x;
         int y = location.y;
@@ -320,7 +322,7 @@ public abstract class Player  extends PhysicalGameObject {
 
 
     @Override
-    public void drawAfterAll(Graphics2D g) {
+    public void drawAfterAll(PatternGameGraphics2D g) {
         if (objectForAttack != null && !objectForAttack.isDestroy()) {
             g.drawImage(aimImage, objectForAttack.getLocation().x - 14, objectForAttack.getLocation().y - 14, null);
         }
@@ -438,7 +440,7 @@ public abstract class Player  extends PhysicalGameObject {
      * Отрисовка изображения персонажа. Без индикатора выделения, здоровья и прочего. Только его тело.
      * @param g
      */
-    protected void drawPlayer(Graphics2D g) {
+    protected void drawPlayer(PatternGameGraphics2D g) {
         // отрисовка героя
         if(isAutomaticTurnImagePlayer()) {
             if (targetLocation != null && targetLocation.x < location.x) {
@@ -472,9 +474,9 @@ public abstract class Player  extends PhysicalGameObject {
 
     private boolean outsideClick(Point point) {
         return !(point.x>windowsInfo.getBorderLeft()
-                && point.x<windowsInfo.getWidth() - windowsInfo.getBorderRight()
+                && point.x<windowsInfo.getDefaultWidth() - windowsInfo.getBorderRight()
                 && point.y>windowsInfo.getBorderTop()
-                && point.y<windowsInfo.getHeight() - windowsInfo.getBorderBottom());
+                && point.y<windowsInfo.getDefaultHeight() - windowsInfo.getBorderBottom());
     }
 
     protected boolean clickToStaticObject(Point targetClock){
@@ -520,20 +522,20 @@ public abstract class Player  extends PhysicalGameObject {
      */
     protected abstract boolean isAutomaticTurnImagePlayer();
 
-    public class PlayerMouseListener implements MouseListener {
+    public class PlayerMouseListener extends PatternGameMouseListener {
 
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void patternGameMouseClicked(MouseEvent e) {
 
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void patternGameMousePressed(MouseEvent e) {
 
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void patternGameMouseReleased(MouseEvent e) {
 
             if(e.getButton()==MouseEvent.BUTTON2 && infighting) { //Клик по экрано CКМ
                 if(isSeletedByCursor()){
@@ -555,12 +557,12 @@ public abstract class Player  extends PhysicalGameObject {
         }
 
         @Override
-        public void mouseEntered(MouseEvent e) {
+        public void patternGameMouseEntered(MouseEvent e) {
 
         }
 
         @Override
-        public void mouseExited(MouseEvent e) {
+        public void patternGameMouseExited(MouseEvent e) {
 
         }
     }

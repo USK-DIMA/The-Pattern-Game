@@ -55,11 +55,11 @@ public class WindowInfo {
         return borderLeft;
     }
 
-    public int getWidth() {
+    public int getDefaultWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public int getDefaultHeight() {
         return height;
     }
 

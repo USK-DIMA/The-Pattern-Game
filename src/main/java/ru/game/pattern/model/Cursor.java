@@ -1,6 +1,9 @@
 package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.PatternGameMouseListener;
+import ru.game.pattern.view.PatternGameGraphics2D;
+import ru.game.pattern.view.Property;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -101,12 +104,12 @@ public class Cursor extends GameObject {
     }
 
     @Override
-    public MouseListener getMouseListener(){
+    public PatternGameMouseListener getMouseListener(){
         return mouseListener;
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(PatternGameGraphics2D g) {
         if(drawAndUpdate){
             g.setColor(color);
             //если выделять будем НЕ из левого верзнего угла, а из любого другого
@@ -133,12 +136,16 @@ public class Cursor extends GameObject {
     public void update(GameController gameController) {
         if(drawAndUpdate){
             Point location = MouseInfo.getPointerInfo().getLocation();
+           // int x = (int) (location.getX() / Property.SCREEN_SIZE_MULTIPLIER);
+           // int y = (int) (location.getY()/ Property.SCREEN_SIZE_MULTIPLIER);
             int x = (int) location.getX();
             int y = (int) location.getY();
             int frameX = windowInfo.getFrameLocation().getLocation().x;
             int frameY = windowInfo.getFrameLocation().getLocation().y;
             endX = x - frameX - 8;// - windowInfo.getWindowsBarHeight(); //TODO Не понимаю, почему именно с этими числами работает корректно
             endY = y - frameY - 30;// - windowInfo.getWindowBoard();
+            endX = (int)(endX/Property.SCREEN_SIZE_MULTIPLIER);
+            endY = (int)(endY/Property.SCREEN_SIZE_MULTIPLIER);
         }
     }
 
@@ -150,15 +157,15 @@ public class Cursor extends GameObject {
     /**
      * Обработчик действий мышью для курсора
      */
-    class CursorMouseListener implements MouseListener{
+    class CursorMouseListener extends PatternGameMouseListener{
 
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void patternGameMouseClicked(MouseEvent e) {
 
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void patternGameMousePressed(MouseEvent e) {
             if(e.getButton()==MouseEvent.BUTTON1) { //выделение объектов на экране (отрисовка рамки)
                 drawAndUpdate = true;
                 startX = e.getX();
@@ -169,7 +176,7 @@ public class Cursor extends GameObject {
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void patternGameMouseReleased(MouseEvent e) {
             if(e.getButton()==MouseEvent.BUTTON1) { //выделение объектов на экране (сообщение объектам, что они выделены)
                 drawAndUpdate = false;
                 for (PhysicalGameObject o : selectingGameObjects) {
@@ -189,12 +196,12 @@ public class Cursor extends GameObject {
         }
 
         @Override
-        public void mouseEntered(MouseEvent e) {
+        public void patternGameMouseEntered(MouseEvent e) {
 
         }
 
         @Override
-        public void mouseExited(MouseEvent e) {
+        public void patternGameMouseExited(MouseEvent e) {
         }
     }
 

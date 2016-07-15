@@ -1,6 +1,8 @@
 package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.PatternGameMouseListener;
+import ru.game.pattern.view.PatternGameGraphics2D;
 import ru.game.pattern.model.WindowInfo;
 
 import java.awt.*;
@@ -40,7 +42,7 @@ abstract public class Priest extends Player{
 
     private final int manaAdding;
 
-    private MouseListener mouseListener;
+    private PatternGameMouseListener mouseListener;
 
     private KeyListener keyListener;
 
@@ -99,7 +101,7 @@ abstract public class Priest extends Player{
     }
 
     @Override
-    public MouseListener getMouseListener() {
+    public PatternGameMouseListener getMouseListener() {
         return mouseListener;
     }
 
@@ -160,7 +162,7 @@ abstract public class Priest extends Player{
     }
 
     @Override
-    public void drawBeforeAll(Graphics2D g) {
+    public void drawBeforeAll(PatternGameGraphics2D g) {
 
         if(hill){
             g.setStroke(new BasicStroke(3));
@@ -175,7 +177,7 @@ abstract public class Priest extends Player{
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(PatternGameGraphics2D g) {
         super.draw(g);
         g.setColor(Color.black);
         g.fillRect(location.x-PLAYER_IMAGE_SHIFT_X-5, location.y-PLAYER_IMAGE_SHIFT_Y-12-additionalSelectingIndicatorShift, PLAYER_IMAGE_SHIFT_X*2+5, 10);

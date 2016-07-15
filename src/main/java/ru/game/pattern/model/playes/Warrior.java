@@ -1,6 +1,7 @@
 package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.PatternGameMouseListener;
 import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.Enemy;
 import ru.game.pattern.model.PhysicalGameObject;
@@ -34,7 +35,7 @@ abstract public class Warrior extends Player {
      */
     private final int speed;
 
-    private MouseListener mouseListener;
+    private PatternGameMouseListener mouseListener;
 
 
     public Warrior(int maxHelth, WindowInfo windowsInfo, int attackPause, int attackRadius, int speed, int damage) throws IOException {
@@ -78,7 +79,7 @@ abstract public class Warrior extends Player {
     }
 
     @Override
-    public MouseListener getMouseListener() {
+    public PatternGameMouseListener getMouseListener() {
         return mouseListener;
     }
 

@@ -5,12 +5,11 @@ package ru.game.pattern.controller;
  */
 
 import ru.game.pattern.model.GameObject;
+import ru.game.pattern.view.PatternGameGraphics2D;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
-import java.security.Key;
 
 /**
  * Объект, содержащий в себе информацию о состоянии игры.
@@ -38,12 +37,12 @@ public class GameStatus extends GameObject {
     }
 
     @Override
-    public MouseListener getMouseListener() {
+    public PatternGameMouseListener getMouseListener() {
         return null;
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(PatternGameGraphics2D g) {
 
     }
 

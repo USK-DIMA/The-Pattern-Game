@@ -1,9 +1,11 @@
 package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.PatternGameMouseListener;
 import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.playes.Player;
 import ru.game.pattern.model.staticObjects.StaticPhysicalGameObject;
+import ru.game.pattern.view.PatternGameGraphics2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -155,12 +157,12 @@ public class Enemy extends PhysicalGameObject {
     }
 
     @Override
-    public MouseListener getMouseListener() {
+    public PatternGameMouseListener getMouseListener() {
         return null;
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(PatternGameGraphics2D g) {
         if(isDestroy()){ return; }
         int x = location.x;
         int y = location.y;
@@ -410,9 +412,9 @@ public class Enemy extends PhysicalGameObject {
 
     private boolean outsideClick(Point point) {
         return !(point.x>windowsInfo.getBorderLeft()
-                && point.x<windowsInfo.getWidth() - windowsInfo.getBorderRight()
+                && point.x<windowsInfo.getDefaultWidth() - windowsInfo.getBorderRight()
                 && point.y>windowsInfo.getBorderTop()
-                && point.y<windowsInfo.getHeight() - windowsInfo.getBorderBottom());
+                && point.y<windowsInfo.getDefaultHeight() - windowsInfo.getBorderBottom());
     }
 
     @Override

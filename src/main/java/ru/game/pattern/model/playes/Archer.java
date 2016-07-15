@@ -1,6 +1,7 @@
 package ru.game.pattern.model.playes;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.PatternGameMouseListener;
 import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.Enemy;
 import ru.game.pattern.model.FireBall;
@@ -10,7 +11,6 @@ import ru.game.pattern.model.WindowInfo;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  */
 abstract public class Archer extends Player {
 
-    private MouseListener mouseListener;
+    private PatternGameMouseListener mouseListener;
 
     /**
      * Список точек, куда наносить последующие удары.
@@ -73,7 +73,7 @@ abstract public class Archer extends Player {
     }
 
     @Override
-    public MouseListener getMouseListener() {
+    public PatternGameMouseListener getMouseListener() {
         return mouseListener;
     }
 
@@ -155,8 +155,8 @@ abstract public class Archer extends Player {
     class ArcherMouseListener extends PlayerMouseListener{
         
         @Override
-        public void mouseReleased(MouseEvent e) {
-            super.mouseReleased(e);
+        public void patternGameMouseReleased(MouseEvent e) {
+            super.patternGameMouseReleased(e);
             if(e.getButton()==MouseEvent.BUTTON2) { //Клик по экрано СКМ
                 if(isSeletedByCursor()){
                     armBullet(new Point(e.getX(), e.getY()));

@@ -1,9 +1,9 @@
 package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
-import ru.game.pattern.model.playes.Player;
+import ru.game.pattern.controller.PatternGameMouseListener;
+import ru.game.pattern.view.PatternGameGraphics2D;
 
-import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 
@@ -27,14 +27,14 @@ abstract public class GameObject {
     /**
      * Если надо отрисовать что-то ещё особенное под всеми объеками кроме поля
      */
-    public void drawBeforeAll(Graphics2D g){
+    public void drawBeforeAll(PatternGameGraphics2D g){
 
     }
 
     /**
      * Если надо отрисовать что-то ещё особенное под всеми объеками кроме поля
      */
-    public void drawAfterAll(Graphics2D g){
+    public void drawAfterAll(PatternGameGraphics2D g){
 
     }
 
@@ -55,13 +55,13 @@ abstract public class GameObject {
     /**
      * Возвращает обработчик игрового объекта
      */
-    public abstract MouseListener getMouseListener();
+    public abstract PatternGameMouseListener getMouseListener();
 
     /**
      * В метожн происходит отрисовка объекта игры
      * @param g объект, на котором должна происходить отрисовка
      */
-    abstract public void draw(Graphics2D g);
+    abstract public void draw(PatternGameGraphics2D g);
 
     /**
      * В методе должно происходить обновление состояния объекта

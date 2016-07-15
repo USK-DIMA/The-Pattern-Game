@@ -1,7 +1,9 @@
 package ru.game.pattern.model.staticObjects;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.PatternGameMouseListener;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.view.PatternGameGraphics2D;
 import ru.game.pattern.model.PhysicalGameObject;
 
 import javax.imageio.ImageIO;
@@ -61,12 +63,12 @@ public class StaticPhysicalGameObject extends PhysicalGameObject {
     }
 
     @Override
-    public MouseListener getMouseListener() {
+    public PatternGameMouseListener getMouseListener() {
         return null;
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(PatternGameGraphics2D g) {
         if(image!=null && imageSize !=null) {
             g.setColor(Color.WHITE);
             g.drawImage(image, location.x - imageSize.x / 2, location.y - imageSize.y / 2 + additionalIamgeShift, null);

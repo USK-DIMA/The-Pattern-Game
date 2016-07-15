@@ -1,6 +1,7 @@
 package ru.game.pattern.model.staticObjects;
 
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.view.PatternGameGraphics2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -31,7 +32,7 @@ public class MediumTree extends StaticPhysicalGameObject {
     }
 
     @Override
-    public void drawAfterAll(Graphics2D g) {
+    public void drawAfterAll(PatternGameGraphics2D g) {
         g.drawImage(leavesImage, location.x - IMAGE_SIZE.x / 2, location.y - IMAGE_SIZE.y / 2 + additionalIamgeShift, null);
     }
 }
