@@ -66,6 +66,8 @@ public interface GameController {
 
     Menu getMenu();
 
+    Cursor getCursor();
+
     public static interface ObjectNotifer{
         void addListeners(GameObject object);
     }

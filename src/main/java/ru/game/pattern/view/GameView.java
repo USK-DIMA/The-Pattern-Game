@@ -86,6 +86,7 @@ public class GameView implements  Runnable{
         gameController.startUpdate(gameStatus);
         gamePanel.addGameObjectListeners(gameController.getAllGameObjects());
         gamePanel.addGameObjectListener(gameController.getGameBoard());
+        gamePanel.addGameObjectListener(gameController.getCursor());
         this.startDraw();
         mainFrame.setVisible(true);
     }
@@ -136,20 +137,27 @@ public class GameView implements  Runnable{
             for(GameObject o : gameObjectList){
                 o.drawBeforeAll(g); //Отрисовка объектов из контроллера
             }
+            gameController.getCursor().drawBeforeAll(g);
+
+
             for(GameObject o : gameObjectList) {
                     o.draw(g); //Отрисовка объектов из контроллера
             }
+            gameController.getCursor().draw(g);
+
             for(GameObject o : gameObjectList){
                 o.drawAfterAll(g); //Отрисовка объектов из контроллера
             }
+            gameController.getCursor().drawAfterAll(g);
+
             gameController.getGameBoard().draw(g);
             gameController.getBackgound().drawAfterAll(g);
 
             if(gameStatus.isPause()){
-                g.setColor(new Color(0,0,0, 170));
+                g.setColor(new Color(0,0,255, 20));
                 g.fillRect(0,0, windowInfo.getDefaultWidth(), windowInfo.getDefaultHeight());
                 g.setColor(Color.WHITE);
-                g.drawString("Pause", windowInfo.getDefaultWidth()/2 , windowInfo.getDefaultHeight()/2);
+                //g.drawString("Pause", windowInfo.getDefaultWidth()/2 , windowInfo.getDefaultHeight()/2);
             }
             gameDraw();
         }

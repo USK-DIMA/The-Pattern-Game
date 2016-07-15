@@ -101,7 +101,7 @@ public class GameControllerImpl implements GameController, Runnable{
 
         initStaticObjects();
         initEnemy();
-        allGameObjects.add(cursor);
+        //allGameObjects.add(cursor);
         castle = new Castle(new Point(CASTLE_LOCATION_X, CASTLE_LOCATION_Y));
         addStaticObject(castle);
         Player.setStaticObjects(getStaticPhysicalGameObjects());
@@ -111,6 +111,11 @@ public class GameControllerImpl implements GameController, Runnable{
     @Override
     public Menu getMenu() {
         return menu;
+    }
+
+    @Override
+    public Cursor getCursor() {
+        return cursor;
     }
 
     private void initEnemy() throws IOException {
@@ -263,10 +268,13 @@ public class GameControllerImpl implements GameController, Runnable{
      */
     @Override
     public void updateAll() {
+
         while (gameStatus.isMenu()){
             menu.update(this);
         }
+
         while (gameStatus.isRun()) {
+            cursor.update(this);
             if (!gameStatus.isPause()) {
                 try {
                     Thread.sleep(Property.UPDATE_PAUSE); //просто пауза
