@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Stone extends StaticPhysicalGameObject {
 
 
-    private static final String IMAGE_PATH = Property.RESOURSES_PATH + "static/stone.png";
+    private static final String IMAGE_PATH = Property.RESOURCES_PATH + "static/stone.png";
 
     private static final int TERRITORY_RADIUS = 20;
 

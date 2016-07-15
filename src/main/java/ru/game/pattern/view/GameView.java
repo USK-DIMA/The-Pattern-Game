@@ -19,9 +19,9 @@ import java.util.List;
  */
 public class GameView implements  Runnable{
 
-    public static final int WIDTH = Property.WINDOW_WIDTH;
+    public static final int WIDTH = Property.DEFAULT_WINDOW_WIDTH;
 
-    public static final int HEIGHT = Property.WINDOW_HEIGHT;
+    public static final int HEIGHT = Property.DEFAULT_WINDOW_HEIGHT;
 
     /**
      * Окно игры
@@ -56,7 +56,7 @@ public class GameView implements  Runnable{
      * g = (Graphics2D) image.getGraphics();
      * через данный объект происходит отрисовка
      */
-    private Graphics2D g;
+    private PatternGameGraphics2D g;
 
     /**
      * Данный объект содержит всю необходимую информацию об окне.
@@ -68,7 +68,7 @@ public class GameView implements  Runnable{
 
     public GameView() {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setPreferredSize(new Dimension(WIDTH+Property.WINDOW_BOARD, HEIGHT+Property.WINDOW_BAR_HEIGHT)); //+ оконная рамка и + верхня панель окна с названием и иконкойыв
+        mainFrame.setPreferredSize(new Dimension((int)(WIDTH*Property.SCREEN_SIZE_MULTIPLIER)+Property.WINDOW_BOARD, (int)(HEIGHT*Property.SCREEN_SIZE_MULTIPLIER)+Property.WINDOW_BAR_HEIGHT)); //+ оконная рамка и + верхня панель окна с названием и иконкойыв
         mainFrame.pack();
         mainFrame.setContentPane(gamePanel);
         mainFrame.setLocationRelativeTo(null);
@@ -81,11 +81,12 @@ public class GameView implements  Runnable{
         this.gameController = gameController;
         gameStatus = new GameStatus();
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        g = (Graphics2D) image.getGraphics();
+        g = new PatternGameGraphics2D((Graphics2D) image.getGraphics());
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         gameController.startUpdate(gameStatus);
         gamePanel.addGameObjectListeners(gameController.getAllGameObjects());
         gamePanel.addGameObjectListener(gameController.getGameBoard());
+        gamePanel.addGameObjectListener(gameController.getCursor());
         this.startDraw();
         mainFrame.setVisible(true);
     }
@@ -118,6 +119,11 @@ public class GameView implements  Runnable{
      * Метод, отрисовывающий все игровые объекты на BufferedImage image с помощью Graphics2D g.
      */
     private void drawAll() {
+        while (gameStatus.isMenu()){
+            gameController.getMenu().draw(g);
+            gameDraw();
+        }
+
         while (gameStatus.isRun()){
             try {
                 Thread.sleep(1000/Property.FPS);
@@ -131,23 +137,28 @@ public class GameView implements  Runnable{
             for(GameObject o : gameObjectList){
                 o.drawBeforeAll(g); //Отрисовка объектов из контроллера
             }
+            gameController.getCursor().drawBeforeAll(g);
+
+
             for(GameObject o : gameObjectList) {
                     o.draw(g); //Отрисовка объектов из контроллера
             }
+            gameController.getCursor().draw(g);
+
             for(GameObject o : gameObjectList){
                 o.drawAfterAll(g); //Отрисовка объектов из контроллера
             }
+            gameController.getCursor().drawAfterAll(g);
+
             gameController.getGameBoard().draw(g);
             gameController.getBackgound().drawAfterAll(g);
 
             if(gameStatus.isPause()){
-                g.setColor(new Color(0,0,0, 170));
-                g.fillRect(0,0, windowInfo.getWidth(), windowInfo.getHeight());
+                g.setColor(new Color(0,0,255, 20));
+                g.fillRect(0,0, windowInfo.getDefaultWidth(), windowInfo.getDefaultHeight());
                 g.setColor(Color.WHITE);
-                g.drawString("Pause", windowInfo.getWidth()/2 , windowInfo.getHeight()/2);
+                //g.drawString("Pause", windowInfo.getDefaultWidth()/2 , windowInfo.getDefaultHeight()/2);
             }
-
-
             gameDraw();
         }
     }
@@ -176,4 +187,5 @@ public class GameView implements  Runnable{
     public GamePanel getGamePanel() {
         return gamePanel;
     }
+
 }

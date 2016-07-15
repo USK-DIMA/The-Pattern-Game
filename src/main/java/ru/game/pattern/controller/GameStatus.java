@@ -5,23 +5,22 @@ package ru.game.pattern.controller;
  */
 
 import ru.game.pattern.model.GameObject;
+import ru.game.pattern.view.PatternGameGraphics2D;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
-import java.security.Key;
 
 /**
  * Объект, содержащий в себе информацию о состоянии игры.
- * Пока это только параметр, показывающий началась ли игра или уже закончилась.
- * Позже возможно добавить состояние "Пауза"
  */
 public class GameStatus extends GameObject {
 
     volatile private boolean run;
 
     volatile private boolean pause;
+
+    volatile private boolean menu = true;
 
     private KeyListener keyListener = new GameStatusKeyListener();
 
@@ -35,12 +34,12 @@ public class GameStatus extends GameObject {
     }
 
     @Override
-    public MouseListener getMouseListener() {
+    public PatternGameMouseListener getMouseListener() {
         return null;
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(PatternGameGraphics2D g) {
 
     }
 
@@ -68,6 +67,14 @@ public class GameStatus extends GameObject {
 
     public void setPause(boolean pause) {
         this.pause = pause;
+    }
+
+    public boolean isMenu() {
+        return menu;
+    }
+
+    public void setMenu(boolean menu) {
+        this.menu = menu;
     }
 
 

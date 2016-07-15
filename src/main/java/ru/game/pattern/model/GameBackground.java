@@ -1,8 +1,9 @@
 package ru.game.pattern.model;
 
-import ru.game.pattern.Main;
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.PatternGameMouseListener;
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.view.PatternGameGraphics2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -28,9 +29,9 @@ public class GameBackground extends GameObject {
 
     private BufferedImage imageTree = null;
 
-    private String BACKGROUND_IMAGE_PATH = Property.RESOURSES_PATH + "plane_lite_80.png";
+    private String BACKGROUND_IMAGE_PATH = Property.RESOURCES_PATH + "plane_lite_80.png";
 
-    private String BACKGROUND_IMAGE_PATH_THREE = Property.RESOURSES_PATH + "plane_lite_81.png";
+    private String BACKGROUND_IMAGE_PATH_THREE = Property.RESOURCES_PATH + "plane_lite_81.png";
 
     private int black = 0;
 
@@ -48,13 +49,13 @@ public class GameBackground extends GameObject {
     }
 
     @Override
-    public void drawAfterAll(Graphics2D g) {
+    public void drawAfterAll(PatternGameGraphics2D g) {
         g.drawImage(imageTree, 0, 0, null);
         g.setColor(Color.WHITE);
         if (Property.DEBUG_MODE) {
             g.drawRect(windowInfo.getBorderLeft(), windowInfo.getBorderTop(),
-                         windowInfo.getWidth() - windowInfo.getBorderLeft() - windowInfo.getBorderRight(),
-                        windowInfo.getHeight() - windowInfo.getBorderTop() - windowInfo.getBorderBottom());
+                         windowInfo.getDefaultWidth() - windowInfo.getBorderLeft() - windowInfo.getBorderRight(),
+                        windowInfo.getDefaultHeight() - windowInfo.getBorderTop() - windowInfo.getBorderBottom());
         }
 
         if(black>0) {
@@ -93,12 +94,12 @@ public class GameBackground extends GameObject {
     }
 
     @Override
-    public MouseListener getMouseListener() {
+    public PatternGameMouseListener getMouseListener() {
         return null;
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(PatternGameGraphics2D g) {
         g.drawImage(image, 0, 0, null);
     }
 

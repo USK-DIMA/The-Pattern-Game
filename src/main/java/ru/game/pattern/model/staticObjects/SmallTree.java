@@ -1,6 +1,7 @@
 package ru.game.pattern.model.staticObjects;
 
 import ru.game.pattern.controller.Property;
+import ru.game.pattern.view.PatternGameGraphics2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,9 +15,9 @@ import java.io.IOException;
 public class SmallTree extends StaticPhysicalGameObject {
 
 
-    private static final String IMAGE_PATH = Property.RESOURSES_PATH + "static/tree_small.png";
+    private static final String IMAGE_PATH = Property.RESOURCES_PATH + "static/tree_small.png";
 
-    private static final String LEAVES_IMAGE_PATH = Property.RESOURSES_PATH + "static/tree_small_leaves.png";
+    private static final String LEAVES_IMAGE_PATH = Property.RESOURCES_PATH + "static/tree_small_leaves.png";
 
     private static final int TERRITORY_RADIUS = 10;
 
@@ -31,7 +32,7 @@ public class SmallTree extends StaticPhysicalGameObject {
     }
 
     @Override
-    public void drawAfterAll(Graphics2D g) {
+    public void drawAfterAll(PatternGameGraphics2D g) {
         g.drawImage(leavesImage, location.x - IMAGE_SIZE.x / 2, location.y - IMAGE_SIZE.y / 2 + additionalIamgeShift, null);
     }
 

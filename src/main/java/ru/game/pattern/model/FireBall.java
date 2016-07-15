@@ -1,6 +1,8 @@
 package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.PatternGameMouseListener;
+import ru.game.pattern.view.PatternGameGraphics2D;
 
 import java.awt.*;
 import java.awt.event.KeyListener;
@@ -74,6 +76,9 @@ public abstract class FireBall extends PhysicalGameObject {
         int n = (int)((Math.sqrt(dx*dx + dy+ dy)/radius)+1);
         this.location.x+=dx*n;
         this.location.y+=dy*n;
+        if(dx==0 && dy==0){
+            destroy();
+        }
     }
 
     @Override
@@ -97,20 +102,20 @@ public abstract class FireBall extends PhysicalGameObject {
     }
 
     @Override
-    public MouseListener getMouseListener() {
+    public PatternGameMouseListener getMouseListener() {
         return null;
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(PatternGameGraphics2D g) {
         if(isDestroy()){ return;}
         g.drawImage(getImageForDraw(), location.x-5, location.y-5, null);
     }
 
     @Override
     public void update(GameController gameController) {
-        if(location.x>gameController.getWindowInfo().getWidth()+territoryRadius || location.x<-territoryRadius ||
-          location.y>gameController.getWindowInfo().getHeight()+territoryRadius || location.y<-territoryRadius){
+        if(location.x>gameController.getWindowInfo().getDefaultWidth()+territoryRadius || location.x<-territoryRadius ||
+          location.y>gameController.getWindowInfo().getDefaultHeight()+territoryRadius || location.y<-territoryRadius){
             destroy();
         }
         for(PhysicalGameObject o : gameController.getPhysicalGameObject()){

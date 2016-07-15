@@ -1,12 +1,14 @@
 package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
+import ru.game.pattern.controller.PatternGameMouseListener;
 import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.fabrica.PlayerFabric;
 import ru.game.pattern.model.fabrica.PlayerFabricLvl1;
 import ru.game.pattern.model.fabrica.PlayerFabricLvl2;
 import ru.game.pattern.model.fabrica.PlayerFabricLvl3;
 import ru.game.pattern.model.playes.Player;
+import ru.game.pattern.view.PatternGameGraphics2D;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -85,7 +87,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     public GameBoard(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
-        moneyImage = ImageIO.read(new File(Property.RESOURSES_PATH+"money.png"));
+        moneyImage = ImageIO.read(new File(Property.RESOURCES_PATH +"money.png"));
         initFabricaByLvl(1);
         keyListener = new GameBoardKeyListener();
         wight = 4 * (IMAGE_SIZE + BORDER) + BORDER + INFO_WIDTH;
@@ -133,12 +135,12 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
     }
 
     @Override
-    public MouseListener getMouseListener() {
+    public PatternGameMouseListener getMouseListener() {
         return null;
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(PatternGameGraphics2D g) {
         g.setColor(Color.black);
         g.fillRect(0, 0, wight, height);
 
@@ -219,7 +221,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
      * @param cost стоимость
      * @param money кол-во денег
      */
-    private void setColor(Graphics2D g, int cost, int money) {
+    private void setColor(PatternGameGraphics2D g, int cost, int money) {
         if(money>=cost){
             g.setColor(Color.WHITE);
         } else {
@@ -318,7 +320,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
             if (cost <= money) {
                 money -= cost;
-                Player player = creator.create(new Point(115, windowInfo.getHeight() + 100), new Point(115, windowInfo.getHeight() - 100), windowInfo);
+                Player player = creator.create(new Point(115, windowInfo.getDefaultHeight() + 100), new Point(115, windowInfo.getDefaultHeight() - 100), windowInfo);
                 playerCount++;
                 buyTimer=0;
                 player.setPlayerDestroyNotifer(this);
