@@ -20,6 +20,7 @@ public class Main {
         double ww = w/ Property.DEFAULT_WINDOW_WIDTH;
         double hh = h/Property.DEFAULT_WINDOW_HEIGHT;
         Property.SCREEN_SIZE_MULTIPLIER =  Math.min(ww, hh)*0.9;
+        Property.SCREEN_SIZE_MULTIPLIER =  1; //масштаб не работает
         System.out.println(w+"*"+h);
         System.out.println(Property.SCREEN_SIZE_MULTIPLIER);
 
