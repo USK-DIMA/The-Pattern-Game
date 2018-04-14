@@ -2,7 +2,6 @@ package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.PatternGameMouseListener;
-import ru.game.pattern.controller.Property;
 import ru.game.pattern.model.fabrica.PlayerFabric;
 import ru.game.pattern.model.fabrica.PlayerFabricLvl1;
 import ru.game.pattern.model.fabrica.PlayerFabricLvl2;
@@ -14,9 +13,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import static ru.game.pattern.controller.Property.*;
@@ -81,20 +78,20 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
 
     private int enemyCount = ENEMY_COUNT;
 
-    Color impossibleByColor = new Color(100, 100, 100);
+    private Color impossibleByColor = new Color(100, 100, 100);
 
     private boolean isLvlUp = false;
 
     public GameBoard(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
-        moneyImage = ImageIO.read(new File(Property.RESOURCES_PATH +"money.png"));
-        initFabricaByLvl(1);
+        moneyImage = getResourseAsImage("money.png");
+        initFactoryByLvl(1);
         keyListener = new GameBoardKeyListener();
         wight = 4 * (IMAGE_SIZE + BORDER) + BORDER + INFO_WIDTH;
         height = IMAGE_SIZE + 2 * BORDER + COST_HEIGHT;
     }
 
-    private void initFabricaByLvl(int i) throws IOException {
+    private void initFactoryByLvl(int i) throws IOException {
         switch (i){
             case 1: playerFabrica = new PlayerFabricLvl1();
                 break;
@@ -105,10 +102,10 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
             default: return;
         }
 
-        archerImage = ImageIO.read(new File(playerFabrica.getArcherInfo().getIconPath()));
-        warriorImage = ImageIO.read(new File(playerFabrica.getWarriorInfo().getIconPath()));
-        pristImage = ImageIO.read(new File(playerFabrica.getPristInfo().getIconPath()));
-        magImage = ImageIO.read(new File(playerFabrica.getMagInfo().getIconPath()));
+        archerImage = getResourseAsImage(playerFabrica.getArcherInfo().getIconPath());
+        warriorImage = getResourseAsImage(playerFabrica.getWarriorInfo().getIconPath());
+        pristImage = getResourseAsImage(playerFabrica.getPristInfo().getIconPath());
+        magImage = getResourseAsImage(playerFabrica.getMagInfo().getIconPath());
 
         archerCost = playerFabrica.getArcherInfo().getCost();
         warriorCost = playerFabrica.getWarriorInfo().getCost();
@@ -263,7 +260,7 @@ public class GameBoard extends GameObject implements GameObject.GameObjectDestro
             money-=nextUpdate;
         }
         try {
-            initFabricaByLvl(playerFabrica.getLvl()+1);
+            initFactoryByLvl(playerFabrica.getLvl()+1);
         } catch (IOException e) {
             throw new RuntimeException();
         }

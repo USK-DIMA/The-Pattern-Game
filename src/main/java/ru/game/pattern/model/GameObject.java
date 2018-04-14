@@ -2,23 +2,30 @@ package ru.game.pattern.model;
 
 import ru.game.pattern.controller.GameController;
 import ru.game.pattern.controller.PatternGameMouseListener;
+import ru.game.pattern.resource.provider.ResourceProvider;
+import ru.game.pattern.resource.provider.ResourceProviderBinder;
 import ru.game.pattern.view.PatternGameGraphics2D;
 
+import javax.imageio.ImageIO;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
  */
 
 /**
- * Родительский класс для всекх игровых обхъектов
+ * Родительский класс для всех игровых обхъектов
  */
 abstract public class GameObject {
 
     protected boolean destroy;
 
     private GameObjectDestroyNotifer gameObjectDestroyNotifer = null;
+
+    private static ResourceProvider resourceProvider = ResourceProviderBinder.getInstance();
 
     public GameObject() {
         this.destroy = false;
@@ -111,6 +118,16 @@ abstract public class GameObject {
     public interface GameObjectDestroyNotifer {
         void objectIsDistroy(GameObject player);
     }
+
+    protected InputStream getResource(String path) {
+        return resourceProvider.getResource(path);
+    }
+
+    protected BufferedImage getResourseAsImage(String path) throws IOException {
+        return ImageIO.read(getResource(path));
+    }
+
+
 
 
 }

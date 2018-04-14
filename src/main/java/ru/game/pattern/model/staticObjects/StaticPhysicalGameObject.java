@@ -37,7 +37,7 @@ public class StaticPhysicalGameObject extends PhysicalGameObject {
         this.location = location;
         this.territoryRadius = territoryRadius;
         if(imagePath!=null) {
-            this.image = ImageIO.read(new File(imagePath));
+            this.image = getResourseAsImage(imagePath);
         }
         this.imageSize = imageSize;
     }

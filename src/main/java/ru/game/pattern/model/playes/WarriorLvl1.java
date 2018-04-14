@@ -24,7 +24,7 @@ import static ru.game.pattern.controller.Property.*;
  */
 public class WarriorLvl1 extends Warrior {
 
-    public static final String ICON_PATH = Property.RESOURCES_PATH + "warrior/warrior_icon1.jpg";
+    public static final String ICON_PATH =  "warrior/warrior_icon1.jpg";
 
     public static final int COST = WARRIOR_LVL1_COST;
 
@@ -57,8 +57,8 @@ public class WarriorLvl1 extends Warrior {
 
     public WarriorLvl1(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo, ATTACK_PAUSE, ATTACK_RADIUS, SPEED, DAMAGE );
-        playerRightImage = ImageIO.read(new File(Property.RESOURCES_PATH + "warrior/warrior_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURCES_PATH + "warrior/warrior_left.png"));
+        playerRightImage = getResourseAsImage("warrior/warrior_right.png");
+        playerLeftImage = getResourseAsImage("warrior/warrior_left.png");
 
     }
 

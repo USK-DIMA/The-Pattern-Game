@@ -17,7 +17,7 @@ public class PriestLvl1 extends Priest {
 
     public static final int COST = PRIST_LVL1_COST;
 
-    public static final String ICON_PATH = Property.RESOURCES_PATH + "prist/prist_icon1.jpg";
+    public static final String ICON_PATH = "prist/prist_icon1.jpg";
 
     private static final int MAX_HELTH = PRIST_LVL1_MAX_HELTH;
 
@@ -47,8 +47,8 @@ public class PriestLvl1 extends Priest {
 
     public PriestLvl1(WindowInfo windowsInfo) throws IOException {
         super(MAX_HELTH, windowsInfo, SPEED, HELTH_HILL, MAX_MANA, HILL_PAUSE, HILL_RADIUS, MANA_LOSES, MANA_ADDING);
-        playerRightImage = ImageIO.read(new File(Property.RESOURCES_PATH + "prist/prist_right.png"));
-        playerLeftImage = ImageIO.read(new File(Property.RESOURCES_PATH + "prist/prist_left.png"));
+        playerRightImage = getResourseAsImage("prist/prist_right.png");
+        playerLeftImage = getResourseAsImage("prist/prist_left.png");
     }
 
     @Override

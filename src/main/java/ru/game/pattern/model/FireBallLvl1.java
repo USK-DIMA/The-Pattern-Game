@@ -34,7 +34,7 @@ public class FireBallLvl1 extends FireBall {
     public FireBallLvl1(Point location, Point targetLocation, int objectTerritoryRadius, GameObject parant) throws IOException {
         super(location, targetLocation, objectTerritoryRadius, parant, TERRITORY_RADIUS, MAX_DISTANSE, DAMAGE, SPEED);
         if(image==null){
-            image = ImageIO.read(new File(Property.RESOURCES_PATH + "fireball_min.png"));
+            image = getResourseAsImage( "fireball_min.png");
         }
     }
 

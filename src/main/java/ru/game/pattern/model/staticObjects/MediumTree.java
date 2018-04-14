@@ -1,12 +1,9 @@
 package ru.game.pattern.model.staticObjects;
 
-import ru.game.pattern.controller.Property;
 import ru.game.pattern.view.PatternGameGraphics2D;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -15,9 +12,9 @@ import java.io.IOException;
 public class MediumTree extends StaticPhysicalGameObject {
 
 
-    private static final String IMAGE_PATH = Property.RESOURCES_PATH + "static/tree_medium.png";
+    private static final String IMAGE_PATH = "static/tree_medium.png";
 
-    private static final String LEAVES_IMAGE_PATH = Property.RESOURCES_PATH + "static/tree_medium_leaves.png";
+    private static final String LEAVES_IMAGE_PATH = "static/tree_medium_leaves.png";
 
     private static final int TERRITORY_RADIUS = 15;
 
@@ -27,7 +24,7 @@ public class MediumTree extends StaticPhysicalGameObject {
 
     public MediumTree(Point location) throws IOException{
         super(location, TERRITORY_RADIUS, IMAGE_PATH, IMAGE_SIZE);
-        leavesImage = ImageIO.read(new File(LEAVES_IMAGE_PATH));
+        leavesImage = getResourseAsImage(LEAVES_IMAGE_PATH);
         additionalIamgeShift = -20;
     }
 

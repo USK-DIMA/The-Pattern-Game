@@ -149,10 +149,10 @@ public abstract class Player  extends PhysicalGameObject {
         this.location = new Point(windowsInfo.getDefaultWidth()/2, windowsInfo.getDefaultHeight()/2);
         this.targetLocationList = new LinkedList<>();
         if(aimImage==null) {
-            aimImage = ImageIO.read(new File(Property.RESOURCES_PATH + "aim2.png"));
+            aimImage = getResourseAsImage("aim2.png");
         }
-        selectiongIndicatorImage = ImageIO.read(new File(Property.RESOURCES_PATH + "selecting_player.png"));
-        targetPointImage = ImageIO.read(new File(Property.RESOURCES_PATH + "flag.png"));
+        selectiongIndicatorImage = getResourseAsImage("selecting_player.png");
+        targetPointImage = getResourseAsImage("flag.png");
         selectedByCursor=false;
 
         targetLocation=null;

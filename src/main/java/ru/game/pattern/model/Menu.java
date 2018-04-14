@@ -46,7 +46,7 @@ public class Menu extends GameObject {
         this.gameStatus = gameStatus;
         this.windowInfo = windowInfo;
         menuMouseListener = new MenuMouseListener();
-        menuBackground = ImageIO.read(new File(Property.RESOURCES_PATH+"menu.png"));
+        menuBackground = getResourseAsImage("menu.png");
     }
 
     @Override
@@ -73,7 +73,7 @@ public class Menu extends GameObject {
             graphics2d.drawString(Property.GUIDE, 0, windowInfo.getDefaultHeight());
             graphics2d.setFont(new Font("default", Font.BOLD, 10));*/
             try {
-                g.drawImage(ImageIO.read(new File(Property.RESOURCES_PATH+"guide.png")), 0,0, windowInfo.getDefaultWidth(),
+                g.drawImage(getResourseAsImage("guide.png"), 0,0, windowInfo.getDefaultWidth(),
                         windowInfo.getDefaultHeight(), null);
             } catch (IOException e) {
                 e.printStackTrace();

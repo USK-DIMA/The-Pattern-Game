@@ -31,7 +31,7 @@ public abstract class PhysicalGameObject extends GameObject {
 
     public PhysicalGameObject(int maxHelth) {
         this.maxHelth = maxHelth;
-        this.helth  = maxHelth;
+        this.helth = maxHelth;
     }
 
     /**
@@ -39,29 +39,34 @@ public abstract class PhysicalGameObject extends GameObject {
      * Данный метод является методом по умолчанию для всех дочерних классов.
      * По умолчанию объекты нельзя выделить курсором.
      * Чтобы реализовать эту возможность надо переопределить данный метод в дочернем классе, реализовавв там необходимую логику
+     *
      * @return true, если выбран, иначе false
      */
-    public boolean isSeletedByCursor(){
+    public boolean isSeletedByCursor() {
         return false;
-    };
+    }
+
+    ;
 
     /**
      * Передает информацию объекту, выбран ли он курсором.
      * Данный метод является методом по умолчанию для всех дочерних классов.
      * По умолчанию объекты нельзя выделить курсором. Поэтому этот метод пустой
      * Чтобы реализовать эту возможность надо переопределить данный метод в дочернем классе, реализовавв там необходимую логику
+     *
      * @param selectedByCursor true, если объект выделен курсором, иначе false
      */
-    public void setSelectedByCursor(boolean selectedByCursor){
+    public void setSelectedByCursor(boolean selectedByCursor) {
 
     }
 
 
     /**
      * Возвращает местоположение объекта на карте без учёта его размера (грубо говоря, возвращает координаты центра объекта)
+     *
      * @return местоположение объекта на карте
      */
-    public Point getLocation(){
+    public Point getLocation() {
         return location;
     }
 
@@ -72,57 +77,63 @@ public abstract class PhysicalGameObject extends GameObject {
 
     /**
      * Возвращает радиус объекта (т.е. пространство, которое он занимает)
+     *
      * @return
      */
     abstract public int getTerritoryRadius();
 
     /**
      * Возвращает расстояние между объектами.
-     * @param gameObject  объект, с которым проверяется столкновение.
+     *
+     * @param gameObject объект, с которым проверяется столкновение.
      * @return расстояние между объектами. Если объекты налегли друг на друга, то число отрицательное.
      * Если передана ссылка на этот же объект возвращает ~0.
      * Если gameObject==null, возвращает ~0.
      */
-     public int collision(PhysicalGameObject gameObject){
-        if(gameObject==null){ return Integer.MAX_VALUE;}
-        if(gameObject==this){ return Integer.MAX_VALUE;}
+    public int collision(PhysicalGameObject gameObject) {
+        if (gameObject == null) {
+            return Integer.MAX_VALUE;
+        }
+        if (gameObject == this) {
+            return Integer.MAX_VALUE;
+        }
         int x = location.x;
         int y = location.y;
         int x2 = gameObject.getLocation().x;
         int y2 = gameObject.getLocation().y;
         double length = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
-        return (int)(length - (getTerritoryRadius() + gameObject.getTerritoryRadius()));
+        return (int) (length - (getTerritoryRadius() + gameObject.getTerritoryRadius()));
     }
+
     /**
      * Возвращает расстояние между объектами.
      * Аналог функции abstract public int collision(PhysicalGameObject gameObject), но с другими вход параметрами
-     * @param x координата x объекта, с которым проверяем столкновение
-     * @param y координата y объекта, с которым проверяем столкновение
+     *
+     * @param x              координата x объекта, с которым проверяем столкновение
+     * @param y              координата y объекта, с которым проверяем столкновение
      * @param teritoryRadius радиус, обозначающий размер объекта, с которым проверяем столкновение
      * @return расстояние между объектами. Если объекты налегли друг на друга, то число отрицательное.
      */
-    public int collision(double x, double y, int teritoryRadius){
+    public int collision(double x, double y, int teritoryRadius) {
         int x2 = location.x;
         int y2 = location.y;
         double length = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
-        return (int)(length - (getTerritoryRadius() + teritoryRadius));
+        return (int) (length - (getTerritoryRadius() + teritoryRadius));
     }
 
     /**
      * Добавляет жизней персонажу, но не может добавить больше максимума. Отрицательное значение соответсвует урону.
      * Если жизней меньше или равно 0, объект сачитаетсы уничтоженным, т.е. destroy = true;
+     *
      * @param h на сколько надо увеличить жизни
      */
-    public void addHealth(int h){
-        if(this instanceof Enemy){
-            System.out.println(h);
-        }
-        helth+=h;
-        if(helth>maxHelth){
+    public void addHealth(int h) {
+        helth += h;
+        if (helth > maxHelth) {
             helth = maxHelth;
         }
-        if(helth<=0){
-            if(!isDestroy()) {
+        if (helth <= 0) {
+            if (!isDestroy()) {
                 destroy();
             }
         }
@@ -130,48 +141,53 @@ public abstract class PhysicalGameObject extends GameObject {
 
     /**
      * Находит расстояние между центрами объктов
+     *
      * @param object объект, с которым надо найти расстояние от центров
      * @return расстояние между центрами.
      */
     public double distanceBetweenCenter(PhysicalGameObject object) {
         int dx = object.location.x - location.x;
         int dy = object.location.y - location.y;
-        return Math.sqrt(dx*dx + dy*dy);
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     /**
      * Находит расстояние между краями объктов (т.е минимальное между ними)
+     *
      * @param object объект, с которым надо найти расстояние от краёв
      * @return расстояние между объектами. Число отрицательное, если объекты налегли дрург на друга
      */
     public double distanceBetweenEdge(PhysicalGameObject object) {
         int dx = object.location.x - location.x;
         int dy = object.location.y - location.y;
-        return Math.sqrt(dx*dx + dy*dy)- object.getTerritoryRadius() - this.getTerritoryRadius();
+        return Math.sqrt(dx * dx + dy * dy) - object.getTerritoryRadius() - this.getTerritoryRadius();
     }
 
     /**
      * Возвращает скокрость объекта
+     *
      * @return скорость объекта
      */
     public abstract int getSpeed();
 
     /**
      * Устанавдивает множитель скорости на одну итерацию
+     *
      * @param multSpeed
      */
-    public void setOneMultiSpeed(double multSpeed){
+    public void setOneMultiSpeed(double multSpeed) {
         this.multSpeed = multSpeed;
     }
 
     /**
      * Возвращает множитель скорости, обнуляя его
+     *
      * @return
      */
-    public double getOneMultiSpeed(){
+    public double getOneMultiSpeed() {
         double ans = multSpeed;
         multSpeed = 1;
-        return  ans;
+        return ans;
     }
 
 }

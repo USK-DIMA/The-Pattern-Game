@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * Created by Uskov Dmitry on 27.05.2016.
  */
-public class Main {
+public class PatternGameMain {
 
     public static void main(String[] args) throws IOException {
         Dimension sSize = Toolkit.getDefaultToolkit ().getScreenSize ();

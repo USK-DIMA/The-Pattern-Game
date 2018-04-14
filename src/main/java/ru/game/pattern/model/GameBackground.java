@@ -15,9 +15,7 @@ import java.io.IOException;
 
 /**
  * Created by Uskov Dmitry on 27.05.2016.
- */
-
-/**
+ *
  * Объект, отвечающий за фон игры.
  * Если мы захотим, чтобы изображение на фоне было динамическое, изменения вносить здесь
  */
@@ -25,13 +23,13 @@ public class GameBackground extends GameObject {
 
     private WindowInfo windowInfo;
 
-    private BufferedImage image = null;
+    private BufferedImage image;
 
-    private BufferedImage imageTree = null;
+    private BufferedImage imageTree;
 
-    private String BACKGROUND_IMAGE_PATH = Property.RESOURCES_PATH + "plane_lite_80.png";
+    private static final String BACKGROUND_IMAGE_PATH = "plane_lite_80.png";
 
-    private String BACKGROUND_IMAGE_PATH_THREE = Property.RESOURCES_PATH + "plane_lite_81.png";
+    private static final String BACKGROUND_IMAGE_PATH_THREE = "plane_lite_81.png";
 
     private int black = 0;
 
@@ -44,8 +42,8 @@ public class GameBackground extends GameObject {
 
     public GameBackground(WindowInfo windowInfo) throws IOException {
         this.windowInfo = windowInfo;
-        image = ImageIO.read(new File(BACKGROUND_IMAGE_PATH));
-        imageTree = ImageIO.read(new File(BACKGROUND_IMAGE_PATH_THREE));
+        image = getResourseAsImage(BACKGROUND_IMAGE_PATH);
+        imageTree = getResourseAsImage(BACKGROUND_IMAGE_PATH_THREE);
     }
 
     @Override

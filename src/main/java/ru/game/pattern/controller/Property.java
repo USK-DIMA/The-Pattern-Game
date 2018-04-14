@@ -6,9 +6,8 @@ import ru.game.pattern.model.Enemy.FreeTargetPoint;
  * Created by Uskov Dmitry on 27.05.2016.
  */
 public class Property {
-    public static int UPDATE_PAUSE = 33;
 
-    public static String RESOURCES_PATH = "src/main/resources/";
+    static int UPDATE_PAUSE = 33;
 
     public static boolean DEBUG_MODE = false;
 
@@ -142,7 +141,6 @@ public class Property {
     public static int PRIST_LVL3_HILL_RADIUS = 90;
     public static int PRIST_LVL3_HELTH_HILL = 5;
     public static int PRIST_LVL3_HILL_PAUSE = 15;
-    public static String GUIDE = "Guide Guide Guide Guide Guide Guide \nGuide Guide ";
 
     public static FreeTargetPoint initFreeTargetPointForEnemy() {
         FreeTargetPoint p1 = new FreeTargetPoint();

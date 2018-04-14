@@ -11,7 +11,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ import static ru.game.pattern.controller.Property.ENEMY_COUNT;
  * @see ru.game.pattern.controller.GameController
  * @see java.lang.Runnable
  */
-public class GameControllerImpl implements GameController, Runnable{
+public class GameControllerImpl implements GameController, Runnable {
 
     /**
      * Поток для обновления состояний игровых объектов. (например изменения координат на экране)
